@@ -9,6 +9,7 @@ const Footer = dynamic(() => import("./components/Footer"), { ssr: true });
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -33,6 +34,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Preload critical resources */}
+        <link rel="preload" href="/Timian2.mp4" as="video" type="video/mp4" />
+        <link rel="preload" href="/nature.jpg" as="image" />
+        <link rel="preload" href="/the_chalet.jpg" as="image" />
+        <link rel="preload" href="/nature-optimized.jpg" as="image" />
+      </head>
       <body className={`${inter.variable} antialiased`}>
         <Navbar />
         {children}

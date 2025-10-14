@@ -65,8 +65,8 @@ function VideoBackground() {
         loop
         muted
         playsInline
-        preload="metadata"
-        poster="/next.svg"
+        preload="auto"
+        poster="/nature-optimized.jpg"
       >
         <source src="/Timian2.mp4" type="video/mp4" />
       </video>
