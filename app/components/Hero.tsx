@@ -29,12 +29,22 @@ export default function Hero() {
         </p>
         
         <div className="mt-12 flex flex-col sm:flex-row gap-6">
-          <a href="#rooms" className="inline-flex items-center justify-center text-white px-8 py-4 text-sm font-semibold tracking-wider uppercase transition-colors" style={{backgroundColor: '#C9A961'}} onMouseEnter={(e) => e.target.style.backgroundColor = '#B89A51'} onMouseLeave={(e) => e.target.style.backgroundColor = '#C9A961'}>
-            EXPLORE ROOMS
-            <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
+        <a
+    href="#rooms"
+    className="inline-flex items-center justify-center text-white px-8 py-4 text-sm font-semibold tracking-wider uppercase transition-colors"
+    style={{ backgroundColor: '#C9A961' }}
+    onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.currentTarget.style.backgroundColor = '#B89A51';
+    }}
+    onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+      e.currentTarget.style.backgroundColor = '#C9A961';
+    }}
+  >
+    EXPLORE ROOMS
+    <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+    </svg>
+  </a>
           <a href="#contact" className="inline-flex items-center justify-center border-2 border-white text-white px-8 py-4 text-sm font-semibold tracking-wider uppercase hover:bg-white/10 transition-colors">
             BOOK YOUR STAY
           </a>
@@ -58,7 +68,7 @@ function VideoBackground() {
         preload="metadata"
         poster="/next.svg"
       >
-        <source src="/Timian_Website_V2.mp4" type="video/mp4" />
+        <source src="/Timian2.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
     </div>
