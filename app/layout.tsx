@@ -13,17 +13,17 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Timian Chalet | Alpine Hotel",
-  description: "A serene alpine retreat with modern comforts. Book your stay at Timian Chalet.",
+  title: "Timian Chalet | Mountain Retreat",
+  description: "Transylvanian Mountain Retreat with modern comforts. Book your stay at Timian Chalet.",
   openGraph: {
-    title: "Timian Chalet | Alpine Hotel",
-    description: "A serene alpine retreat with modern comforts. Book your stay at Timian Chalet.",
+    title: "Timian Chalet | Mountain Retreat",
+    description: "Transylvanian Mountain Retreat with modern comforts. Book your stay at Timian Chalet.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Timian Chalet | Alpine Hotel",
-    description: "A serene alpine retreat with modern comforts. Book your stay at Timian Chalet.",
+    title: "Timian Chalet | Mountain Retreat",
+    description: "Transylvanian Mountain Retreat with modern comforts. Book your stay at Timian Chalet.",
   },
 };
 
