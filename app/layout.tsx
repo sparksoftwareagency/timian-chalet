@@ -35,7 +35,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Preload critical resources */}
+          <title>Timian Chalet | Mountain Retreat</title>
+          {/* Preload critical resources */}
         <link rel="preload" href="/Timian2.mp4" as="video" type="video/mp4" />
         <link rel="preload" href="/nature.jpg" as="image" />
         <link rel="preload" href="/the_chalet.jpg" as="image" />
