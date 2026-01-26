@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 
 export default function Hero() {
   return (
@@ -60,13 +59,14 @@ function VideoBackground() {
   return (
     <div className="absolute inset-0 -z-10">
       <video
-        className="h-full w-full object-cover"
+        className="absolute inset-0 min-h-full min-w-full object-cover"
         autoPlay
         loop
         muted
         playsInline
         preload="auto"
         poster="/nature-optimized.jpg"
+        style={{ minHeight: "100%", minWidth: "100%" }}
       >
         <source src="/Timian2.mp4" type="video/mp4" />
       </video>
