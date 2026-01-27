@@ -12,6 +12,56 @@ export default function ClientPage() {
       <LoadingState />
       <Hero />
 
+      {/* Landing Section - visible after hero animation */}
+      <section className="relative min-h-screen w-full px-6 sm:px-10 lg:px-16 pt-20 pb-12 flex flex-col" style={{backgroundColor: '#FFF8F0'}}>
+        {/* Top section with branding */}
+        <div className="max-w-xl">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light tracking-[0.25em] uppercase" style={{color: '#8B6914'}}>
+            TIMIAN
+          </h1>
+          <div className="flex items-center mt-4">
+            <div className="w-12 h-[1px]" style={{backgroundColor: '#C9A961'}}></div>
+            <span className="mx-4 text-sm sm:text-base lg:text-lg tracking-[0.35em] uppercase" style={{color: '#A08050'}}>
+              CHALET
+            </span>
+            <div className="w-12 h-[1px]" style={{backgroundColor: '#C9A961'}}></div>
+          </div>
+          <p className="mt-5 text-lg sm:text-xl lg:text-2xl italic font-light" style={{color: '#C9A961'}}>
+            Transylvanian Mountain Retreat
+          </p>
+        </div>
+
+        {/* Staggered text - positioned in middle/lower area */}
+        <div className="flex-1 flex flex-col justify-center mt-8">
+          <div className="leading-[0.85] space-y-1">
+            <div 
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-[0.12em] uppercase"
+              style={{color: '#A67C52'}}
+            >
+              BECAUSE
+            </div>
+            <div 
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-[0.12em] uppercase"
+              style={{color: '#D4C4A0', paddingLeft: '12%'}}
+            >
+              YOU
+            </div>
+            <div 
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-[0.12em] uppercase"
+              style={{color: '#A67C52', paddingLeft: '28%'}}
+            >
+              DESERVE
+            </div>
+            <div 
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-[0.12em] uppercase"
+              style={{color: '#D4C4A0', paddingLeft: '38%'}}
+            >
+              IT
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="about" className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24" style={{backgroundColor: '#FFF8F0'}}>
         {/* Welcome Title */}
         <div className="text-center mb-16">
