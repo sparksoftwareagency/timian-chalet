@@ -29,12 +29,13 @@ export default function Hero() {
   // Transform values based on progress (0 -> 1)
   // Final position: top-right area, smaller size
   // Use width/height percentages instead of scale to avoid stretching content
-  const widthPercent = useTransform(progress, [0, 1], [100, 45]); // 100% -> 30% of viewport width
+  const widthPercent = useTransform(progress, [0, 1], [100, 48]); // 100% -> 30% of viewport width
   const heightPercent = useTransform(progress, [0, 1], [100, 45]); // 100% -> 30% of viewport height
   const xPercent = useTransform(progress, [0, 1], [0, 50]); // Move to right (in % of viewport)
   const yPercent = useTransform(progress, [0, 1], [0, 9]); // Move down slightly from top
   const contentOpacity = useTransform(progress, [0, 0.4], [1, 0]);
-  const borderRadius = useTransform(progress, [0, 1], [0, 12]);
+  const borderRadius = useTransform(progress, [0, 1], [0, 0]);
+  const borderFrameOpacity = useTransform(progress, [0.6, 1], [0, 1]);
 
   // Animate forward (scroll down)
   const animateForward = useCallback(() => {
@@ -305,6 +306,7 @@ export default function Hero() {
         scrollOffset={scrollOffset}
         contentOpacity={contentOpacity}
         borderRadius={borderRadius}
+        borderFrameOpacity={borderFrameOpacity}
       />
     </>
   );
@@ -319,6 +321,7 @@ interface HeroVisualProps {
   scrollOffset: MotionValue<number>;
   contentOpacity: MotionValue<number>;
   borderRadius: MotionValue<number>;
+  borderFrameOpacity: MotionValue<number>;
 }
 
 function HeroVisual({
@@ -330,6 +333,7 @@ function HeroVisual({
   scrollOffset,
   contentOpacity,
   borderRadius,
+  borderFrameOpacity,
 }: HeroVisualProps) {
   // Transform motion values to CSS values
   const width = useTransform(widthPercent, (v) => `${v}vw`);
@@ -360,6 +364,19 @@ function HeroVisual({
         <VideoBackground />
 
         <div className="absolute inset-0 bg-black/40" />
+
+        {/* Decorative inset border frame (Ritz-Carlton style) */}
+        <motion.div
+          className="absolute z-20 pointer-events-none"
+          style={{
+            opacity: borderFrameOpacity,
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: 10,
+            border: "1px solid #D4C4A0",
+          }}
+        />
 
         <motion.div
           className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 h-full flex flex-col items-center justify-center text-center"
