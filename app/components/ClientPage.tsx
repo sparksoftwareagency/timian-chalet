@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import ImageRevealSection from "./ImageRevealSection";
@@ -8,6 +9,13 @@ const Hero = dynamic(() => import("./Hero"), { ssr: true });
 const LoadingState = dynamic(() => import("./LoadingState"), { ssr: false });
 
 export default function ClientPage() {
+  useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <main className="w-full">
       <LoadingState />
