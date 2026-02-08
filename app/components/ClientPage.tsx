@@ -221,18 +221,6 @@ export default function ClientPage() {
           </div>
         </div>
 
-        {/* Decorative Divider */}
-        <div className="mt-16 flex items-center justify-center">
-          <div className="flex items-center space-x-1">
-            <div className="w-8 h-0.5" style={{backgroundColor: '#C9A961'}}></div>
-            <div className="w-2 h-2" style={{backgroundColor: '#8B4513'}}></div>
-            <div className="w-4 h-0.5" style={{backgroundColor: '#C9A961'}}></div>
-            <div className="w-3 h-3" style={{backgroundColor: '#C9A961'}}></div>
-            <div className="w-4 h-0.5" style={{backgroundColor: '#C9A961'}}></div>
-            <div className="w-2 h-2" style={{backgroundColor: '#8B4513'}}></div>
-            <div className="w-8 h-0.5" style={{backgroundColor: '#C9A961'}}></div>
-          </div>
-        </div>
       </section>
 
       {/* Scroll-reveal image sections */}
