@@ -29,7 +29,7 @@ export default function Navbar() {
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="h-16 grid grid-cols-2 md:grid-cols-3 items-center">
           <div className="justify-self-start">
-            <Link href="#top" className="flex items-center" onClick={close}>
+            <Link href="/" className="flex items-center" onClick={close}>
               <div className="h-6 w-auto">
                 <Logo />
               </div>
@@ -37,7 +37,7 @@ export default function Navbar() {
           </div>
 
           <div className="hidden md:flex justify-center items-center gap-8">
-            <NavLink href="#rooms" onClick={close}>Rooms</NavLink>
+            <NavLink href="/rooms" onClick={close}>Rooms</NavLink>
             <NavLink href="#culinary" onClick={close}>Culinary</NavLink>
             <NavLink href="#experience" onClick={close}>Experience</NavLink>
             <NavLink href="#contact" onClick={close}>Contact</NavLink>
@@ -70,7 +70,7 @@ export default function Navbar() {
         {isOpen && (
           <div className="md:hidden pb-4">
             <div className="flex flex-col gap-2">
-              <MobileLink href="#rooms" onClick={close}>Rooms</MobileLink>
+              <MobileLink href="/rooms" onClick={close}>Rooms</MobileLink>
               <MobileLink href="#culinary" onClick={close}>Culinary</MobileLink>
               <MobileLink href="#experience" onClick={close}>Experience</MobileLink>
               <MobileLink href="#contact" onClick={close}>Contact</MobileLink>

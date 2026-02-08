@@ -29,10 +29,10 @@ export default function Hero() {
   // Transform values based on progress (0 -> 1)
   // Final position: top-right area, smaller size
   // Use width/height percentages instead of scale to avoid stretching content
-  const widthPercent = useTransform(progress, [0, 1], [100, 30]); // 100% -> 30% of viewport width
-  const heightPercent = useTransform(progress, [0, 1], [100, 30]); // 100% -> 30% of viewport height
-  const xPercent = useTransform(progress, [0, 1], [0, 70]); // Move to right (in % of viewport)
-  const yPercent = useTransform(progress, [0, 1], [0, 5]); // Move down slightly from top
+  const widthPercent = useTransform(progress, [0, 1], [100, 45]); // 100% -> 30% of viewport width
+  const heightPercent = useTransform(progress, [0, 1], [100, 45]); // 100% -> 30% of viewport height
+  const xPercent = useTransform(progress, [0, 1], [0, 50]); // Move to right (in % of viewport)
+  const yPercent = useTransform(progress, [0, 1], [0, 9]); // Move down slightly from top
   const contentOpacity = useTransform(progress, [0, 0.4], [1, 0]);
   const borderRadius = useTransform(progress, [0, 1], [0, 12]);
 
@@ -383,7 +383,7 @@ function HeroVisual({
 
           <div className="mt-12 flex flex-col sm:flex-row gap-6">
             <a
-              href="#rooms"
+              href="/rooms"
               className="inline-flex items-center justify-center text-white px-8 py-4 text-sm font-semibold tracking-wider uppercase transition-colors"
               style={{ backgroundColor: "#C9A961" }}
               onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {

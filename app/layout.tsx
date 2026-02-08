@@ -41,6 +41,7 @@ export default function RootLayout({
         <link rel="preload" href="/nature.jpg" as="image" />
         <link rel="preload" href="/the_chalet.jpg" as="image" />
         <link rel="preload" href="/nature-optimized.jpg" as="image" />
+        <link rel="preload" href="/rooms-thumbnail.jpg" as="image" />
       </head>
       <body className={`${inter.variable} antialiased`}>
         <Navbar />
