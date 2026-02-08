@@ -244,6 +244,19 @@ export default function ClientPage() {
         scaleY={0.55}
         offsetX={50}
         offsetY={40}
+        overlayText={
+          <div className="text-center px-6">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+            </div>
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
+              Surrounding Nature
+            </h2>
+            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+          </div>
+        }
         text={
           <div>
             <span
@@ -285,6 +298,19 @@ export default function ClientPage() {
         scaleY={0.55}
         offsetX={50}
         offsetY={50}
+        overlayText={
+          <div className="text-center px-6">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+            </div>
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
+              Chalet Building
+            </h2>
+            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+          </div>
+        }
         text={
           <div>
             <span

@@ -19,6 +19,12 @@ interface ImageRevealSectionProps {
   offsetY?: number;
   /** Content displayed alongside the image after the reveal */
   text: React.ReactNode;
+  /** Content displayed centered on the image before the reveal */
+  overlayText?: React.ReactNode;
+  /** Extra classes for the overlay text container (positioning, alignment, padding…) */
+  overlayClassName?: string;
+  /** Inline styles for the overlay text container */
+  overlayStyle?: React.CSSProperties;
   /** Which side the image lands on after shrinking. Default: 'imageLeft' */
   layout?: "imageLeft" | "imageRight";
 }
@@ -34,6 +40,9 @@ export default function ImageRevealSection({
   offsetX = 50,
   offsetY = 50,
   text,
+  overlayText,
+  overlayClassName = "",
+  overlayStyle,
   layout = "imageLeft",
 }: ImageRevealSectionProps) {
   const [triggered, setTriggered] = useState(false);
@@ -123,9 +132,22 @@ export default function ImageRevealSection({
               style={{ objectPosition: `${offsetX}% ${offsetY}%` }}
             />
           </motion.div>
+
+          {/* ── Overlay text — visible on the image before the reveal ── */}
+          {overlayText && (
+            <motion.div
+              className={`absolute inset-0 z-10 flex items-center justify-center pointer-events-none ${overlayClassName}`}
+              style={overlayStyle}
+              initial={false}
+              animate={{ opacity: triggered ? 0 : 1 }}
+              transition={{ duration: 0.6, ease: LUXURY_EASE }}
+            >
+              {overlayText}
+            </motion.div>
+          )}
         </motion.div>
 
-        {/* ── Text container ──────────────────────────────── */}
+        {/* ── Text container — fades in as overlay fades out ── */}
         <motion.div
           className="flex-1 flex items-center justify-center px-8 sm:px-12 lg:px-16 min-w-0 overflow-hidden"
           initial={false}
