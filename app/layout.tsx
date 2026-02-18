@@ -4,6 +4,7 @@ import "./globals.css";
 import dynamic from "next/dynamic";
 
 const Footer = dynamic(() => import("./components/Footer"), { ssr: true });
+const HamburgerMenu = dynamic(() => import("./components/HamburgerMenu"));
 
 const inter = Inter({
   variable: "--font-inter",
@@ -43,6 +44,7 @@ export default function RootLayout({
         <link rel="preload" href="/rooms-thumbnail.jpg" as="image" />
       </head>
       <body className={`${inter.variable} antialiased`}>
+        <HamburgerMenu />
         {children}
         <Footer />
       </body>
