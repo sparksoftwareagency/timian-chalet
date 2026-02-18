@@ -38,7 +38,7 @@ export default function Navbar() {
 
           <div className="hidden md:flex justify-center items-center gap-8">
             <NavLink href="/rooms" onClick={close}>Rooms</NavLink>
-            <NavLink href="#culinary" onClick={close}>Culinary</NavLink>
+            <NavLink href="/culinary" onClick={close}>Culinary</NavLink>
             <NavLink href="#experience" onClick={close}>Experience</NavLink>
             <NavLink href="#contact" onClick={close}>Contact</NavLink>
           </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const Footer = () => {
   return (
@@ -8,17 +9,15 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Column 1 - Brand/About */}
           <div className="space-y-4">
-            {/* Logo/Brand Name */}
+            {/* Logo */}
             <div>
-              <div className="text-2xl font-bold" style={{ color: '#E0E0E0' }}>
-                TIMIAN
-              </div>
-              <div className="flex items-center mt-2">
-                <div className="h-px flex-1" style={{ backgroundColor: '#C8A86E' }}></div>
-                <span className="ml-3 text-sm font-medium" style={{ color: '#E0E0E0' }}>
-                  CHALET
-                </span>
-              </div>
+              <Image
+                src="/timian_chalet_logo_w.png"
+                alt="Timian Chalet"
+                width={180}
+                height={36}
+                className="h-9 w-auto"
+              />
             </div>
             
             {/* Description */}
