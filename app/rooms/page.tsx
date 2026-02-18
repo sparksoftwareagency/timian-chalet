@@ -1,12 +1,222 @@
 "use client";
 
 import Image from "next/image";
+import ImageRevealSection from "../components/ImageRevealSection";
 
 export default function RoomsPage() {
   return (
     <main>
       <RoomsHero />
-      <RoomsContent />
+
+      {/* Mini Chalet */}
+      <ImageRevealSection
+        imageSrc="/Timian-Insta6.jpg%20m%C3%A1solata%20m%C3%A1solata.jpg"
+        imageAlt="Mini Chalet room"
+        layout="imageLeft"
+        scaleX={0.55}
+        scaleY={0.55}
+        offsetX={50}
+        offsetY={50}
+        overlayText={
+          <div className="text-center px-6">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+            </div>
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
+              Mini Chalet
+            </h2>
+            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+          </div>
+        }
+        text={
+          <div>
+            <span
+              className="block text-sm uppercase tracking-[0.3em] mb-4"
+              style={{ color: "#C9A961" }}
+            >
+              Cozy Retreat
+            </span>
+            <h2
+              className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
+              style={{ color: "#6B4423" }}
+            >
+              Mini
+              <br />
+              Chalet
+            </h2>
+            <div
+              className="w-12 h-[1px] mb-6"
+              style={{ backgroundColor: "#C9A961" }}
+            />
+            <p
+              className="text-lg leading-relaxed"
+              style={{ color: "#6B5D53" }}
+            >
+              A cozy log cabin room with floor-to-ceiling windows framing
+              panoramic forest views. Warm wooden interiors, lantern accents, and
+              a fur rug create an intimate mountain hideaway.
+            </p>
+          </div>
+        }
+      />
+
+      {/* Grove */}
+      <ImageRevealSection
+        imageSrc="/Crang-10.jpg"
+        imageAlt="Grove room"
+        layout="imageRight"
+        scaleX={0.55}
+        scaleY={0.55}
+        offsetX={50}
+        offsetY={50}
+        overlayText={
+          <div className="text-center px-6">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+            </div>
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
+              Grove
+            </h2>
+            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+          </div>
+        }
+        text={
+          <div>
+            <span
+              className="block text-sm uppercase tracking-[0.3em] mb-4"
+              style={{ color: "#C9A961" }}
+            >
+              Elegant Comfort
+            </span>
+            <h2
+              className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
+              style={{ color: "#6B4423" }}
+            >
+              Grove
+            </h2>
+            <div
+              className="w-12 h-[1px] mb-6"
+              style={{ backgroundColor: "#C9A961" }}
+            />
+            <p
+              className="text-lg leading-relaxed"
+              style={{ color: "#6B5D53" }}
+            >
+              An elegant room adorned with natural textures, rich blue velvet
+              accents, and pampas grass arrangements. Warm ambient lighting and
+              marble-effect walls create a serene, sophisticated atmosphere.
+            </p>
+          </div>
+        }
+      />
+
+      {/* Mineral */}
+      <ImageRevealSection
+        imageSrc="/DSC_6533_1.jpg%20m%C3%A1solata%20m%C3%A1solata.jpg"
+        imageAlt="Mineral room"
+        layout="imageLeft"
+        scaleX={0.55}
+        scaleY={0.55}
+        offsetX={50}
+        offsetY={50}
+        overlayText={
+          <div className="text-center px-6">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+            </div>
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
+              Mineral
+            </h2>
+            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+          </div>
+        }
+        text={
+          <div>
+            <span
+              className="block text-sm uppercase tracking-[0.3em] mb-4"
+              style={{ color: "#C9A961" }}
+            >
+              Earth &amp; Stone
+            </span>
+            <h2
+              className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
+              style={{ color: "#6B4423" }}
+            >
+              Mineral
+            </h2>
+            <div
+              className="w-12 h-[1px] mb-6"
+              style={{ backgroundColor: "#C9A961" }}
+            />
+            <p
+              className="text-lg leading-relaxed"
+              style={{ color: "#6B5D53" }}
+            >
+              A dramatic room centred around a backlit mineral stone headboard,
+              surrounded by warm reclaimed wood walls. Fur throws and golden
+              accents complete this earthy, luxurious sanctuary.
+            </p>
+          </div>
+        }
+      />
+
+      {/* Timian */}
+      <ImageRevealSection
+        imageSrc="/DSC_7435_1.jpg%20m%C3%A1solata%20m%C3%A1solata.jpg"
+        imageAlt="Timian room"
+        layout="imageRight"
+        scaleX={0.55}
+        scaleY={0.55}
+        offsetX={50}
+        offsetY={50}
+        overlayText={
+          <div className="text-center px-6">
+            <div className="flex items-center justify-center mb-4">
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
+              <div className="w-8 h-[1px] bg-[#C9A961]" />
+            </div>
+            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
+              Timian
+            </h2>
+            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+          </div>
+        }
+        text={
+          <div>
+            <span
+              className="block text-sm uppercase tracking-[0.3em] mb-4"
+              style={{ color: "#C9A961" }}
+            >
+              Bright &amp; Airy
+            </span>
+            <h2
+              className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
+              style={{ color: "#6B4423" }}
+            >
+              Timian
+            </h2>
+            <div
+              className="w-12 h-[1px] mb-6"
+              style={{ backgroundColor: "#C9A961" }}
+            />
+            <p
+              className="text-lg leading-relaxed"
+              style={{ color: "#6B5D53" }}
+            >
+              A bright attic suite bathed in natural light from skylights above.
+              Floral curtains, whitewashed wooden beams, and a classic wardrobe
+              give this room an airy, garden-inspired charm.
+            </p>
+          </div>
+        }
+      />
     </main>
   );
 }
@@ -48,122 +258,5 @@ function RoomsHero() {
         </p>
       </div>
     </section>
-  );
-}
-
-function RoomsContent() {
-  const rooms = [
-    {
-      name: "Mountain Suite",
-      description: "Spacious suite with panoramic mountain views, featuring a king-size bed, private balcony, and luxurious bathroom with soaking tub.",
-      size: "65 m²",
-      capacity: "2 guests",
-      image: "/rooms-thumbnail.jpg",
-    },
-    {
-      name: "Forest Retreat",
-      description: "Intimate room surrounded by ancient forest, with floor-to-ceiling windows, queen bed, and cozy reading nook.",
-      size: "45 m²",
-      capacity: "2 guests",
-      image: "/nature-optimized.jpg",
-    },
-    {
-      name: "Chalet Master",
-      description: "Our flagship accommodation featuring a private living area, fireplace, premium amenities, and unparalleled views of the Transylvanian peaks.",
-      size: "85 m²",
-      capacity: "4 guests",
-      image: "/the_chalet.jpg",
-    },
-  ];
-
-  return (
-    <section className="bg-neutral-950 py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-[1px]" style={{ backgroundColor: "#C9A961" }} />
-            <div 
-              className="w-3 h-3 mx-4 border rotate-45"
-              style={{ borderColor: "#C9A961" }}
-            />
-            <div className="w-16 h-[1px]" style={{ backgroundColor: "#C9A961" }} />
-          </div>
-          <h2 className="text-3xl sm:text-4xl text-white tracking-wider uppercase font-light">
-            Choose Your Sanctuary
-          </h2>
-          <p className="mt-4 text-white/60 max-w-2xl mx-auto">
-            Each room is thoughtfully designed to provide the perfect balance of rustic charm and modern luxury.
-          </p>
-        </div>
-
-        {/* Rooms Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {rooms.map((room, index) => (
-            <RoomCard key={index} room={room} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-interface Room {
-  name: string;
-  description: string;
-  size: string;
-  capacity: string;
-  image: string;
-}
-
-function RoomCard({ room }: { room: Room }) {
-  return (
-    <div className="group relative bg-neutral-900 overflow-hidden">
-      {/* Image */}
-      <div className="relative h-72 overflow-hidden">
-        <Image
-          src={room.image}
-          alt={room.name}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-          sizes="(max-width: 1024px) 100vw, 33vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent" />
-      </div>
-
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl text-white tracking-wider uppercase mb-3">
-          {room.name}
-        </h3>
-        <p className="text-white/60 text-sm leading-relaxed mb-4">
-          {room.description}
-        </p>
-
-        {/* Details */}
-        <div className="flex gap-6 text-sm text-white/50 mb-6">
-          <span className="flex items-center gap-2">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8V6a2 2 0 012-2h12a2 2 0 012 2v2M4 8v10a2 2 0 002 2h12a2 2 0 002-2V8M4 8h16" />
-            </svg>
-            {room.size}
-          </span>
-          <span className="flex items-center gap-2">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-            {room.capacity}
-          </span>
-        </div>
-
-        {/* Button */}
-        <button
-          className="w-full py-3 text-sm tracking-wider uppercase text-white border transition-all duration-300 hover:bg-white hover:text-neutral-900"
-          style={{ borderColor: "#C9A961" }}
-        >
-          View Details
-        </button>
-      </div>
-    </div>
   );
 }
