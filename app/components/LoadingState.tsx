@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useT } from "../i18n/LanguageContext";
+import { tr } from "../i18n/translations";
 
 export default function LoadingState() {
+  const t = useT();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Hide loading state after a short delay to ensure smooth transition
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
@@ -23,7 +25,7 @@ export default function LoadingState() {
         <h2 className="text-2xl font-bold tracking-wider text-[#6B4423] uppercase">
           TIMIAN
         </h2>
-        <p className="text-sm text-[#6B5D53] mt-2">Loading your mountain retreat...</p>
+        <p className="text-sm text-[#6B5D53] mt-2">{t(tr.loading.text)}</p>
       </div>
     </div>
   );

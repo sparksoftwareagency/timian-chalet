@@ -2,6 +2,8 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useMotionValue, useTransform, animate, MotionValue } from "framer-motion";
+import { useT } from "../i18n/LanguageContext";
+import { tr } from "../i18n/translations";
 
 type AnimationPhase = "initial" | "animating" | "complete" | "scrolling";
 
@@ -424,9 +426,10 @@ function VideoBackground() {
 }
 
 function ScrollCue() {
+  const t = useT();
   return (
     <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-white text-xs flex flex-col items-center">
-      <span className="tracking-wider uppercase font-semibold">DISCOVER</span>
+      <span className="tracking-wider uppercase font-semibold">{t(tr.hero.discover)}</span>
       <span className="mt-2 inline-flex h-6 w-[2px] overflow-hidden rounded-full bg-white/30">
         <span className="animate-bounceSlow h-3 w-full bg-white" />
       </span>
