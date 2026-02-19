@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 
 const Footer = dynamic(() => import("./components/Footer"), { ssr: true });
 const HamburgerMenu = dynamic(() => import("./components/HamburgerMenu"));
+const BookNowButton = dynamic(() => import("./components/BookNowButton"));
 
 const inter = Inter({
   variable: "--font-inter",
@@ -45,6 +46,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} antialiased`}>
         <HamburgerMenu />
+        <BookNowButton />
         {children}
         <Footer />
       </body>
