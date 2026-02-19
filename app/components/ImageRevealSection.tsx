@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { colors } from "../theme/colors";
 
 interface ImageRevealSectionProps {
   /** Path to the image */
@@ -98,7 +99,7 @@ export default function ImageRevealSection({
     <section
       ref={sectionRef}
       className="relative w-full overflow-hidden"
-      style={{ height: "100vh", backgroundColor: "#FFF8F0" }}
+      style={{ height: "100vh", backgroundColor: colors.primaryBg }}
     >
       <div
         className="relative h-full w-full flex items-center"

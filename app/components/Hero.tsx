@@ -4,6 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useMotionValue, useTransform, animate, MotionValue } from "framer-motion";
 import { useT } from "../i18n/LanguageContext";
 import { tr } from "../i18n/translations";
+import { colors } from "../theme/colors";
 
 type AnimationPhase = "initial" | "animating" | "complete" | "scrolling";
 
@@ -377,7 +378,7 @@ function HeroVisual({
             left: 10,
             right: 10,
             bottom: 10,
-            border: "1px solid #D4C4A0",
+            border: `1px solid ${colors.border}`,
           }}
         />
 
@@ -390,11 +391,11 @@ function HeroVisual({
           </h1>
 
           <div className="flex items-center justify-center mt-4">
-            <div className="w-32 h-0.5" style={{ backgroundColor: "#C9A961" }}></div>
+            <div className="w-32 h-0.5" style={{ backgroundColor: colors.cta }}></div>
             <h2 className="mx-4 text-2xl sm:text-3xl tracking-[0.35em] text-white uppercase">
               CHALET
             </h2>
-            <div className="w-32 h-0.5" style={{ backgroundColor: "#C9A961" }}></div>
+            <div className="w-32 h-0.5" style={{ backgroundColor: colors.cta }}></div>
           </div>
         </motion.div>
 

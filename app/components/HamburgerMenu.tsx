@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { colors } from "../theme/colors";
 
 const COLORS = {
   line: "#FFFFFF",
-  lineHover: "#000000",
+  lineHover: colors.textPrimary,
   hoverCircle: "#FFFFFF",
 };
 

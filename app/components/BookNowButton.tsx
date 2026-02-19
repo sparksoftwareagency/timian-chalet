@@ -3,17 +3,18 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { colors } from "../theme/colors";
 
 const THEMES = {
   light: {
-    background: "#1a1a1a", // Dark button for light sections
-    text: "#FFFFFF",
-    accent: "#C5A059",
+    background: colors.textPrimary,
+    text: colors.primaryBg,
+    accent: colors.cta,
   },
   dark: {
-    background: "#FFFFFF", // Light button for dark sections
-    text: "#1a1a1a",
-    accent: "#C5A059",
+    background: colors.primaryBg,
+    text: colors.textPrimary,
+    accent: colors.cta,
   },
 };
 
@@ -78,7 +79,7 @@ export default function BookNowButton() {
     <motion.a
       ref={buttonRef}
       href="#book"
-      className="fixed top-5 right-5 z-[100] flex items-center justify-center overflow-hidden rounded-full px-2 py-2 text-sm font-medium tracking-[0.15em] shadow-lg transition-colors hover:bg-neutral-50 md:top-8 md:right-8"
+      className="fixed top-5 right-5 z-[100] flex items-center justify-center overflow-hidden rounded-full px-2 py-2 text-sm font-medium tracking-[0.15em] shadow-lg transition-colors hover:bg-primary-bg md:top-8 md:right-8"
       animate={{
         backgroundColor: currentColors.background,
         color: currentColors.text,
@@ -113,7 +114,7 @@ export default function BookNowButton() {
 
       {/* Subtle border shine effect */}
       <motion.div
-        className="absolute inset-0 rounded-full border border-neutral-200"
+        className="absolute inset-0 rounded-full border border-border"
         variants={{
           rest: { opacity: 0.5 },
           hover: { opacity: 1, scale: 1.02 },

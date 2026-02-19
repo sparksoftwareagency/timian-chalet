@@ -8,6 +8,7 @@ import Logo from "./Logo";
 import { useLanguage, useT } from "../i18n/LanguageContext";
 import { tr } from "../i18n/translations";
 import type { Language } from "../i18n/translations";
+import { colors, rgba } from "../theme/colors";
 
 const LANGUAGES: { code: Language; label: string }[] = [
   { code: "en", label: "english" },
@@ -29,25 +30,25 @@ const THEMES = {
     fgDim: "rgba(255,255,255,0.3)",
     border: "rgba(255,255,255,0.4)",
     hoverBg: "rgba(255,255,255,0.1)",
-    hamburgerHoverFg: "#000000",
+    hamburgerHoverFg: colors.textPrimary,
     hoverCircle: "#FFFFFF",
-    bookBg: "#FFFFFF",
-    bookText: "#1a1a1a",
-    bookBorder: "rgba(200,200,200,0.5)",
-    accent: "#C5A059",
+    bookBg: colors.primaryBg,
+    bookText: colors.textPrimary,
+    bookBorder: rgba(colors.border, 0.5),
+    accent: colors.cta,
   },
   light: {
-    fg: "#1a1a1a",
-    fgMuted: "rgba(26,26,26,0.7)",
-    fgDim: "rgba(26,26,26,0.3)",
-    border: "rgba(26,26,26,0.4)",
-    hoverBg: "rgba(26,26,26,0.1)",
-    hamburgerHoverFg: "#FFFFFF",
-    hoverCircle: "#1a1a1a",
-    bookBg: "#1a1a1a",
-    bookText: "#FFFFFF",
-    bookBorder: "rgba(60,60,60,0.5)",
-    accent: "#C5A059",
+    fg: colors.textPrimary,
+    fgMuted: rgba(colors.textPrimary, 0.7),
+    fgDim: rgba(colors.textPrimary, 0.3),
+    border: rgba(colors.textPrimary, 0.4),
+    hoverBg: rgba(colors.textPrimary, 0.1),
+    hamburgerHoverFg: colors.primaryBg,
+    hoverCircle: colors.textPrimary,
+    bookBg: colors.textPrimary,
+    bookText: colors.primaryBg,
+    bookBorder: rgba(colors.textPrimary, 0.5),
+    accent: colors.cta,
   },
 };
 
@@ -425,7 +426,7 @@ export default function FloatingMenu() {
             style={{
               inset: 8,
               borderRadius: 20,
-              backgroundColor: "rgba(18, 18, 18, 0.85)",
+              backgroundColor: rgba(colors.textPrimary, 0.85),
               backdropFilter: "blur(24px)",
               WebkitBackdropFilter: "blur(24px)",
             }}
@@ -471,7 +472,7 @@ export default function FloatingMenu() {
                     <motion.div key={si} variants={fadeUp} className={si > 0 ? "mt-8" : ""}>
                       <h3
                         className="text-[10px] uppercase tracking-[0.3em] font-medium pb-3 mb-1 border-b border-white/10"
-                        style={{ color: "#C9A961" }}
+                        style={{ color: colors.cta }}
                       >
                         {t(section.headline)}
                       </h3>
@@ -511,7 +512,7 @@ export default function FloatingMenu() {
                   <motion.div key={si} variants={fadeUp} className={si > 0 ? "mt-8" : ""}>
                     <h3
                       className="text-[10px] uppercase tracking-[0.3em] font-medium pb-3 mb-1 border-b border-white/10"
-                      style={{ color: "#C9A961" }}
+                      style={{ color: colors.cta }}
                     >
                       {t(section.headline)}
                     </h3>

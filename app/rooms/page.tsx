@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import ImageRevealSection from "../components/ImageRevealSection";
+import { colors } from "../theme/colors";
 
 export default function RoomsPage() {
   return (
@@ -20,27 +21,27 @@ export default function RoomsPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               Mini Chalet
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
             <span
               className="block text-sm uppercase tracking-[0.3em] mb-4"
-              style={{ color: "#C9A961" }}
+              style={{ color: colors.cta }}
             >
               Cozy Retreat
             </span>
             <h2
               className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
-              style={{ color: "#6B4423" }}
+              style={{ color: colors.accent }}
             >
               Mini
               <br />
@@ -48,11 +49,11 @@ export default function RoomsPage() {
             </h2>
             <div
               className="w-12 h-[1px] mb-6"
-              style={{ backgroundColor: "#C9A961" }}
+              style={{ backgroundColor: colors.cta }}
             />
             <p
               className="text-lg leading-relaxed"
-              style={{ color: "#6B5D53" }}
+              style={{ color: colors.textSecondary }}
             >
               A cozy log cabin room with floor-to-ceiling windows framing
               panoramic forest views. Warm wooden interiors, lantern accents, and
@@ -74,37 +75,37 @@ export default function RoomsPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               Grove
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
             <span
               className="block text-sm uppercase tracking-[0.3em] mb-4"
-              style={{ color: "#C9A961" }}
+              style={{ color: colors.cta }}
             >
               Elegant Comfort
             </span>
             <h2
               className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
-              style={{ color: "#6B4423" }}
+              style={{ color: colors.accent }}
             >
               Grove
             </h2>
             <div
               className="w-12 h-[1px] mb-6"
-              style={{ backgroundColor: "#C9A961" }}
+              style={{ backgroundColor: colors.cta }}
             />
             <p
               className="text-lg leading-relaxed"
-              style={{ color: "#6B5D53" }}
+              style={{ color: colors.textSecondary }}
             >
               An elegant room adorned with natural textures, rich blue velvet
               accents, and pampas grass arrangements. Warm ambient lighting and
@@ -126,37 +127,37 @@ export default function RoomsPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               Mineral
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
             <span
               className="block text-sm uppercase tracking-[0.3em] mb-4"
-              style={{ color: "#C9A961" }}
+              style={{ color: colors.cta }}
             >
               Earth &amp; Stone
             </span>
             <h2
               className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
-              style={{ color: "#6B4423" }}
+              style={{ color: colors.accent }}
             >
               Mineral
             </h2>
             <div
               className="w-12 h-[1px] mb-6"
-              style={{ backgroundColor: "#C9A961" }}
+              style={{ backgroundColor: colors.cta }}
             />
             <p
               className="text-lg leading-relaxed"
-              style={{ color: "#6B5D53" }}
+              style={{ color: colors.textSecondary }}
             >
               A dramatic room centred around a backlit mineral stone headboard,
               surrounded by warm reclaimed wood walls. Fur throws and golden
@@ -178,37 +179,37 @@ export default function RoomsPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               Timian
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
             <span
               className="block text-sm uppercase tracking-[0.3em] mb-4"
-              style={{ color: "#C9A961" }}
+              style={{ color: colors.cta }}
             >
               Bright &amp; Airy
             </span>
             <h2
               className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
-              style={{ color: "#6B4423" }}
+              style={{ color: colors.accent }}
             >
               Timian
             </h2>
             <div
               className="w-12 h-[1px] mb-6"
-              style={{ backgroundColor: "#C9A961" }}
+              style={{ backgroundColor: colors.cta }}
             />
             <p
               className="text-lg leading-relaxed"
-              style={{ color: "#6B5D53" }}
+              style={{ color: colors.textSecondary }}
             >
               A bright attic suite bathed in natural light from skylights above.
               Floral curtains, whitewashed wooden beams, and a classic wardrobe
@@ -243,7 +244,7 @@ function RoomsHero() {
         <div className="mb-8">
           <div 
             className="w-4 h-4 border-2 rotate-45"
-            style={{ borderColor: "#C9A961" }}
+            style={{ borderColor: colors.cta }}
           />
         </div>
 

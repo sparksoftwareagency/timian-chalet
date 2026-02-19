@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import ImageRevealSection from "../components/ImageRevealSection";
+import { colors } from "../theme/colors";
 
 export default function CulinaryPage() {
   return (
@@ -20,27 +21,27 @@ export default function CulinaryPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               The Restaurant
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
             <span
               className="block text-sm uppercase tracking-[0.3em] mb-4"
-              style={{ color: "#C9A961" }}
+              style={{ color: colors.cta }}
             >
               Dining Space
             </span>
             <h2
               className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
-              style={{ color: "#6B4423" }}
+              style={{ color: colors.accent }}
             >
               The
               <br />
@@ -48,11 +49,11 @@ export default function CulinaryPage() {
             </h2>
             <div
               className="w-12 h-[1px] mb-6"
-              style={{ backgroundColor: "#C9A961" }}
+              style={{ backgroundColor: colors.cta }}
             />
             <p
               className="text-lg leading-relaxed"
-              style={{ color: "#6B5D53" }}
+              style={{ color: colors.textSecondary }}
             >
               A warm, inviting dining space where rustic wooden tables meet the
               glow of a crackling fireplace. Enjoy fine wines and freshly prepared
@@ -74,27 +75,27 @@ export default function CulinaryPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               Traditional Flavours
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
             <span
               className="block text-sm uppercase tracking-[0.3em] mb-4"
-              style={{ color: "#C9A961" }}
+              style={{ color: colors.cta }}
             >
               Authentic Cuisine
             </span>
             <h2
               className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
-              style={{ color: "#6B4423" }}
+              style={{ color: colors.accent }}
             >
               Traditional
               <br />
@@ -102,11 +103,11 @@ export default function CulinaryPage() {
             </h2>
             <div
               className="w-12 h-[1px] mb-6"
-              style={{ backgroundColor: "#C9A961" }}
+              style={{ backgroundColor: colors.cta }}
             />
             <p
               className="text-lg leading-relaxed"
-              style={{ color: "#6B5D53" }}
+              style={{ color: colors.textSecondary }}
             >
               Authentic Romanian recipes passed down through generations, prepared
               with locally sourced ingredients. Each dish tells a story of
@@ -128,27 +129,27 @@ export default function CulinaryPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               Artisan Selection
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
             <span
               className="block text-sm uppercase tracking-[0.3em] mb-4"
-              style={{ color: "#C9A961" }}
+              style={{ color: colors.cta }}
             >
               Curated Boards
             </span>
             <h2
               className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
-              style={{ color: "#6B4423" }}
+              style={{ color: colors.accent }}
             >
               Artisan
               <br />
@@ -156,11 +157,11 @@ export default function CulinaryPage() {
             </h2>
             <div
               className="w-12 h-[1px] mb-6"
-              style={{ backgroundColor: "#C9A961" }}
+              style={{ backgroundColor: colors.cta }}
             />
             <p
               className="text-lg leading-relaxed"
-              style={{ color: "#6B5D53" }}
+              style={{ color: colors.textSecondary }}
             >
               Hand-picked local cheeses, fresh grapes, and toasted walnuts
               arranged on artisan boards. A celebration of Romanian dairy
@@ -182,27 +183,27 @@ export default function CulinaryPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               Mountain Cuisine
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
             <span
               className="block text-sm uppercase tracking-[0.3em] mb-4"
-              style={{ color: "#C9A961" }}
+              style={{ color: colors.cta }}
             >
               Hearty Dishes
             </span>
             <h2
               className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6"
-              style={{ color: "#6B4423" }}
+              style={{ color: colors.accent }}
             >
               Mountain
               <br />
@@ -210,11 +211,11 @@ export default function CulinaryPage() {
             </h2>
             <div
               className="w-12 h-[1px] mb-6"
-              style={{ backgroundColor: "#C9A961" }}
+              style={{ backgroundColor: colors.cta }}
             />
             <p
               className="text-lg leading-relaxed"
-              style={{ color: "#6B5D53" }}
+              style={{ color: colors.textSecondary }}
             >
               Hearty mountain dishes featuring slow-cooked meats, golden gratins,
               and garden-fresh vegetables. Every plate is a tribute to the rich,
@@ -249,7 +250,7 @@ function CulinaryHero() {
         <div className="mb-8">
           <div
             className="w-4 h-4 border-2 rotate-45"
-            style={{ borderColor: "#C9A961" }}
+            style={{ borderColor: colors.cta }}
           />
         </div>
 

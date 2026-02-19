@@ -6,15 +6,16 @@ import Image from "next/image";
 import ImageRevealSection from "./ImageRevealSection";
 import { useLanguage, useT, TLines } from "../i18n/LanguageContext";
 import { tr } from "../i18n/translations";
+import { colors, rgba } from "../theme/colors";
 
 const Hero = dynamic(() => import("./Hero"), { ssr: true });
 const LoadingState = dynamic(() => import("./LoadingState"), { ssr: false });
 
 const TAGLINE_STYLES: React.CSSProperties[] = [
-  { color: "#A67C52" },
-  { color: "#D4C4A0", paddingLeft: "12%" },
-  { color: "#A67C52", paddingLeft: "28%" },
-  { color: "#D4C4A0", paddingLeft: "38%" },
+  { color: colors.cta },
+  { color: colors.secondaryBg, paddingLeft: "12%" },
+  { color: colors.cta, paddingLeft: "28%" },
+  { color: colors.secondaryBg, paddingLeft: "38%" },
 ];
 
 export default function ClientPage() {
@@ -38,7 +39,7 @@ export default function ClientPage() {
       </section>
 
       {/* Landing Section - visible after hero animation */}
-      <section data-theme="light" className="relative min-h-screen w-full px-6 sm:px-10 lg:px-16 pt-20 pb-12 flex flex-col" style={{ backgroundColor: "#FFF8F0" }}>
+      <section data-theme="light" className="relative min-h-screen w-full px-6 sm:px-10 lg:px-16 pt-20 pb-12 flex flex-col" style={{ backgroundColor: colors.primaryBg }}>
         <div className="flex-1 flex flex-col justify-center mt-8">
           <div className="leading-[0.85] space-y-1">
             {taglines.map((line, i) =>
@@ -56,14 +57,14 @@ export default function ClientPage() {
         </div>
       </section>
 
-      <section data-theme="dark" id="about" className="w-full" style={{ backgroundColor: "#FFF8F0" }}>
+      <section data-theme="dark" id="about" className="w-full" style={{ backgroundColor: colors.primaryBg }}>
         {/* Welcome Title */}
         <div className="text-center py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight" style={{ color: "#6B4423" }}>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight" style={{ color: colors.accent }}>
             {t(tr.about.welcomeTitle)}
           </h2>
-          <div className="w-16 h-0.5 mx-auto mt-6" style={{ backgroundColor: "#A67C52" }}></div>
-          <p className="mt-6 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed" style={{ color: "#6B5D53" }}>
+          <div className="w-16 h-0.5 mx-auto mt-6" style={{ backgroundColor: colors.cta }}></div>
+          <p className="mt-6 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed" style={{ color: colors.textSecondary }}>
             {t(tr.about.welcomeDesc)}
           </p>
         </div>
@@ -80,19 +81,19 @@ export default function ClientPage() {
                 className="object-cover"
                 sizes="100vw"
               />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(107, 68, 35, 0.85) 0%, rgba(107, 68, 35, 0.4) 50%, transparent 100%)" }}></div>
+              <div className="absolute inset-0" style={{ background: `linear-gradient(to right, ${rgba(colors.accent, 0.85)} 0%, ${rgba(colors.accent, 0.4)} 50%, transparent 100%)` }}></div>
             </div>
             <div className="relative z-10 h-full flex items-center">
               <div className="px-8 sm:px-16 lg:px-24 max-w-2xl">
                 <div className="overflow-hidden">
-                  <span className="block text-sm uppercase tracking-[0.3em] mb-4 opacity-80" style={{ color: "#C9A961" }}>
+                  <span className="block text-sm uppercase tracking-[0.3em] mb-4 opacity-80" style={{ color: colors.cta }}>
                     {t(tr.about.locationLabel)}
                   </span>
                 </div>
                 <h3 className="text-4xl sm:text-5xl lg:text-6xl font-serif text-white mb-6 leading-tight">
                   <TLines text={t(tr.about.locationTitle)} />
                 </h3>
-                <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: "#C9A961" }}></div>
+                <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: colors.cta }}></div>
                 <p className="text-white/90 text-lg leading-relaxed max-w-md">
                   {t(tr.about.locationDesc)}
                 </p>
@@ -112,17 +113,17 @@ export default function ClientPage() {
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(107, 68, 35, 0.9) 0%, rgba(107, 68, 35, 0.3) 60%, transparent 100%)" }}></div>
+                <div className="absolute inset-0" style={{ background: `linear-gradient(to top, ${rgba(colors.accent, 0.9)} 0%, ${rgba(colors.accent, 0.3)} 60%, transparent 100%)` }}></div>
               </div>
               <div className="relative z-10 h-full flex items-end p-8 sm:p-12">
                 <div>
-                  <span className="block text-xs uppercase tracking-[0.3em] mb-3 opacity-80" style={{ color: "#C9A961" }}>
+                  <span className="block text-xs uppercase tracking-[0.3em] mb-3 opacity-80" style={{ color: colors.cta }}>
                     {t(tr.about.experienceLabel)}
                   </span>
                   <h3 className="text-3xl sm:text-4xl font-serif text-white mb-4 leading-tight">
                     <TLines text={t(tr.about.experienceTitle)} />
                   </h3>
-                  <div className="w-8 h-[1px] mb-4" style={{ backgroundColor: "#C9A961" }}></div>
+                  <div className="w-8 h-[1px] mb-4" style={{ backgroundColor: colors.cta }}></div>
                   <p className="text-white/85 text-base leading-relaxed max-w-sm">
                     {t(tr.about.experienceDesc)}
                   </p>
@@ -140,17 +141,17 @@ export default function ClientPage() {
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(107, 68, 35, 0.9) 0%, rgba(107, 68, 35, 0.3) 60%, transparent 100%)" }}></div>
+                <div className="absolute inset-0" style={{ background: `linear-gradient(to top, ${rgba(colors.accent, 0.9)} 0%, ${rgba(colors.accent, 0.3)} 60%, transparent 100%)` }}></div>
               </div>
               <div className="relative z-10 h-full flex items-end p-8 sm:p-12">
                 <div>
-                  <span className="block text-xs uppercase tracking-[0.3em] mb-3 opacity-80" style={{ color: "#C9A961" }}>
+                  <span className="block text-xs uppercase tracking-[0.3em] mb-3 opacity-80" style={{ color: colors.cta }}>
                     {t(tr.about.craftsmanshipLabel)}
                   </span>
                   <h3 className="text-3xl sm:text-4xl font-serif text-white mb-4 leading-tight">
                     <TLines text={t(tr.about.craftsmanshipTitle)} />
                   </h3>
-                  <div className="w-8 h-[1px] mb-4" style={{ backgroundColor: "#C9A961" }}></div>
+                  <div className="w-8 h-[1px] mb-4" style={{ backgroundColor: colors.cta }}></div>
                   <p className="text-white/85 text-base leading-relaxed max-w-sm">
                     {t(tr.about.craftsmanshipDesc)}
                   </p>
@@ -161,7 +162,7 @@ export default function ClientPage() {
         </div>
 
         {/* Statistics Section */}
-        <div className="mt-20 py-12 px-4 sm:px-6 lg:px-8" style={{ background: "linear-gradient(to bottom, #FFF8F0, #EDE5D8)" }}>
+        <div className="mt-20 py-12 px-4 sm:px-6 lg:px-8" style={{ background: `linear-gradient(to bottom, ${colors.primaryBg}, ${colors.secondaryBg})` }}>
           <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {[
               { value: "2018", label: tr.about.statEstablished },
@@ -170,11 +171,11 @@ export default function ClientPage() {
               { value: "24/7", label: tr.about.statConcierge },
             ].map((stat) => (
               <div key={stat.value} className="text-center">
-                <div className="w-14 h-14 mx-auto mb-4 border-2 flex items-center justify-center" style={{ borderColor: "#C9A961" }}>
-                  <div className="w-10 h-10 border" style={{ borderColor: "#C9A961" }}></div>
+                <div className="w-14 h-14 mx-auto mb-4 border-2 flex items-center justify-center" style={{ borderColor: colors.cta }}>
+                  <div className="w-10 h-10 border" style={{ borderColor: colors.cta }}></div>
                 </div>
-                <div className="text-3xl sm:text-4xl font-light mb-2" style={{ color: "#6B4423" }}>{stat.value}</div>
-                <div className="text-xs font-medium uppercase tracking-widest" style={{ color: "#8B7355" }}>{t(stat.label)}</div>
+                <div className="text-3xl sm:text-4xl font-light mb-2" style={{ color: colors.accent }}>{stat.value}</div>
+                <div className="text-xs font-medium uppercase tracking-widest" style={{ color: colors.textSecondary }}>{t(stat.label)}</div>
               </div>
             ))}
           </div>
@@ -183,13 +184,13 @@ export default function ClientPage() {
         {/* Decorative Divider */}
         <div className="mt-16 flex items-center justify-center">
           <div className="flex items-center space-x-1">
-            <div className="w-8 h-0.5" style={{ backgroundColor: "#C9A961" }}></div>
-            <div className="w-2 h-2" style={{ backgroundColor: "#8B4513" }}></div>
-            <div className="w-4 h-0.5" style={{ backgroundColor: "#C9A961" }}></div>
-            <div className="w-3 h-3" style={{ backgroundColor: "#C9A961" }}></div>
-            <div className="w-4 h-0.5" style={{ backgroundColor: "#C9A961" }}></div>
-            <div className="w-2 h-2" style={{ backgroundColor: "#8B4513" }}></div>
-            <div className="w-8 h-0.5" style={{ backgroundColor: "#C9A961" }}></div>
+            <div className="w-8 h-0.5" style={{ backgroundColor: colors.cta }}></div>
+            <div className="w-2 h-2" style={{ backgroundColor: colors.accent }}></div>
+            <div className="w-4 h-0.5" style={{ backgroundColor: colors.cta }}></div>
+            <div className="w-3 h-3" style={{ backgroundColor: colors.cta }}></div>
+            <div className="w-4 h-0.5" style={{ backgroundColor: colors.cta }}></div>
+            <div className="w-2 h-2" style={{ backgroundColor: colors.accent }}></div>
+            <div className="w-8 h-0.5" style={{ backgroundColor: colors.cta }}></div>
           </div>
         </div>
       </section>
@@ -206,26 +207,26 @@ export default function ClientPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               {t(tr.nature.overlayTitle)}
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
-            <span className="block text-sm uppercase tracking-[0.3em] mb-4" style={{ color: "#C9A961" }}>
+            <span className="block text-sm uppercase tracking-[0.3em] mb-4" style={{ color: colors.cta }}>
               {t(tr.nature.label)}
             </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6" style={{ color: "#6B4423" }}>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6" style={{ color: colors.accent }}>
               <TLines text={t(tr.nature.title)} />
             </h2>
-            <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: "#C9A961" }} />
-            <p className="text-lg leading-relaxed" style={{ color: "#6B5D53" }}>
+            <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: colors.cta }} />
+            <p className="text-lg leading-relaxed" style={{ color: colors.textSecondary }}>
               {t(tr.nature.desc)}
             </p>
           </div>
@@ -243,26 +244,26 @@ export default function ClientPage() {
         overlayText={
           <div className="text-center px-6">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
-              <div className="w-2 h-2 mx-3 border border-[#C9A961]" />
-              <div className="w-8 h-[1px] bg-[#C9A961]" />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
+              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
+              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
             </div>
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
               {t(tr.chalet.overlayTitle)}
             </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5 bg-[#C9A961]" />
+            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
           </div>
         }
         text={
           <div>
-            <span className="block text-sm uppercase tracking-[0.3em] mb-4" style={{ color: "#C9A961" }}>
+            <span className="block text-sm uppercase tracking-[0.3em] mb-4" style={{ color: colors.cta }}>
               {t(tr.chalet.label)}
             </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6" style={{ color: "#6B4423" }}>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6" style={{ color: colors.accent }}>
               <TLines text={t(tr.chalet.title)} />
             </h2>
-            <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: "#C9A961" }} />
-            <p className="text-lg leading-relaxed" style={{ color: "#6B5D53" }}>
+            <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: colors.cta }} />
+            <p className="text-lg leading-relaxed" style={{ color: colors.textSecondary }}>
               {t(tr.chalet.desc)}
             </p>
           </div>
