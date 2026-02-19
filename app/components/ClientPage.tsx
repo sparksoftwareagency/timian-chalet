@@ -19,26 +19,13 @@ export default function ClientPage() {
   return (
     <main className="w-full">
       <LoadingState />
-      <Hero />
+      <section data-theme="dark">
+        <Hero />
+      </section>
+      
 
       {/* Landing Section - visible after hero animation */}
-      <section className="relative min-h-screen w-full px-6 sm:px-10 lg:px-16 pt-20 pb-12 flex flex-col" style={{backgroundColor: '#FFF8F0'}}>
-        {/* Top section with branding
-        <div className="max-w-xl">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light tracking-[0.25em] uppercase" style={{color: '#8B6914'}}>
-            TIMIAN
-          </h1>
-          <div className="flex items-center mt-4">
-            <div className="w-12 h-[1px]" style={{backgroundColor: '#C9A961'}}></div>
-            <span className="mx-4 text-sm sm:text-base lg:text-lg tracking-[0.35em] uppercase" style={{color: '#A08050'}}>
-              CHALET
-            </span>
-            <div className="w-12 h-[1px]" style={{backgroundColor: '#C9A961'}}></div>
-          </div>
-          <p className="mt-5 text-lg sm:text-xl lg:text-2xl italic font-light" style={{color: '#C9A961'}}>
-            Transylvanian Mountain Retreat
-          </p>
-        </div> */}
+      <section data-theme="light" className="relative min-h-screen w-full px-6 sm:px-10 lg:px-16 pt-20 pb-12 flex flex-col" style={{backgroundColor: '#FFF8F0'}}>
 
         {/* Staggered text - positioned in middle/lower area */}
         <div className="flex-1 flex flex-col justify-center mt-8">
@@ -71,7 +58,7 @@ export default function ClientPage() {
         </div>
       </section>
 
-      <section id="about" className="w-full" style={{backgroundColor: '#FFF8F0'}}>
+      <section data-theme="dark" id="about" className="w-full" style={{backgroundColor: '#FFF8F0'}}>
         {/* Welcome Title */}
         <div className="text-center py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight" style={{color: '#6B4423'}}>

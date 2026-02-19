@@ -348,6 +348,7 @@ function HeroVisual({
 
   return (
     <motion.section
+      data-theme="dark"
       ref={containerRef}
       id="top"
       className="overflow-hidden"
@@ -361,7 +362,7 @@ function HeroVisual({
         zIndex: 40,
       }}
     >
-        <VideoBackground />
+        <VideoBackground/>
 
         <div className="absolute inset-0 bg-black/40" />
 
@@ -392,35 +393,6 @@ function HeroVisual({
               CHALET
             </h2>
             <div className="w-32 h-0.5" style={{ backgroundColor: "#C9A961" }}></div>
-          </div>
-
-          <p className="mt-6 text-xl sm:text-2xl text-white italic font-light">
-            Transylvanian Mountain Retreat
-          </p>
-
-          <div className="mt-12 flex flex-col sm:flex-row gap-6">
-            <a
-              href="/rooms"
-              className="inline-flex items-center justify-center text-white px-8 py-4 text-sm font-semibold tracking-wider uppercase transition-colors"
-              style={{ backgroundColor: "#C9A961" }}
-              onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                e.currentTarget.style.backgroundColor = "#B89A51";
-              }}
-              onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                e.currentTarget.style.backgroundColor = "#C9A961";
-              }}
-            >
-              EXPLORE ROOMS
-              <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-            <a
-              href="#contact"
-              className="inline-flex items-center justify-center border-2 border-white text-white px-8 py-4 text-sm font-semibold tracking-wider uppercase hover:bg-white/10 transition-colors"
-            >
-              BOOK YOUR STAY
-            </a>
           </div>
         </motion.div>
 
