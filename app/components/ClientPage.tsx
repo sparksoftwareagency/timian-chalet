@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import ImageRevealSection from "./ImageRevealSection";
 import { useLanguage, useT, TLines } from "../i18n/LanguageContext";
 import { tr } from "../i18n/translations";
 import { colors, rgba } from "../theme/colors";
@@ -195,80 +194,6 @@ export default function ClientPage() {
         </div>
       </section>
 
-      {/* Scroll-reveal image sections */}
-      <ImageRevealSection
-        imageSrc="/nature.jpg"
-        imageAlt="Surrounding nature at Timian Chalet"
-        layout="imageLeft"
-        scaleX={0.55}
-        scaleY={0.55}
-        offsetX={50}
-        offsetY={40}
-        overlayText={
-          <div className="text-center px-6">
-            <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
-              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
-              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
-            </div>
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
-              {t(tr.nature.overlayTitle)}
-            </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
-          </div>
-        }
-        text={
-          <div>
-            <span className="block text-sm uppercase tracking-[0.3em] mb-4" style={{ color: colors.cta }}>
-              {t(tr.nature.label)}
-            </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6" style={{ color: colors.accent }}>
-              <TLines text={t(tr.nature.title)} />
-            </h2>
-            <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: colors.cta }} />
-            <p className="text-lg leading-relaxed" style={{ color: colors.textSecondary }}>
-              {t(tr.nature.desc)}
-            </p>
-          </div>
-        }
-      />
-
-      <ImageRevealSection
-        imageSrc="/the_chalet.jpg"
-        imageAlt="Timian Chalet building exterior"
-        layout="imageRight"
-        scaleX={0.55}
-        scaleY={0.55}
-        offsetX={50}
-        offsetY={50}
-        overlayText={
-          <div className="text-center px-6">
-            <div className="flex items-center justify-center mb-4">
-              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
-              <div className="w-2 h-2 mx-3 border" style={{ borderColor: colors.cta }} />
-              <div className="w-8 h-[1px]" style={{ backgroundColor: colors.cta }} />
-            </div>
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-serif text-white drop-shadow-lg">
-              {t(tr.chalet.overlayTitle)}
-            </h2>
-            <div className="w-16 h-[1px] mx-auto mt-5" style={{ backgroundColor: colors.cta }} />
-          </div>
-        }
-        text={
-          <div>
-            <span className="block text-sm uppercase tracking-[0.3em] mb-4" style={{ color: colors.cta }}>
-              {t(tr.chalet.label)}
-            </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif leading-tight mb-6" style={{ color: colors.accent }}>
-              <TLines text={t(tr.chalet.title)} />
-            </h2>
-            <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: colors.cta }} />
-            <p className="text-lg leading-relaxed" style={{ color: colors.textSecondary }}>
-              {t(tr.chalet.desc)}
-            </p>
-          </div>
-        }
-      />
     </main>
   );
 }
