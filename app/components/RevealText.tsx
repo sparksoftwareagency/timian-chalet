@@ -3,7 +3,6 @@
 import {
   motion,
   Variants,
-  useAnimation,
 } from "framer-motion";
 
 type RevealMode = "all" | "word" | "char";
@@ -92,6 +91,7 @@ export default function RevealText({
 
   return (
     <motion.h1
+        key={text}
         variants={getContainerVariants()}
         initial="hidden"
         whileInView={enabled ? "visible" : undefined}
