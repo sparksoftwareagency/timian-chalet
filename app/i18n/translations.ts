@@ -19,6 +19,12 @@ export const tr = {
 
   // ─── Hero ──────────────────────────────────────────
   hero: {
+    title: { en: "TIMIAN", ro: "TIMIAN", hu: "TIMIAN" } as T,
+    subtitle: {
+      en: "Transylvanian Mountain Retreat",
+      ro: "Refugiu Montan Transilvănean",
+      hu: "Erdélyi Hegyi Menedék",
+    } as T,
     discover: { en: "DISCOVER", ro: "DESCOPERĂ", hu: "FEDEZD FEL" } as T,
     craftedForEscape: {
       en: "Stay elevated.",
@@ -138,6 +144,104 @@ export const tr = {
     } as T,
   },
 
+  // ─── Room Pages ────────────────────────────────────
+  rooms: {
+    label: { en: "The Room", ro: "Camera", hu: "A Szoba" } as T,
+    backToRooms: { en: "Back to all rooms", ro: "Înapoi la camere", hu: "Vissza a szobákhoz" } as T,
+    bookThisRoom: { en: "Book this room", ro: "Rezervă camera", hu: "Foglalja le a szobát" } as T,
+    galleryTitle: { en: "Gallery", ro: "Galerie", hu: "Galéria" } as T,
+    discoverSpace: { en: "Discover the space", ro: "Descoperă spațiul", hu: "Fedezze fel a teret" } as T,
+    overviewTitle: { en: "Rooms & Suites", ro: "Camere și Suite", hu: "Szobák és Lakosztályok" } as T,
+    overviewSubtitle: {
+      en: "Each room is a unique world inspired by the nature that surrounds us",
+      ro: "Fiecare cameră este o lume unică inspirată de natura care ne înconjoară",
+      hu: "Minden szoba egyedi világ, amelyet a minket körülvevő természet ihletett",
+    } as T,
+
+    crang: {
+      tagline: { en: "A forest sanctuary", ro: "Un sanctuar al pădurii", hu: "Erdei szentély" } as T,
+      desc: {
+        en: "Inspired by the ancient groves that surround Timian Chalet, this room brings the forest indoors with warm timber tones and earthy textures. Floor-to-ceiling windows frame the woodland views, while hand-carved details recall the timeless beauty of Transylvanian craftsmanship.",
+        ro: "Inspirată de crângurile străvechi care înconjoară Timian Chalet, această cameră aduce pădurea în interior cu tonuri calde de lemn și texturi pământii. Ferestrele generoase încadrează priveliștile către pădure, iar detaliile sculptate manual amintesc de frumusețea atemporală a meșteșugului transilvănean.",
+        hu: "Az ősi ligetektől ihletve, amelyek körülveszik a Timian Chalet-t, ez a szoba meleg fa tónusokkal és földes textúrákkal hozza be az erdőt. A padlótól a mennyezetig érő ablakok keretezik az erdei kilátást, míg a kézzel faragott részletek az erdélyi mesterség időtlen szépségét idézik.",
+      } as T,
+    },
+    frunzis: {
+      tagline: { en: "Wrapped in green", ro: "Învăluită în verde", hu: "Zöldbe burkolva" } as T,
+      desc: {
+        en: "Leafage celebrates the verdant canopy that defines our mountain landscape. Rich botanical accents and natural fabrics create a room that breathes with the rhythm of the forest. Every detail is a tribute to the lush foliage that blankets the Carpathian hillsides.",
+        ro: "Frunzișul celebrează coroana verde care definește peisajul nostru montan. Accente botanice bogate și țesături naturale creează o cameră care respiră în ritmul pădurii. Fiecare detaliu este un omagiu adus frunzișului luxuriant care acoperă coastele Carpaților.",
+        hu: "A Lombozat a hegyvidéki tájat meghatározó zöld lombkoronát ünnepli. Gazdag botanikai díszítések és természetes szövetek teremtenek olyan szobát, amely az erdő ritmusában lélegzik.",
+      } as T,
+    },
+    timian: {
+      tagline: { en: "The essence of the mountains", ro: "Esența munților", hu: "A hegyek lényege" } as T,
+      desc: {
+        en: "Named after the wild thyme that grows on our mountain slopes, this signature room embodies the aromatic spirit of the Carpathians. Elegant furnishings blend with alpine charm, offering a retreat where every breath carries the scent of the highlands.",
+        ro: "Numită după cimbrul sălbatic care crește pe pantele munților noștri, această cameră emblematică întrupează spiritul aromatic al Carpaților. Mobilierul elegant se îmbină cu farmecul alpin, oferind un refugiu unde fiecare respirație poartă parfumul munților.",
+        hu: "A hegyoldalakon vadon termő kakukkfűről elnevezve, ez a szoba a Kárpátok aromás szellemét testesíti meg. Az elegáns berendezés alpesi bájjal ötvöződik, olyan menedéket kínálva, ahol minden lélegzetvétel a felvidék illatát hordozza.",
+      } as T,
+    },
+    con: {
+      tagline: { en: "Nature's geometry", ro: "Geometria naturii", hu: "A természet geometriája" } as T,
+      desc: {
+        en: "The Cone room draws its character from the sculptural beauty of pine cones — nature's perfect geometry. Angular wooden details and soft textiles create a space where architectural precision meets mountain warmth.",
+        ro: "Camera Con își trage caracterul din frumusețea sculpturală a conurilor de pin — geometria perfectă a naturii. Detalii unghiulare din lemn și textile moi creează un spațiu unde precizia arhitecturală întâlnește căldura muntelui.",
+        hu: "A Toboz szoba a tobozok szobrászati szépségéből — a természet tökéletes geometriájából — meríti jellegét. Szögletes fa részletek és puha textíliák teremtenek olyan teret, ahol az építészeti precizitás találkozik a hegyi melegséggel.",
+      } as T,
+    },
+    lichen: {
+      tagline: { en: "Quiet resilience", ro: "Reziliență liniștită", hu: "Csendes ellenállás" } as T,
+      desc: {
+        en: "Like the lichen that adorns our ancient trees, this room embodies quiet resilience and natural grace. Muted earth tones and organic textures create an atmosphere of understated elegance, perfect for those who find beauty in subtlety.",
+        ro: "Ca și lichenul care împodobește copacii noștri străvechi, această cameră întrupează reziliența liniștită și grația naturală. Tonuri pământii atenuate și texturi organice creează o atmosferă de eleganță discretă.",
+        hu: "Mint a zuzmó, amely ősi fáinkat díszíti, ez a szoba a csendes ellenállást és a természetes kecsességet testesíti meg. Tompított földszínek és organikus textúrák teremtenek visszafogott elegancia légkörét.",
+      } as T,
+    },
+    mineral: {
+      tagline: { en: "Carved from the earth", ro: "Sculptat din pământ", hu: "A földből faragva" } as T,
+      desc: {
+        en: "The Mineral room pays homage to the geological wonders of the Carpathians. Stone accents and crystalline touches merge with premium comfort, evoking the raw beauty of mountain rock formations while maintaining the warmth and luxury that define Timian Chalet.",
+        ro: "Camera Mineral aduce un omagiu minunilor geologice ale Carpaților. Accente de piatră și atingeri cristaline se îmbină cu confortul premium, evocând frumusețea brută a formațiunilor stâncoase montane.",
+        hu: "A Mineral szoba a Kárpátok geológiai csodái előtt tiszteleg. Kő díszítések és kristályos érintések olvadnak össze prémium kényelemmel, felidézve a hegyi sziklaformációk nyers szépségét.",
+      } as T,
+    },
+    zoriDeZi: {
+      tagline: { en: "First light over the peaks", ro: "Prima lumină peste vârfuri", hu: "Az első fény a csúcsok felett" } as T,
+      desc: {
+        en: "Dawn captures the magical moment when first light spills over the Carpathian peaks. Soft golden hues and gentle textures create a room that glows with the warmth of sunrise. East-facing windows ensure you wake to the most spectacular mountain views.",
+        ro: "Zori de zi surprinde momentul magic când prima lumină se revarsă peste vârfurile Carpaților. Nuanțe aurii delicate și texturi blânde creează o cameră care strălucește cu căldura răsăritului.",
+        hu: "A Hajnal megragadja azt a varázslatos pillanatot, amikor az első fény kiárad a Kárpátok csúcsai felett. Lágy aranyszínű árnyalatok és finom textúrák teremtenek olyan szobát, amely a napfelkelte melegével ragyog.",
+      } as T,
+    },
+    comoara: {
+      tagline: { en: "Hidden luxury", ro: "Lux ascuns", hu: "Rejtett luxus" } as T,
+      desc: {
+        en: "Treasure is our most opulent room, inspired by the hidden riches of the Transylvanian mountains. Rich fabrics, gilded accents, and artisanal details create an atmosphere of refined luxury where mountain tradition meets its most elegant expression.",
+        ro: "Comoara este cea mai opulentă cameră a noastră, inspirată de bogățiile ascunse ale munților Transilvaniei. Țesături bogate, accente aurite și detalii artizanale creează o atmosferă de lux rafinat.",
+        hu: "A Kincs a legpompázatosabb szobánk, amelyet az erdélyi hegyek rejtett kincsei inspiráltak. Gazdag szövetek, aranyozott díszítések és kézműves részletek teremtenek kifinomult luxus légkörét.",
+      } as T,
+    },
+    miniChalet: {
+      tagline: { en: "A world of its own", ro: "O lume a sa", hu: "Egy saját világ" } as T,
+      desc: {
+        en: "The Mini Chalet is a self-contained alpine retreat within the retreat. With its own entrance, living area, and panoramic mountain views, it offers the ultimate in privacy and independence — perfect for extended stays or those who desire their own Carpathian hideaway.",
+        ro: "Mini Chaletul este un refugiu alpin de sine stătător în cadrul refugiului. Cu propria intrare, zonă de living și priveliști panoramice montane, oferă maximul de intimitate și independență.",
+        hu: "A Mini Chalet egy önálló alpesi menedék a menedéken belül. Saját bejárattal, nappali résszel és panorámás hegyi kilátással a magánélet és függetlenség csúcsát kínálja.",
+      } as T,
+    },
+  },
+
+  // ─── Culinary Page ─────────────────────────────────
+  culinaryPage: {
+    heroTitle: { en: "Culinary", ro: "Culinar", hu: "Gasztronómia" } as T,
+    heroSubtitle: {
+      en: "Authentic Transylvanian flavours crafted with passion",
+      ro: "Arome transilvănene autentice, preparate cu pasiune",
+      hu: "Autentikus erdélyi ízek, szenvedéllyel készítve",
+    } as T,
+  },
+
   // ─── Fullscreen Menu ────────────────────────────────
   menu: {
     press: { en: "Press", ro: "Presă", hu: "Sajtó" } as T,
@@ -151,13 +255,13 @@ export const tr = {
 
     rooms: { en: "Rooms", ro: "Camere", hu: "Szobák" } as T,
     grove: { en: "Grove", ro: "Grove", hu: "Grove" } as T,
-    leafage: { en: "Leafage", ro: "Leafage", hu: "Leafage" } as T,
-    thyme: { en: "Thyme", ro: "Thyme", hu: "Thyme" } as T,
-    cone: { en: "Cone", ro: "Cone", hu: "Cone" } as T,
+    leafage: { en: "Leafage", ro: "Frunziș", hu: "Leafage" } as T,
+    thyme: { en: "Thyme", ro: "Timian", hu: "Thyme" } as T,
+    cone: { en: "Cone", ro: "Con", hu: "Cone" } as T,
     lichen: { en: "Lichen", ro: "Lichen", hu: "Lichen" } as T,
     mineral: { en: "Mineral", ro: "Mineral", hu: "Mineral" } as T,
-    dawn: { en: "Dawn", ro: "Dawn", hu: "Dawn" } as T,
-    treasure: { en: "Treasure", ro: "Treasure", hu: "Treasure" } as T,
+    dawn: { en: "Dawn", ro: "Zori de zi", hu: "Dawn" } as T,
+    treasure: { en: "Treasure", ro: "Comoară", hu: "Treasure" } as T,
     miniChalet: { en: "Mini Chalet", ro: "Mini Chalet", hu: "Mini Chalet" } as T,
 
     culinary: { en: "Culinary", ro: "Culinar", hu: "Gasztronómia" } as T,

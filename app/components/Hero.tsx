@@ -143,7 +143,7 @@ export default function Hero() {
 }
 
 function HeroVisual({ progress }: { progress: MotionValue<number> }) {
-  // Utilizing the configuration variables directly in the transform hooks
+  const t = useT();
   const width = useTransform(progress, [0, 1], ["100vw", COLLAPSED_WIDTH]);
   const height = useTransform(progress, [0, 1], ["100vh", COLLAPSED_HEIGHT]);
   const left = useTransform(progress, [0, 1], ["0vw", COLLAPSED_LEFT]);
@@ -173,11 +173,11 @@ function HeroVisual({ progress }: { progress: MotionValue<number> }) {
         style={{ opacity }}
         className="relative z-10 h-full flex flex-col items-center justify-center text-white text-center"
       >
-        <h1 className="text-8xl tracking-[0.35em] uppercase">
-          TIMIAN
+        <h1 className="text-8xl tracking-[0.35em] uppercase font-sans">
+          {t(tr.hero.title)}
         </h1>
-        <p className="mt-6 text-xl italic">
-          Transylvanian Mountain Retreat
+        <p className="mt-6 text-xl italic font-sans">
+          {t(tr.hero.subtitle)}
         </p>
       </motion.div>
     </motion.section>
