@@ -21,14 +21,19 @@ export const tr = {
   hero: {
     discover: { en: "DISCOVER", ro: "DESCOPERĂ", hu: "FEDEZD FEL" } as T,
     craftedForEscape: {
-      en: "Crafted for your escape",
+      en: "Stay elevated.",
       ro: "Creat pentru evadarea ta",
       hu: "A menekülésedért készült",
     } as T,
-    rootedInNature: {
-      en: "Rooted in nature",
-      ro: "Înrădăcinat în natură",
-      hu: "A természet gyökerében",
+    rooted: {
+      en: "Rooted",
+      ro: "Înrădăcinat",
+      hu: "A természetben",
+    } as T,
+    inNature: {
+      en: "In nature.",
+      ro: "În natură.",
+      hu: "",
     } as T,
   },
 
@@ -41,47 +46,72 @@ export const tr = {
     } as TLines,
   },
 
-  // ─── About / Features ─────────────────────────────
+  // ─── About / Welcome ─────────────────────────────
   about: {
     welcomeTitle: {
       en: "Welcome to Timian Chalet",
       ro: "Bine ați venit la Timian Chalet",
       hu: "Üdvözöljük a Timian Chalet-ban",
     } as T,
-    welcomeDesc: {
-      en: "Nestled in the heart of the Carpathian Mountains, Timian Chalet offers an authentic Transylvanian escape where traditional Romanian craftsmanship meets rustic luxury.",
-      ro: "Situat în inima Munților Carpați, Timian Chalet oferă o evadare autentică transilvăneană unde meșteșugul tradițional românesc întâlnește luxul rustic.",
-      hu: "A Kárpátok szívében megbújva a Timian Chalet autentikus erdélyi menedéket kínál, ahol a hagyományos kézművesség találkozik a rusztikus luxussal.",
+    welcomePara1: {
+      en: "Perched at the edge of the Carpathian wilderness, Timian Chalet is more than a destination — it's a feeling. Built with hand-selected timber and stone from the surrounding mountains, every detail speaks to the land it was born from.",
+      ro: "Situat la marginea sălbăticiei carpatine, Timian Chalet este mai mult decât o destinație — este o stare de spirit. Construit din lemn și piatră alese cu grijă din munții din jur, fiecare detaliu vorbește despre pământul din care s-a născut.",
+      hu: "A Kárpátok vadonjának szélén megbújva a Timian Chalet több mint egy úti cél — ez egy érzés. A környező hegyekből válogatott fából és kőből épült, minden részlet a tájról mesél, amelyből született.",
     } as T,
-
-    locationLabel: { en: "The Location", ro: "Locația", hu: "Helyszín" } as T,
-    locationTitle: { en: "Carpathian\nRetreat", ro: "Refugiu în\nCarpați", hu: "Kárpáti\nMenedék" } as T,
-    locationDesc: {
-      en: "Surrounded by majestic peaks where ancient forests meet pristine wilderness.",
-      ro: "Înconjurat de vârfuri maiestuoase unde pădurile străvechi întâlnesc natura sălbatică.",
-      hu: "Fenséges csúcsok ölelésében, ahol az ősi erdők találkoznak az érintetlen vadonnal.",
+    welcomePara2: {
+      en: "Our twelve uniquely designed rooms offer a sanctuary where rustic charm meets thoughtful luxury. Wake to birdsong, unwind by the fire, and let the rhythm of the mountains set your pace.",
+      ro: "Cele douăsprezece camere, fiecare cu un design unic, oferă un sanctuar unde farmecul rustic întâlnește luxul atent. Treziți-vă în cântecul păsărilor, relaxați-vă lângă foc și lăsați ritmul munților să vă ghideze.",
+      hu: "Tizenkét egyedi szobánk menedéket kínál, ahol a rusztikus báj az átgondolt luxussal találkozik. Ébredjen madárdalra, pihenjen a kandalló mellett, és hagyja, hogy a hegyek ritmusa vezesse.",
     } as T,
-
-    experienceLabel: { en: "The Experience", ro: "Experiența", hu: "Az Élmény" } as T,
-    experienceTitle: { en: "Authentic\nHospitality", ro: "Ospitalitate\nAutentică", hu: "Autentikus\nVendégszeretet" } as T,
-    experienceDesc: {
-      en: "Genuine Romanian warmth where every guest becomes family.",
-      ro: "Căldura autentică românească unde fiecare oaspete devine familie.",
-      hu: "Valódi vendégszeretet, ahol minden vendég a család részévé válik.",
-    } as T,
-
-    craftsmanshipLabel: { en: "The Craftsmanship", ro: "Meșteșugul", hu: "A Mesterség" } as T,
-    craftsmanshipTitle: { en: "Rustic\nLuxury", ro: "Lux\nRustic", hu: "Rusztikus\nLuxus" } as T,
-    craftsmanshipDesc: {
-      en: "Hand-carved interiors blending artisanal heritage with modern comfort.",
-      ro: "Interioare sculptate manual care îmbină moștenirea artizanală cu confortul modern.",
-      hu: "Kézzel faragott belsőterek, ahol a kézműves hagyomány találkozik a modern kényelemmel.",
+    welcomePara3: {
+      en: "From farm-to-table dining to guided alpine adventures, every moment at Timian is crafted to reconnect you with nature, with tradition, and with yourself.",
+      ro: "De la preparate de la fermă la aventuri alpine ghidate, fiecare moment la Timian este creat pentru a vă reconecta cu natura, cu tradiția și cu voi înșivă.",
+      hu: "A farmról az asztalra kerülő ételektől a vezetett alpesi kalandokig, a Timian minden pillanata arra lett tervezve, hogy újra összekapcsolja a természettel, a hagyományokkal és önmagával.",
     } as T,
 
     statEstablished: { en: "ESTABLISHED", ro: "FONDAT", hu: "ALAPÍTVA" } as T,
     statRooms: { en: "LUXURY ROOMS", ro: "CAMERE DE LUX", hu: "LUXUS SZOBÁK" } as T,
     statSatisfaction: { en: "GUEST SATISFACTION", ro: "SATISFACȚIA OASPEȚILOR", hu: "VENDÉG ELÉGEDETTSÉG" } as T,
     statConcierge: { en: "CONCIERGE SERVICE", ro: "SERVICIU CONCIERGE", hu: "CONCIERGE SZOLGÁLTATÁS" } as T,
+  },
+
+  // ─── Landing Sections ───────────────────────────────
+  sections: {
+    hotelLabel: { en: "The Hotel", ro: "Hotelul", hu: "A Hotel" } as T,
+    hotelTitle: { en: "A Story Written\nin Wood & Stone", ro: "O Poveste Scrisă\nîn Lemn și Piatră", hu: "Egy Történet\nFából és Kőből" } as T,
+    hotelDesc: {
+      en: "Discover the story of Timian Chalet — a Transylvanian retreat where traditional architecture, natural materials, and heartfelt hospitality create an atmosphere unlike any other.",
+      ro: "Descoperiți povestea Timian Chalet — un refugiu transilvănean unde arhitectura tradițională, materialele naturale și ospitalitatea autentică creează o atmosferă unică.",
+      hu: "Fedezze fel a Timian Chalet történetét — egy erdélyi menedék, ahol a hagyományos építészet, a természetes anyagok és a szívből jövő vendégszeretet páratlan atmoszférát teremt.",
+    } as T,
+    hotelLink: { en: "Discover more", ro: "Descoperă mai mult", hu: "Tudjon meg többet" } as T,
+
+    roomsLabel: { en: "The Rooms", ro: "Camerele", hu: "A Szobák" } as T,
+    roomsTitle: { en: "Twelve Rooms,\nTwelve Worlds", ro: "Douăsprezece Camere,\nDouăsprezece Lumi", hu: "Tizenkét Szoba,\nTizenkét Világ" } as T,
+    roomsDesc: {
+      en: "Each room is named after the natural world that surrounds us. Hand-carved details, premium linens, and mountain views in every direction.",
+      ro: "Fiecare cameră poartă numele lumii naturale care ne înconjoară. Detalii sculptate manual, lenjerie premium și priveliști montane în fiecare direcție.",
+      hu: "Minden szoba a minket körülvevő természeti világról kapta nevét. Kézzel faragott részletek, prémium ágyneműk és hegyi panoráma minden irányban.",
+    } as T,
+    roomsLink: { en: "Explore our rooms", ro: "Explorează camerele", hu: "Fedezze fel szobáinkat" } as T,
+
+    culinaryLabel: { en: "Culinary", ro: "Culinar", hu: "Gasztronómia" } as T,
+    culinaryTitle: { en: "Flavors of\nTransylvania", ro: "Aromele\nTransilvaniei", hu: "Erdély\nÍzei" } as T,
+    culinaryDesc: {
+      en: "Our kitchen celebrates the heart of Transylvania. Locally sourced ingredients, artisanal cheeses, and seasonal menus that honor the region's rich culinary heritage.",
+      ro: "Bucătăria noastră celebrează inima Transilvaniei. Ingrediente locale, brânzeturi artizanale și meniuri sezoniere care onorează bogata moștenire culinară a regiunii.",
+      hu: "Konyhánk Erdély szívét ünnepli. Helyi alapanyagok, kézműves sajtok és szezonális menük, amelyek a régió gazdag kulináris örökségét tisztelik.",
+    } as T,
+    culinaryLink: { en: "See the menu", ro: "Vezi meniul", hu: "Nézze meg az étlapot" } as T,
+
+    experiencesLabel: { en: "Experiences", ro: "Experiențe", hu: "Élmények" } as T,
+    experiencesTitle: { en: "Adventures\nAwait", ro: "Aventuri\nVă Așteaptă", hu: "Kalandok\nVárnak" } as T,
+    experiencesDesc: {
+      en: "From wellness retreats and mountain sports to buggy tours through ancient forests — every day brings a new way to experience the Carpathians.",
+      ro: "De la retreat-uri de wellness și sporturi montane la tururi cu buggy prin păduri străvechi — fiecare zi aduce un nou mod de a experimenta Carpații.",
+      hu: "A wellness pihenéstől és a hegyi sportoktól a buggy túrákig az ősi erdőkben — minden nap új módot kínál a Kárpátok felfedezésére.",
+    } as T,
+    experiencesLink: { en: "Plan your adventure", ro: "Planifică aventura", hu: "Tervezze meg kalandját" } as T,
   },
 
   // ─── Nature reveal section ─────────────────────────

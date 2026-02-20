@@ -39,10 +39,8 @@ export default function RootLayout({
           <title>Timian Chalet | Mountain Retreat</title>
           {/* Preload critical resources */}
         <link rel="preload" href="/Timian2.mp4" as="video" type="video/mp4" />
-        <link rel="preload" href="/nature.jpg" as="image" />
-        <link rel="preload" href="/the_chalet.jpg" as="image" />
-        <link rel="preload" href="/nature-optimized.jpg" as="image" />
-        <link rel="preload" href="/rooms-thumbnail.jpg" as="image" />
+        <link rel="preload" href="/Timian-Insta6.jpg" as="image" />
+        <link rel="preload" href="/hotel/the_chalet.jpg" as="image" />
       </head>
       <body className={`${inter.variable} antialiased`}>
         <LanguageProvider>
