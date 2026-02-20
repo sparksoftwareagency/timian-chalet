@@ -1,29 +1,34 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import Image from "next/image";
 import {
   motion,
   useMotionValue,
   useTransform,
   animate,
   MotionValue,
+  useAnimation,
 } from "framer-motion";
+import { useT } from "../i18n/LanguageContext";
+import { tr } from "../i18n/translations";
+import RevealText from "./RevealText";  
 
 // ==========================================
 // ANIMATION & LAYOUT CONFIGURATION
 // ==========================================
 
 // 1. Collapsed Video Dimensions (Tweak these to easily change the final size/position)
-const COLLAPSED_HEIGHT = "32vh"; // <-- Changed from 45vh to make it less tall
-const COLLAPSED_WIDTH = "32vw";
-const COLLAPSED_TOP = "42vh";    // <-- You may want to adjust this as you change the height
-const COLLAPSED_LEFT = "60vw";
+const COLLAPSED_HEIGHT = "30vh"; // <-- Changed from 45vh to make it less tall
+const COLLAPSED_WIDTH = "46vw";
+const COLLAPSED_TOP = "14vh";    // <-- You may want to adjust this as you change the height
+const COLLAPSED_LEFT = "50vw";
 
 // 2. Scroll Triggers
-const ANIMATION_DURATION = 1.5;
+const ANIMATION_DURATION = 1.9;
 const TRIGGER_DOWN_DISTANCE = 120;
-const TRIGGER_UP_DISTANCE = 350; 
-const SCROLL_JUMP_AMOUNT = 300;
+const TRIGGER_UP_DISTANCE = 590; 
+const SCROLL_JUMP_AMOUNT = 600;
 
 type Phase = "expanded" | "collapsed" | "animating";
 
@@ -31,6 +36,9 @@ export default function Hero() {
   const progress = useMotionValue(0);
   const [phase, setPhase] = useState<Phase>("expanded");
   const isAnimating = useRef(false);
+  const t = useT();
+
+  const [heroFinished, setHeroFinished] = useState(false);
 
   const animateTo = useCallback(
     (target: 0 | 1) => {
@@ -51,6 +59,12 @@ export default function Hero() {
         onComplete: () => {
           isAnimating.current = false;
           setPhase(target === 1 ? "collapsed" : "expanded");
+          if (target === 1) {
+            setHeroFinished(true); // ✅ unlock text animations
+          }
+          if (target === 0) {
+            setHeroFinished(true); // ✅ lock text animations
+          }
         },
       });
 
@@ -91,18 +105,45 @@ export default function Hero() {
         before the video unsticks and scrolls off the screen. 
         150vh gives enough room for the 300px jump plus some scrolling room.
       */}
-      <div data-theme="light" style={{ height: "150vh", position: "relative" }}>
+      <div data-theme="light" style={{ height: "190vh", position: "relative" }}>
         {/* The sticky container pins the video to the screen until the wrapper ends */}
         <div style={{ position: "sticky", top: 0, height: "100vh" }}>
           <HeroVisual progress={progress} />
         </div>
+
+        <div className="flex items-center pl-40 pt-14" >
+          <RevealText text={t(tr.hero.craftedForEscape)} className="text-8xl" mode="char" enabled={heroFinished}/>
+        </div>
+
+        <div className="absolute right-0 flex items-center gap-10 translate-y-10 pr-40 pt-30">
+          {/* ── Hero nature image ── */}
+          {/* Adjust width/height for aspect ratio, objectPosition for cropping */}
+          <div className="relative w-[52vw] h-[30vh] overflow-hidden flex-shrink-0">
+            <Image
+              src="/hero-nature.jpg"
+              alt="Nature"
+              fill
+              className="object-cover"
+              style={{ objectPosition: "50% 75%" }}
+            />
+          </div>
+
+          <div>
+            <RevealText text={t(tr.hero.rooted)} mode="char" enabled={heroFinished} className="text-8xl"/>
+            <RevealText text={t(tr.hero.inNature)} mode="char" enabled={heroFinished} className="text-8xl"/>
+          </div>
+        </div>
+
+        <div className="overflow-hidden">
+    </div>  
+
       </div>
     </>
   );
 }
 
 function HeroVisual({ progress }: { progress: MotionValue<number> }) {
-  // Utilizing the configuration variables directly in the transform hooks
+  const t = useT();
   const width = useTransform(progress, [0, 1], ["100vw", COLLAPSED_WIDTH]);
   const height = useTransform(progress, [0, 1], ["100vh", COLLAPSED_HEIGHT]);
   const left = useTransform(progress, [0, 1], ["0vw", COLLAPSED_LEFT]);
@@ -129,21 +170,14 @@ function HeroVisual({ progress }: { progress: MotionValue<number> }) {
       <div className="absolute inset-0 bg-black/40" />
 
       <motion.div
-        style={{
-          opacity: borderFrameOpacity,
-        }}
-        className="absolute top-2 left-2 right-2 bottom-2 border border-[#D4C4A0] pointer-events-none"
-      />
-
-      <motion.div
         style={{ opacity }}
         className="relative z-10 h-full flex flex-col items-center justify-center text-white text-center"
       >
-        <h1 className="text-8xl tracking-[0.35em] uppercase">
-          TIMIAN
+        <h1 className="text-8xl tracking-[0.35em] uppercase font-sans">
+          {t(tr.hero.title)}
         </h1>
-        <p className="mt-6 text-xl italic">
-          Transylvanian Mountain Retreat
+        <p className="mt-6 text-xl italic font-sans">
+          {t(tr.hero.subtitle)}
         </p>
       </motion.div>
     </motion.section>

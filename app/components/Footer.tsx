@@ -47,10 +47,15 @@ export default function Footer() {
               {t(tr.footer.quickLinks)}
             </h3>
             <ul className="space-y-2">
-              {[tr.footer.roomsSuites, tr.footer.culinary, tr.footer.experiences, tr.footer.contactUs].map((item) => (
-                <li key={t(item)}>
-                  <a href="#" className="text-sm hover:opacity-80 transition-opacity" style={{ color: colors.secondaryBg }}>
-                    {t(item)}
+              {[
+                { label: tr.footer.roomsSuites, href: "/rooms" },
+                { label: tr.footer.culinary, href: "/culinary" },
+                { label: tr.footer.experiences, href: "#experiences" },
+                { label: tr.footer.contactUs, href: "#contact" },
+              ].map((item) => (
+                <li key={t(item.label)}>
+                  <a href={item.href} className="text-sm hover:opacity-80 transition-opacity" style={{ color: colors.secondaryBg }}>
+                    {t(item.label)}
                   </a>
                 </li>
               ))}

@@ -56,7 +56,7 @@ const MENU_SECTIONS = [
   {
     headline: tr.menu.aboutHotel,
     links: [
-      { label: tr.menu.story, href: "#story" },
+      { label: tr.menu.story, href: "/about" },
       { label: tr.menu.location, href: "#location" },
       { label: tr.menu.shop, href: "#shop" },
     ],
@@ -64,15 +64,15 @@ const MENU_SECTIONS = [
   {
     headline: tr.menu.rooms,
     links: [
-      { label: tr.menu.grove, href: "#grove" },
-      { label: tr.menu.leafage, href: "#leafage" },
-      { label: tr.menu.thyme, href: "#thyme" },
-      { label: tr.menu.cone, href: "#cone" },
-      { label: tr.menu.lichen, href: "#lichen" },
-      { label: tr.menu.mineral, href: "#mineral" },
-      { label: tr.menu.dawn, href: "#dawn" },
-      { label: tr.menu.treasure, href: "#treasure" },
-      { label: tr.menu.miniChalet, href: "#mini-chalet" },
+      { label: tr.menu.grove, href: "/rooms/crang" },
+      { label: tr.menu.leafage, href: "/rooms/frunzis" },
+      { label: tr.menu.thyme, href: "/rooms/timian" },
+      { label: tr.menu.cone, href: "/rooms/con" },
+      { label: tr.menu.lichen, href: "/rooms/lichen" },
+      { label: tr.menu.mineral, href: "/rooms/mineral" },
+      { label: tr.menu.dawn, href: "/rooms/zori-de-zi" },
+      { label: tr.menu.treasure, href: "/rooms/comoara" },
+      { label: tr.menu.miniChalet, href: "/rooms/mini-chalet" },
     ],
   },
   {
@@ -260,7 +260,8 @@ export default function FloatingMenu() {
             </button>
 
             {/* Logo */}
-            <motion.div
+            <motion.a
+              href="/"
               className="h-4 md:h-5 ml-2 md:ml-3"
               animate={{
                 opacity: showLogo ? 1 : 0,
@@ -270,7 +271,7 @@ export default function FloatingMenu() {
               style={{ pointerEvents: showLogo ? "auto" : "none" }}
             >
               <Logo color={tc.fg} />
-            </motion.div>
+            </motion.a>
 
             {/* Language selector — desktop only */}
             <motion.div
