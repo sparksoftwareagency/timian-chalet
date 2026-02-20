@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import dynamic from "next/dynamic";
+import { LanguageProvider } from "./i18n/LanguageContext";
 
-const Navbar = dynamic(() => import("./components/Navbar"), { ssr: true });
 const Footer = dynamic(() => import("./components/Footer"), { ssr: true });
+const FloatingMenu = dynamic(() => import("./components/FloatingMenu"));
 
 const inter = Inter({
   variable: "--font-inter",
@@ -44,9 +45,11 @@ export default function RootLayout({
         <link rel="preload" href="/rooms-thumbnail.jpg" as="image" />
       </head>
       <body className={`${inter.variable} antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
+        <LanguageProvider>
+          <FloatingMenu />
+          {children}
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

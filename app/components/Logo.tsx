@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Logo() {
+export default function Logo({ color = "#fff" }: { color?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,7 +11,7 @@ export default function Logo() {
       className="h-full w-auto"
     >
       <defs>
-        <style>{".cls-1{fill:#fff;}"}</style>
+        <style>{`.cls-1{fill:${color};transition:fill 0.15s ease;}`}</style>
       </defs>
       <path className="cls-1" d="M156.26,36.29s0,0,0,0" />
       <path
