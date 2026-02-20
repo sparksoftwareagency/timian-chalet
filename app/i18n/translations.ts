@@ -20,6 +20,16 @@ export const tr = {
   // ─── Hero ──────────────────────────────────────────
   hero: {
     discover: { en: "DISCOVER", ro: "DESCOPERĂ", hu: "FEDEZD FEL" } as T,
+    craftedForEscape: {
+      en: "Crafted for your escape",
+      ro: "Creat pentru evadarea ta",
+      hu: "A menekülésedért készült",
+    } as T,
+    rootedInNature: {
+      en: "Rooted in nature",
+      ro: "Înrădăcinat în natură",
+      hu: "A természet gyökerében",
+    } as T,
   },
 
   // ─── Landing (tagline section) ─────────────────────

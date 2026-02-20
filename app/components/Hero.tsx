@@ -1,13 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import Image from "next/image";
 import {
   motion,
   useMotionValue,
   useTransform,
   animate,
   MotionValue,
+  useAnimation,
 } from "framer-motion";
+import { useT } from "../i18n/LanguageContext";
+import { tr } from "../i18n/translations";
+import RevealText from "./RevealText";  
 
 // ==========================================
 // ANIMATION & LAYOUT CONFIGURATION
@@ -20,10 +25,10 @@ const COLLAPSED_TOP = "42vh";    // <-- You may want to adjust this as you chang
 const COLLAPSED_LEFT = "60vw";
 
 // 2. Scroll Triggers
-const ANIMATION_DURATION = 1.5;
+const ANIMATION_DURATION = 1.9;
 const TRIGGER_DOWN_DISTANCE = 120;
-const TRIGGER_UP_DISTANCE = 350; 
-const SCROLL_JUMP_AMOUNT = 300;
+const TRIGGER_UP_DISTANCE = 580; 
+const SCROLL_JUMP_AMOUNT = 600;
 
 type Phase = "expanded" | "collapsed" | "animating";
 
@@ -31,6 +36,9 @@ export default function Hero() {
   const progress = useMotionValue(0);
   const [phase, setPhase] = useState<Phase>("expanded");
   const isAnimating = useRef(false);
+  const t = useT();
+
+  const [heroFinished, setHeroFinished] = useState(false);
 
   const animateTo = useCallback(
     (target: 0 | 1) => {
@@ -51,6 +59,12 @@ export default function Hero() {
         onComplete: () => {
           isAnimating.current = false;
           setPhase(target === 1 ? "collapsed" : "expanded");
+          if (target === 1) {
+            setHeroFinished(true); // ✅ unlock text animations
+          }
+          if (target === 0) {
+            setHeroFinished(true); // ✅ lock text animations
+          }
         },
       });
 
@@ -91,11 +105,26 @@ export default function Hero() {
         before the video unsticks and scrolls off the screen. 
         150vh gives enough room for the 300px jump plus some scrolling room.
       */}
-      <div data-theme="light" style={{ height: "150vh", position: "relative" }}>
+      <div data-theme="light" style={{ height: "200vh", position: "relative" }}>
         {/* The sticky container pins the video to the screen until the wrapper ends */}
         <div style={{ position: "sticky", top: 0, height: "100vh" }}>
           <HeroVisual progress={progress} />
         </div>
+
+        <div className="flex justify-center items-center" >
+          <RevealText text={t(tr.hero.craftedForEscape)} className="text-8xl" mode="word" enabled={heroFinished}/>
+        </div>
+
+        <div className="flex justify-center items-center" >
+          <RevealText text={t(tr.hero.rootedInNature)} mode="char" enabled={heroFinished}></RevealText>
+        </div>
+        
+        
+
+
+        <div className="overflow-hidden">
+    </div>  
+
       </div>
     </>
   );
