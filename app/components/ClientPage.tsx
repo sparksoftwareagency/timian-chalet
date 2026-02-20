@@ -304,7 +304,7 @@ export default function ClientPage() {
               <p className="text-base sm:text-lg leading-relaxed mb-2" style={{ color: colors.textSecondary }}>
                 {t(tr.sections.hotelDesc)}
               </p>
-              <SectionLink href="/#about" label={t(tr.sections.hotelLink)} color={colors.cta} />
+              <SectionLink href="/about" label={t(tr.sections.hotelLink)} color={colors.cta} />
             </div>
           </div>
         </div>

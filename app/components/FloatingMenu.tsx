@@ -56,7 +56,7 @@ const MENU_SECTIONS = [
   {
     headline: tr.menu.aboutHotel,
     links: [
-      { label: tr.menu.story, href: "#story" },
+      { label: tr.menu.story, href: "/about" },
       { label: tr.menu.location, href: "#location" },
       { label: tr.menu.shop, href: "#shop" },
     ],

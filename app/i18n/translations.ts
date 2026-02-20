@@ -275,6 +275,140 @@ export const tr = {
     attractions: { en: "Attractions", ro: "Atracții", hu: "Látnivalók" } as T,
   },
 
+  // ─── About / Story Page ─────────────────────────────
+  aboutPage: {
+    heroTitle: {
+      en: "Our Story",
+      ro: "Povestea Noastră",
+      hu: "Történetünk",
+    } as T,
+    heroSubtitle: {
+      en: "How a goat farm became a premium mountain retreat",
+      ro: "Cum a devenit o fermă de capre un refugiu montan premium",
+      hu: "Hogyan lett egy kecskefarmból prémium hegyi menedék",
+    } as T,
+
+    originLabel: {
+      en: "The Beginning",
+      ro: "Începutul",
+      hu: "A Kezdetek",
+    } as T,
+    originTitle: {
+      en: "Where It\nAll Started",
+      ro: "De Unde\nA Început Totul",
+      hu: "Ahol Minden\nElkezdődött",
+    } as T,
+    originPara1: {
+      en: "It all began with a simple love of nature. The Becze–Máthé family, on their estate at the foot of the Harghita Mountains, started a goat farm — not as a business, but as a way of life. For over a decade, the farm provided the family with the finest handcrafted goat cheeses and dairy products.",
+      ro: "Totul a început cu o simplă dragoste pentru natură. Familia Becze–Máthé, pe domeniul lor de la poalele Munților Harghita, a înființat o fermă de capre — nu ca afacere, ci ca un mod de viață. Peste un deceniu, ferma a furnizat familiei cele mai fine brânzeturi artizanale de capră și produse lactate.",
+      hu: "Minden egy kedves hobbival kezdődött. A Becze–Máthé család birtokán, a Hargita lábánál egy kecskefarm született — nem üzleti céllal, hanem a család örömére. A farm több mint tíz éven át biztosította a legnemesebb, kézzel készült kecskesajtokat és tejtermékeket.",
+    } as T,
+    originPara2: {
+      en: "The purity of flavors and authenticity of ingredients quickly grew beyond the family circle. More and more people sought their organic, additive-free dairy products, and the farm gradually evolved into a small commercial venture.",
+      ro: "Puritatea aromelor și autenticitatea ingredientelor au depășit rapid cercul familial. Tot mai mulți oameni căutau produsele lor lactate bio, fără aditivi, iar ferma a evoluat treptat într-o mică întreprindere comercială.",
+      hu: "Az ízek tisztasága és az alapanyagok valódisága hamar túlnőtt a családi körön. Egyre többen keresték a bio, adalékmentes tejtermékeket, így a farm lassan kisebb kereskedelmi vállalkozássá vált.",
+    } as T,
+
+    transformLabel: {
+      en: "The Dream",
+      ro: "Visul",
+      hu: "Az Álom",
+    } as T,
+    transformTitle: {
+      en: "A New Chapter\nUnfolds",
+      ro: "Un Nou Capitol\nSe Deschide",
+      hu: "Egy Új Fejezet\nKezdetét Veszi",
+    } as T,
+    transformPara1: {
+      en: "The family realized that the values they had cultivated over the years — closeness to nature, quality, tranquility — were worth sharing with others. And so the idea was born: to create a place where guests could experience everything they themselves felt on this land, day after day.",
+      ro: "Familia a realizat că valorile cultivate de-a lungul anilor — apropierea de natură, calitatea, liniștea — meritau împărtășite cu alții. Astfel s-a născut ideea: de a crea un loc în care oaspeții să trăiască tot ceea ce ei înșiși simțeau pe acest pământ, zi de zi.",
+      hu: "A család felismerte, hogy mindazt az értéket, amit az évek során megteremtettek — a természet közelségét, a minőséget, a nyugalmat — érdemes megosztani másokkal is. Így született meg a gondolat: egy helyet teremteni, ahol a vendégek is átélhetik mindazt, amit ők maguk nap mint nap tapasztaltak.",
+    } as T,
+    transformPara2: {
+      en: "The goat farm moved a few steps further, making way for a new dream. Timian Chalet was born — an idyllic, premium guesthouse where nature and elegance live in harmony. The spirit of the original farm still permeates the place: simplicity, authenticity, care, and premium quality.",
+      ro: "Ferma de capre s-a mutat câțiva pași mai departe, făcând loc unui nou vis. Astfel s-a născut Timian Chalet — o pensiune premium, idilică, unde natura și eleganța trăiesc în armonie. Spiritul fermei originale încă pătrunde locul: simplitate, autenticitate, grijă și calitate premium.",
+      hu: "A kecskefarm pár lépéssel odébb költözve átadta helyét egy új álomnak. Így született meg a Timian Chalet — egy idilli, prémium panzió, ahol a természet és elegancia harmóniában él. Az egykori farm szellemisége ma is átszövi a helyet: egyszerűség, hitelesség, gondoskodás és prémium minőség.",
+    } as T,
+
+    valuesQuote: {
+      en: "Timian Chalet is not just accommodation. It is a story that you can live.",
+      ro: "Timian Chalet nu este doar cazare. Este o poveste pe care o poți trăi.",
+      hu: "A Timian Chalet nemcsak szálláshely. Ez egy történet, amit Te is átélhetsz.",
+    } as T,
+
+    farmLabel: {
+      en: "From Our Land",
+      ro: "De Pe Pământul Nostru",
+      hu: "A Saját Földünkről",
+    } as T,
+    farmTitle: {
+      en: "Farm to\nTable",
+      ro: "De la Fermă\npe Masă",
+      hu: "A Farmtól\naz Asztalig",
+    } as T,
+    farmPara1: {
+      en: "The farm remains an integral part of Timian Chalet's life. Over the years it has undergone continuous development, and today it produces the finest quality cheeses in a variety of forms and flavors. These artisanal products appear not only on cheese boards but serve as key ingredients throughout our cuisine.",
+      ro: "Ferma rămâne o parte integrantă a vieții Timian Chalet. De-a lungul anilor a trecut printr-o dezvoltare continuă și astăzi produce brânzeturi de cea mai înaltă calitate într-o varietate de forme și arome. Aceste produse artizanale apar nu doar pe platouri de brânză, ci servesc ca ingrediente cheie în întreaga noastră bucătărie.",
+      hu: "A farm azóta is szerves része a Timian Chalet életének. Mára a legkiválóbb minőségű sajtokat állítja elő változatos formákban és ízvilágban. Ezek a kézműves termékek nemcsak sajttálakban jelennek meg, hanem kulcsfontosságú alapanyagként épülnek be ételeinkbe.",
+    } as T,
+    farmPara2: {
+      en: "From fresh garden vegetables and fruits to the ingredients used in our meat dishes — everything comes from our own estate. The trees, the vegetable garden, and our livestock all serve one purpose: for our guests to enjoy truly authentic, natural, and carefully crafted dishes — straight from the source.",
+      ro: "De la legumele și fructele proaspete din grădină până la ingredientele folosite în preparatele din carne — totul provine de pe domeniul nostru. Copacii, grădina de legume și animalele noastre servesc un singur scop: ca oaspeții noștri să se bucure de preparate cu adevărat autentice, naturale și elaborate cu grijă — direct de la sursă.",
+      hu: "A kert friss zöldségeitől és gyümölcseitől a húsételek alapanyagaiig, minden saját gazdaságunkból származik. A birtok fái, a veteményes és az állatállomány mind azt a célt szolgálják, hogy vendégeink valóban hiteles, természetes és gondosan előállított fogásokat élvezhessenek — közvetlenül a forrásból.",
+    } as T,
+
+    roomsLabel: {
+      en: "Three Floors",
+      ro: "Trei Etaje",
+      hu: "Három Emelet",
+    } as T,
+    roomsTitle: {
+      en: "Three Landscapes,\nThree Worlds",
+      ro: "Trei Peisaje,\nTrei Lumi",
+      hu: "Három Táj,\nHárom Világ",
+    } as T,
+    roomsIntro: {
+      en: "Our rooms are not merely places to stay — each space is a world of its own, a mood, a feeling. Across three floors, three different landscapes come alive, symbols of the surrounding farm and nature.",
+      ro: "Camerele noastre nu sunt doar locuri de cazare — fiecare spațiu este o lume aparte, o stare de spirit, o senzație. Pe trei etaje, trei peisaje diferite prind viață, simboluri ale fermei și naturii înconjurătoare.",
+      hu: "Szobáink nem csupán szálláshelyek — minden egyes tér egy külön világ, egy hangulat, egy érzés. Három emeleten három különböző táj elevenedik meg, amelyek a környező farm és természet szimbólumai.",
+    } as T,
+    floorGround: {
+      en: "Ground Floor — The Meadow",
+      ro: "Parter — Câmpia",
+      hu: "Földszint — A Mező Világa",
+    } as T,
+    floorGroundDesc: {
+      en: "Where life begins, open, fresh, and inviting. The gentle calm of the meadow, morning dew, and the play of light — every room on this floor promises a peaceful awakening.",
+      ro: "Unde începe viața, deschis, proaspăt și primitor. Calmul blând al câmpiei, roua dimineții și jocul luminii — fiecare cameră de la acest etaj promite o trezire liniștită.",
+      hu: "Itt indul az élet, ahol a természet nyitott, friss és hívogató. A mező szelíd nyugalma, a reggeli harmat és a fények játéka — minden szoba a békés ébredés ígéretét hordozza.",
+    } as T,
+    floorFirst: {
+      en: "First Floor — The Forest",
+      ro: "Etajul I — Pădurea",
+      hu: "Első Emelet — Az Erdő Mélysége",
+    } as T,
+    floorFirstDesc: {
+      en: "A space for inner harmony and contemplation. Soft living greens, the essence of the deep woods, and treasures from the heart of the Harghita mountains — this floor invites you to look inward.",
+      ro: "Un spațiu pentru armonia interioară și contemplare. Verzi blânde și vii, esența pădurilor adânci și comori din inima Munților Harghita — acest etaj vă invită să priviți spre interior.",
+      hu: "A befelé figyelés, a belső harmónia tere. Puha, élő zöld, az erdő mélységének lényege, a Hargita mélyéből feltörő kincsek — ez a szint a befelé tekintésre hív.",
+    } as T,
+    floorSecond: {
+      en: "Second Floor — The Peaks",
+      ro: "Etajul II — Vârfurile",
+      hu: "Második Emelet — A Havas Hegycsúcsok",
+    } as T,
+    floorSecondDesc: {
+      en: "The highest order of nature — pure, untouched, silent. Refreshing energy, hidden sparkle, and the majesty of mountaintops where everything is seen from a new perspective.",
+      ro: "Cea mai înaltă ordine a naturii — pură, neatinsă, tăcută. Energie revigorantă, strălucire ascunsă și maiestatea vârfurilor munților, de unde totul se vede dintr-o perspectivă nouă.",
+      hu: "A természet legmagasabb rendű formája — tiszta, érintetlen, csendes. Frissítő erő, titkos csillogás és a hegycsúcsok fensége, ahonnan minden más szemszögből látszik.",
+    } as T,
+    roomsLink: {
+      en: "Explore our rooms",
+      ro: "Explorează camerele",
+      hu: "Fedezze fel szobáinkat",
+    } as T,
+  },
+
   // ─── Footer ────────────────────────────────────────
   footer: {
     description: {
