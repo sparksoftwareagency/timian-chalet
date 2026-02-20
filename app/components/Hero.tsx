@@ -19,15 +19,15 @@ import RevealText from "./RevealText";
 // ==========================================
 
 // 1. Collapsed Video Dimensions (Tweak these to easily change the final size/position)
-const COLLAPSED_HEIGHT = "32vh"; // <-- Changed from 45vh to make it less tall
-const COLLAPSED_WIDTH = "32vw";
-const COLLAPSED_TOP = "42vh";    // <-- You may want to adjust this as you change the height
-const COLLAPSED_LEFT = "60vw";
+const COLLAPSED_HEIGHT = "30vh"; // <-- Changed from 45vh to make it less tall
+const COLLAPSED_WIDTH = "46vw";
+const COLLAPSED_TOP = "14vh";    // <-- You may want to adjust this as you change the height
+const COLLAPSED_LEFT = "50vw";
 
 // 2. Scroll Triggers
 const ANIMATION_DURATION = 1.9;
 const TRIGGER_DOWN_DISTANCE = 120;
-const TRIGGER_UP_DISTANCE = 580; 
+const TRIGGER_UP_DISTANCE = 590; 
 const SCROLL_JUMP_AMOUNT = 600;
 
 type Phase = "expanded" | "collapsed" | "animating";
@@ -105,22 +105,34 @@ export default function Hero() {
         before the video unsticks and scrolls off the screen. 
         150vh gives enough room for the 300px jump plus some scrolling room.
       */}
-      <div data-theme="light" style={{ height: "200vh", position: "relative" }}>
+      <div data-theme="light" style={{ height: "190vh", position: "relative" }}>
         {/* The sticky container pins the video to the screen until the wrapper ends */}
         <div style={{ position: "sticky", top: 0, height: "100vh" }}>
           <HeroVisual progress={progress} />
         </div>
 
-        <div className="flex justify-center items-center" >
-          <RevealText text={t(tr.hero.craftedForEscape)} className="text-8xl" mode="word" enabled={heroFinished}/>
+        <div className="flex items-center pl-40 pt-14" >
+          <RevealText text={t(tr.hero.craftedForEscape)} className="text-8xl" mode="char" enabled={heroFinished}/>
         </div>
 
-        <div className="flex justify-center items-center" >
-          <RevealText text={t(tr.hero.rootedInNature)} mode="char" enabled={heroFinished}></RevealText>
-        </div>
-        
-        
+        <div className="absolute right-0 flex items-center gap-10 translate-y-10 pr-40 pt-30">
+          {/* ── Hero nature image ── */}
+          {/* Adjust width/height for aspect ratio, objectPosition for cropping */}
+          <div className="relative w-[52vw] h-[30vh] overflow-hidden flex-shrink-0">
+            <Image
+              src="/hero-nature.jpg"
+              alt="Nature"
+              fill
+              className="object-cover"
+              style={{ objectPosition: "50% 75%" }}
+            />
+          </div>
 
+          <div>
+            <RevealText text={t(tr.hero.rooted)} mode="char" enabled={heroFinished} className="text-8xl"/>
+            <RevealText text={t(tr.hero.inNature)} mode="char" enabled={heroFinished} className="text-8xl"/>
+          </div>
+        </div>
 
         <div className="overflow-hidden">
     </div>  
@@ -156,13 +168,6 @@ function HeroVisual({ progress }: { progress: MotionValue<number> }) {
       <VideoBackground />
 
       <div className="absolute inset-0 bg-black/40" />
-
-      <motion.div
-        style={{
-          opacity: borderFrameOpacity,
-        }}
-        className="absolute top-2 left-2 right-2 bottom-2 border border-[#D4C4A0] pointer-events-none"
-      />
 
       <motion.div
         style={{ opacity }}
