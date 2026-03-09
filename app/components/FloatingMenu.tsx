@@ -1,23 +1,16 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Phone, Mail } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Logo from "./Logo";
-import { useLanguage, useT } from "../i18n/LanguageContext";
-import { tr } from "../i18n/translations";
-import type { Language } from "../i18n/translations";
-import { colors, rgba } from "../theme/colors";
-
-const LANGUAGES: { code: Language; label: string }[] = [
-  { code: "en", label: "english" },
-  { code: "ro", label: "română" },
-  { code: "hu", label: "magyar" },
-];
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import Logo from "@/app/components/Logo";
+import { localizeHref, switchLocaleInPathname, type SiteLocale } from "@/app/lib/locale";
+import { colors, rgba } from "@/app/theme/colors";
+import type { NavigationData, SiteSettingsData } from "@/sanity/lib/queries";
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
-
 const HAMBURGER_LINE_WIDTH = 50;
 const HAMBURGER_LINE_HEIGHT = 1;
 const HAMBURGER_LINE_GAP = 5;
@@ -50,67 +43,62 @@ const THEMES = {
     bookBorder: rgba(colors.textPrimary, 0.5),
     accent: colors.cta,
   },
-};
-
-const MENU_SECTIONS = [
-  {
-    headline: tr.menu.aboutHotel,
-    links: [
-      { label: tr.menu.story, href: "/about" },
-      { label: tr.menu.location, href: "#location" },
-      { label: tr.menu.shop, href: "#shop" },
-    ],
-  },
-  {
-    headline: tr.menu.rooms,
-    links: [
-      { label: tr.menu.grove, href: "/rooms/crang" },
-      { label: tr.menu.leafage, href: "/rooms/frunzis" },
-      { label: tr.menu.thyme, href: "/rooms/timian" },
-      { label: tr.menu.cone, href: "/rooms/con" },
-      { label: tr.menu.lichen, href: "/rooms/lichen" },
-      { label: tr.menu.mineral, href: "/rooms/mineral" },
-      { label: tr.menu.dawn, href: "/rooms/zori-de-zi" },
-      { label: tr.menu.treasure, href: "/rooms/comoara" },
-      { label: tr.menu.miniChalet, href: "/rooms/mini-chalet" },
-    ],
-  },
-  {
-    headline: tr.menu.culinary,
-    links: [
-      { label: tr.menu.restaurant, href: "#restaurant" },
-      { label: tr.menu.localCheese, href: "#local-cheese" },
-    ],
-  },
-  {
-    headline: tr.menu.experiences,
-    links: [
-      { label: tr.menu.wellness, href: "#wellness" },
-      { label: tr.menu.sports, href: "#sports" },
-      { label: tr.menu.buggyTour, href: "#buggy-tour" },
-      { label: tr.menu.attractions, href: "#attractions" },
-    ],
-  },
-];
+} as const;
 
 const staggerContainer = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } },
 };
+
 const fadeUp = {
   hidden: { opacity: 0, y: 12 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
 };
 
-export default function FloatingMenu() {
-  const { lang, setLang } = useLanguage();
-  const t = useT();
+function isExternalHref(href: string) {
+  return href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:") || href.startsWith("tel:");
+}
+
+function resolveHref(locale: SiteLocale, href: string) {
+  return isExternalHref(href) ? href : localizeHref(locale, href);
+}
+
+export default function FloatingMenu({
+  locale,
+  navigation,
+  settings,
+}: {
+  locale: SiteLocale;
+  navigation: NavigationData;
+  settings: SiteSettingsData;
+}) {
   const [hidden, setHidden] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [menuHover, setMenuHover] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const bookRef = useRef<HTMLAnchorElement>(null);
+  const pathname = usePathname();
+
+  const languageOptions = useMemo(
+    () => [
+      { code: "en" as const, label: navigation.languageSwitcherLabelEnglish },
+      { code: "ro" as const, label: navigation.languageSwitcherLabelRomanian },
+      { code: "hu" as const, label: navigation.languageSwitcherLabelHungarian },
+    ],
+    [navigation]
+  );
+
+  const menuSections = useMemo(() => {
+    return navigation.menuGroups.map((group) => ({
+      headline: group.headline,
+      links: group.links.map((link) => ({
+        label: link.label,
+        href: resolveHref(locale, link.href),
+        openInNewTab: link.openInNewTab,
+      })),
+    }));
+  }, [locale, navigation.menuGroups]);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -119,7 +107,6 @@ export default function FloatingMenu() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Scroll direction tracking
   useEffect(() => {
     let lastY = window.scrollY;
     const onScroll = () => {
@@ -137,7 +124,6 @@ export default function FloatingMenu() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Theme detection
   const detectTheme = useCallback(() => {
     const btn = bookRef.current;
     if (!btn) return;
@@ -150,8 +136,9 @@ export default function FloatingMenu() {
       const t = s.getAttribute("data-theme");
       if (t !== "light" && t !== "dark") return;
       const sr = s.getBoundingClientRect();
-      if (cx >= sr.left && cx <= sr.right && cy >= sr.top && cy <= sr.bottom)
+      if (cx >= sr.left && cx <= sr.right && cy >= sr.top && cy <= sr.bottom) {
         found = t;
+      }
     });
     if (found) setTheme(found);
   }, []);
@@ -169,54 +156,43 @@ export default function FloatingMenu() {
     };
   }, [detectTheme]);
 
-  // Lock body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
-  // Close menu on Escape
   useEffect(() => {
     if (!menuOpen) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMenuOpen(false); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
-
-  // When menu is open, force dark theme for nav elements (overlay is always dark)
   const effectiveTheme = menuOpen ? "dark" : theme;
   const tc = THEMES[effectiveTheme];
-
   const showLogo = !menuOpen && (isMobile || !hidden);
   const showExtras = !hidden;
 
   return (
     <>
-      {/* Top navigation bar */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] pointer-events-none">
+      <nav className="pointer-events-none fixed left-0 right-0 top-0 z-[100]">
         <div className="flex items-center justify-between px-5 py-3 md:px-8 md:py-5">
-          {/* ── Left group ── */}
-          <div className="flex items-center pointer-events-auto">
-            {/* Hamburger / Close */}
+          <div className="pointer-events-auto flex items-center">
             <button
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               onClick={() => setMenuOpen((v) => !v)}
               onMouseEnter={() => setMenuHover(true)}
               onMouseLeave={() => setMenuHover(false)}
-              className="relative flex items-center justify-center cursor-pointer shrink-0"
-              style={{
-                width: 55,
-                height: 55,
-                background: "none",
-                border: "none",
-                outline: "none",
-                WebkitTapHighlightColor: "transparent",
-              }}
+              className="relative flex shrink-0 cursor-pointer items-center justify-center"
+              style={{ borderColor: colors.border, background: colors.primaryBg, color: colors.textPrimary }}
             >
               <motion.span
-                className="absolute rounded-full pointer-events-none hidden md:block"
+                className="pointer-events-none absolute hidden rounded-full md:block"
                 style={{ width: 70, height: 70 }}
                 initial={false}
                 animate={{
@@ -226,10 +202,7 @@ export default function FloatingMenu() {
                 }}
                 transition={{ duration: 0.3, ease: EASE }}
               />
-              <span
-                className="relative flex flex-col items-center justify-center"
-                style={{ gap: HAMBURGER_LINE_GAP }}
-              >
+              <span className="relative flex flex-col items-center justify-center" style={{ gap: HAMBURGER_LINE_GAP }}>
                 {HAMBURGER_LINE_DELAYS.map((delay, i) => (
                   <motion.span
                     key={i}
@@ -237,7 +210,13 @@ export default function FloatingMenu() {
                     animate={{
                       width: HAMBURGER_LINE_WIDTH,
                       rotate: menuOpen ? (i === 0 ? 45 : i === 2 ? -45 : 0) : 0,
-                      y: menuOpen ? (i === 0 ? HAMBURGER_LINE_GAP + HAMBURGER_LINE_HEIGHT : i === 2 ? -(HAMBURGER_LINE_GAP + HAMBURGER_LINE_HEIGHT) : 0) : 0,
+                      y: menuOpen
+                        ? i === 0
+                          ? HAMBURGER_LINE_GAP + HAMBURGER_LINE_HEIGHT
+                          : i === 2
+                            ? -(HAMBURGER_LINE_GAP + HAMBURGER_LINE_HEIGHT)
+                            : 0
+                        : 0,
                       opacity: menuOpen && i === 1 ? 0 : 1,
                     }}
                     transition={{
@@ -259,167 +238,99 @@ export default function FloatingMenu() {
               </span>
             </button>
 
-            {/* Logo */}
             <motion.a
-              href="/"
-              className="h-4 md:h-5 ml-2 md:ml-3"
-              animate={{
-                opacity: showLogo ? 1 : 0,
-                y: showLogo ? 0 : -40,
-              }}
+              href={`/${locale}`}
+              className="ml-2 h-4 md:ml-3 md:h-5"
+              animate={{ opacity: showLogo ? 1 : 0, y: showLogo ? 0 : -40 }}
               transition={{ duration: 0.4, ease: EASE }}
               style={{ pointerEvents: showLogo ? "auto" : "none" }}
             >
-              <Logo color={tc.fg} />
+              <Logo color={colors.textPrimary} />
             </motion.a>
 
-            {/* Language selector — desktop only */}
             <motion.div
-              className="hidden md:flex items-center ml-5 text-[11px] tracking-[0.15em]"
-              animate={{
-                opacity: showExtras ? 1 : 0,
-                y: showExtras ? 0 : -40,
-              }}
-              transition={{ duration: 0.4, ease: EASE }}
-              style={{ pointerEvents: showExtras ? "auto" : "none" }}
+              className="ml-5 hidden items-center text-[11px] tracking-[0.15em] md:flex"
+              animate={{ opacity: showExtras ? 1 : 0, y: showExtras ? 0 : -40 }}
+              transition={{ duration: 0.35, ease: EASE }}
             >
-              {LANGUAGES.map((l, i) => (
-                <React.Fragment key={l.code}>
-                  {i > 0 && (
-                    <span style={{ color: tc.fgDim, transition: "color 0.15s ease" }} className="select-none px-4">|</span>
-                  )}
-                  <button
-                    onClick={() => setLang(l.code)}
-                    className="px-1.5 py-1"
-                    style={{
-                      color: lang === l.code ? tc.fg : tc.fgMuted,
-                      backgroundImage: "linear-gradient(currentColor, currentColor)",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "left bottom",
-                      backgroundSize: lang === l.code ? "100% 1px" : "0% 1px",
-                      transition: "color 0.15s ease, background-size 0.25s ease-in-out",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = tc.fg;
-                      e.currentTarget.style.backgroundSize = "100% 1px";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = lang === l.code ? tc.fg : tc.fgMuted;
-                      e.currentTarget.style.backgroundSize = lang === l.code ? "100% 1px" : "0% 1px";
-                    }}
-                  >
-                    {l.label}
-                  </button>
-                </React.Fragment>
-              ))}
+              {languageOptions.map((entry, idx) => {
+                const href = switchLocaleInPathname(pathname || `/${locale}`, entry.code);
+                const active = entry.code === locale;
+                return (
+                  <span key={entry.code} className="inline-flex items-center">
+                    <a
+                      href={href}
+                      className="transition-colors"
+                      style={{
+                        color: active ? tc.fg : tc.fgMuted,
+                        textDecoration: active ? "underline" : "none",
+                        textUnderlineOffset: "2px",
+                      }}
+                    >
+                      {entry.label}
+                    </a>
+                    {idx < languageOptions.length - 1 && <span className="mx-2" style={{ color: tc.fgDim }}>/</span>}
+                  </span>
+                );
+              })}
             </motion.div>
           </div>
 
-          {/* ── Right group ── */}
-          <div className="flex items-center gap-2 md:gap-3 pointer-events-auto">
-            {/* Social icons — desktop only */}
+          <motion.a
+            ref={bookRef}
+            href={settings.bookNowLink}
+            className="pointer-events-auto relative flex items-center justify-center overflow-hidden rounded-full px-3 py-2 text-sm font-medium uppercase tracking-[0.15em] shadow-lg md:px-4"
+            animate={{
+              opacity: showExtras ? 1 : 0,
+              y: showExtras ? 0 : -40,
+              backgroundColor: tc.bookBg,
+              color: tc.bookText,
+            }}
+            transition={{ duration: 0.35, ease: EASE }}
+            initial="rest"
+            whileHover="hover"
+          >
             <motion.div
-              className="hidden md:flex items-center gap-2"
-              animate={{
-                opacity: showExtras ? 1 : 0,
-                y: showExtras ? 0 : -40,
-              }}
+              variants={{ rest: { x: -20, opacity: 0 }, hover: { x: 0, opacity: 1 } }}
               transition={{ duration: 0.4, ease: EASE }}
-              style={{ pointerEvents: showExtras ? "auto" : "none" }}
+              className="mr-2"
             >
-              <CircleLink href="https://www.facebook.com/timianchalet/" label="Facebook" color={tc.fg} borderColor={tc.border} hoverBg={tc.hoverBg}>
-                <FacebookIcon />
-              </CircleLink>
-              <CircleLink href="https://www.instagram.com/timian.chalet/" label="Instagram" color={tc.fg} borderColor={tc.border} hoverBg={tc.hoverBg}>
-                <InstagramIcon />
-              </CircleLink>
-              <CircleLink href="mailto:contact@timian.ro" label="Email" color={tc.fg} borderColor={tc.border} hoverBg={tc.hoverBg}>
-                <Mail size={14} strokeWidth={1.5} />
-              </CircleLink>
+              <ArrowRight size={16} color={tc.accent} strokeWidth={2} />
             </motion.div>
-
-            {/* Phone — mobile only */}
-            <CircleLink
-              href="tel:+40740207200"
-              label="Call us"
-              color={tc.fg}
-              borderColor={tc.border}
-              hoverBg={tc.hoverBg}
-              className="md:hidden"
-              size={36}
-              external={false}
-            >
-              <Phone size={14} strokeWidth={1.5} />
-            </CircleLink>
-
-            {/* Book Now */}
-            <motion.a
-              ref={bookRef}
-              href="#book"
-              className="relative flex items-center justify-center overflow-hidden rounded-full px-2 py-2 text-sm font-medium tracking-[0.15em] shadow-lg"
-              animate={{
-                backgroundColor: tc.bookBg,
-                color: tc.bookText,
-              }}
-              transition={{ duration: 0.01, ease: "easeInOut" }}
-              style={{
-                textDecoration: "none",
-                WebkitTapHighlightColor: "transparent",
-              }}
-              initial="rest"
-              whileHover="hover"
-            >
-              <motion.div
-                variants={{
-                  rest: { x: -20, opacity: 0 },
-                  hover: { x: 0, opacity: 1 },
-                }}
-                transition={{ duration: 0.4, ease: EASE }}
-                className="mr-2"
-              >
-                <ArrowRight size={16} color={tc.accent} strokeWidth={2} />
-              </motion.div>
-              <motion.span
-                variants={{
-                  rest: { x: -10 },
-                  hover: { x: 0 },
-                }}
-                transition={{ duration: 0.4, ease: EASE }}
-              >
-                {t(tr.nav.bookNow)}
-              </motion.span>
-              <motion.div
-                className="absolute inset-0 rounded-full"
-                style={{ border: `1px solid ${tc.bookBorder}`, transition: "border-color 0.15s ease" }}
-                variants={{
-                  rest: { opacity: 0.5 },
-                  hover: { opacity: 1, scale: 1.02 },
-                }}
-              />
-            </motion.a>
-          </div>
+            <motion.span variants={{ rest: { x: -10 }, hover: { x: 0 } }} transition={{ duration: 0.4, ease: EASE }}>
+              {navigation.bookNowLabel}
+            </motion.span>
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: `1px solid ${tc.bookBorder}` }}
+              variants={{ rest: { opacity: 0.5 }, hover: { opacity: 1, scale: 1.02 } }}
+            />
+          </motion.a>
         </div>
       </nav>
 
-      {/* Mobile side social — left side, under hamburger */}
       <motion.div
-        className="md:hidden fixed z-[100] flex flex-col gap-2"
+        className="fixed z-[100] flex flex-col gap-2 md:hidden"
         style={{ left: 30, top: 75 }}
-        animate={{
-          opacity: showExtras ? 1 : 0,
-          x: showExtras ? 0 : -50,
-        }}
+        animate={{ opacity: showExtras ? 1 : 0, x: showExtras ? 0 : -50 }}
         transition={{ duration: 0.4, ease: EASE }}
       >
-        <CircleLink href="https://www.facebook.com/timianchalet/" label="Facebook" size={34} color={tc.fg} borderColor={tc.border} hoverBg={tc.hoverBg}>
-          <FacebookIcon size={12} />
-        </CircleLink>
-        <CircleLink href="https://www.instagram.com/timian.chalet/" label="Instagram" size={34} color={tc.fg} borderColor={tc.border} hoverBg={tc.hoverBg}>
-          <InstagramIcon size={12} />
-        </CircleLink>
+        {settings.socialLinks.slice(0, 2).map((social) => (
+          <CircleLink
+            key={`${social.href}-${social.label}`}
+            href={social.href}
+            label={social.label}
+            size={34}
+            color={tc.fg}
+            borderColor={tc.border}
+            hoverBg={tc.hoverBg}
+            external={social.openInNewTab ?? true}
+          >
+            {social.label.toLowerCase().includes("facebook") ? <FacebookIcon size={12} /> : <InstagramIcon size={12} />}
+          </CircleLink>
+        ))}
       </motion.div>
 
-      {/* ── Fullscreen Menu Overlay ── */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -437,61 +348,62 @@ export default function FloatingMenu() {
             transition={{ duration: 0.45, ease: EASE }}
           >
             <div className="h-full overflow-y-auto">
-              {/* Desktop layout: two columns */}
-              <div className="hidden md:flex h-full min-h-full">
-                {/* Left column — logo centered, utility links below */}
-                <div className="w-[32%] max-w-sm relative flex items-center justify-center h-full border-r border-white/[0.07] px-12">
+              <div className="hidden h-full min-h-full md:flex">
+                <div className="relative flex h-full w-[32%] max-w-sm items-center justify-center border-r border-white/[0.07] px-12">
                   <Image
-                    src="/timian_chalet_logo_w.png"
-                    alt="Timian Chalet"
+                    src={settings.logoLightUrl}
+                    alt={settings.siteTitle}
                     width={200}
                     height={40}
-                    className="w-44 h-auto opacity-80"
+                    className="h-auto w-44 opacity-80"
                   />
                   <nav className="absolute bottom-[22%] left-0 right-0 flex flex-col items-center gap-3">
-                    {[tr.menu.press, tr.menu.contact, tr.menu.privacyPolicy].map((item) => (
+                    {navigation.utilityLinks.map((item) => (
                       <a
-                        key={t(item)}
-                        href="#"
+                        key={`${item.href}-${item.label}`}
+                        href={resolveHref(locale, item.href)}
                         onClick={closeMenu}
-                        className="text-sm text-white/40 hover:text-white transition-colors"
+                        target={item.openInNewTab ? "_blank" : undefined}
+                        rel={item.openInNewTab ? "noopener noreferrer" : undefined}
+                        className="text-sm text-white/40 transition-colors hover:text-white"
                       >
-                        {t(item)}
+                        {item.label}
                       </a>
                     ))}
                   </nav>
                 </div>
 
-                {/* Right column — single-column section lists */}
                 <motion.div
-                  className="flex-1 px-10 lg:px-14 xl:px-20 pt-28 pb-12 overflow-y-auto"
+                  className="flex-1 overflow-y-auto px-10 pb-12 pt-28 lg:px-14 xl:px-20"
                   variants={staggerContainer}
                   initial="hidden"
                   animate="visible"
                 >
-                  {MENU_SECTIONS.map((section, si) => (
-                    <motion.div key={si} variants={fadeUp} className={si > 0 ? "mt-8" : ""}>
+                  {menuSections.map((section, si) => (
+                    <motion.div key={`${section.headline}-${si}`} variants={fadeUp} className={si > 0 ? "mt-8" : ""}>
                       <h3
-                        className="text-[10px] uppercase tracking-[0.3em] font-medium pb-3 mb-1 border-b border-white/10"
+                        className="mb-1 border-b border-white/10 pb-3 text-[10px] font-medium uppercase tracking-[0.3em]"
                         style={{ color: colors.cta }}
                       >
-                        {t(section.headline)}
+                        {section.headline}
                       </h3>
                       <ul>
                         {section.links.map((link) => (
-                          <li key={link.href}>
+                          <li key={`${link.href}-${link.label}`}>
                             <a
                               href={link.href}
+                              target={link.openInNewTab ? "_blank" : undefined}
+                              rel={link.openInNewTab ? "noopener noreferrer" : undefined}
                               onClick={closeMenu}
-                              className="group flex items-center justify-between py-2.5 px-4 -mx-4 rounded-lg border border-transparent hover:border-white/[0.12] transition-all duration-300"
+                              className="group -mx-4 flex items-center justify-between rounded-lg border border-transparent px-4 py-2.5 transition-all duration-300 hover:border-white/[0.12]"
                             >
-                              <span className="text-lg lg:text-xl font-serif text-white/70 group-hover:text-white transition-colors duration-300">
-                                {t(link.label)}
+                              <span className="font-serif text-lg text-white/70 transition-colors duration-300 group-hover:text-white lg:text-xl">
+                                {link.label}
                               </span>
                               <ArrowRight
                                 size={16}
                                 strokeWidth={1.5}
-                                className="text-white/0 group-hover:text-white/50 translate-x-0 group-hover:translate-x-1.5 transition-all duration-300"
+                                className="translate-x-0 text-white/0 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-white/50"
                               />
                             </a>
                           </li>
@@ -502,36 +414,32 @@ export default function FloatingMenu() {
                 </motion.div>
               </div>
 
-              {/* Mobile layout: single column with sections */}
-              <motion.div
-                className="md:hidden px-6 pt-24 pb-12"
-                variants={staggerContainer}
-                initial="hidden"
-                animate="visible"
-              >
-                {MENU_SECTIONS.map((section, si) => (
-                  <motion.div key={si} variants={fadeUp} className={si > 0 ? "mt-8" : ""}>
+              <motion.div className="px-6 pb-12 pt-24 md:hidden" variants={staggerContainer} initial="hidden" animate="visible">
+                {menuSections.map((section, si) => (
+                  <motion.div key={`${section.headline}-${si}`} variants={fadeUp} className={si > 0 ? "mt-8" : ""}>
                     <h3
-                      className="text-[10px] uppercase tracking-[0.3em] font-medium pb-3 mb-1 border-b border-white/10"
+                      className="mb-1 border-b border-white/10 pb-3 text-[10px] font-medium uppercase tracking-[0.3em]"
                       style={{ color: colors.cta }}
                     >
-                      {t(section.headline)}
+                      {section.headline}
                     </h3>
                     <ul>
                       {section.links.map((link) => (
-                        <li key={link.href}>
+                        <li key={`${link.href}-${link.label}`}>
                           <a
                             href={link.href}
+                            target={link.openInNewTab ? "_blank" : undefined}
+                            rel={link.openInNewTab ? "noopener noreferrer" : undefined}
                             onClick={closeMenu}
-                            className="group flex items-center justify-between py-2.5 px-3 -mx-3 rounded-lg border border-transparent hover:border-white/[0.12] transition-all duration-300"
+                            className="group -mx-3 flex items-center justify-between rounded-lg border border-transparent px-3 py-2.5 transition-all duration-300 hover:border-white/[0.12]"
                           >
-                            <span className="text-xl font-serif text-white/70 group-hover:text-white transition-colors duration-300">
-                              {t(link.label)}
+                            <span className="font-serif text-xl text-white/70 transition-colors duration-300 group-hover:text-white">
+                              {link.label}
                             </span>
                             <ArrowRight
                               size={16}
                               strokeWidth={1.5}
-                              className="text-white/0 group-hover:text-white/50 translate-x-0 group-hover:translate-x-1.5 transition-all duration-300"
+                              className="translate-x-0 text-white/0 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-white/50"
                             />
                           </a>
                         </li>
@@ -548,8 +456,6 @@ export default function FloatingMenu() {
   );
 }
 
-/* ── Sub-components ────────────────────────────────── */
-
 function CircleLink({
   href,
   label,
@@ -564,7 +470,7 @@ function CircleLink({
   href: string;
   label: string;
   size?: number;
-  children: React.ReactNode;
+  children: ReactNode;
   color: string;
   borderColor: string;
   hoverBg: string;

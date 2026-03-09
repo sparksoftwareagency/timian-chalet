@@ -1,5 +1,7 @@
-import ClientPage from "./components/ClientPage";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return <ClientPage />;
+import { DEFAULT_SITE_LOCALE } from "./lib/locale";
+
+export default function RootRedirectPage() {
+  redirect(`/${DEFAULT_SITE_LOCALE}`);
 }
