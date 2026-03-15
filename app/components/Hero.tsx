@@ -32,6 +32,7 @@ export default function Hero({ data }: { data: HeroData }) {
   const stickyRef = useRef<HTMLDivElement>(null);
   const videoCellRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
+  const videoElementRef = useRef<HTMLVideoElement>(null);
 
   // On every frame, position the video between fullscreen and
   // the grid cell's *current* viewport rect (which moves as the page scrolls).
@@ -46,7 +47,6 @@ export default function Hero({ data }: { data: HeroData }) {
       if (video && sticky && cell) {
         const s = sticky.getBoundingClientRect();
         const c = cell.getBoundingClientRect();
-
         const tLeft = c.left - s.left;
         const tTop = c.top - s.top;
 
@@ -54,6 +54,7 @@ export default function Hero({ data }: { data: HeroData }) {
         video.style.top = `${p * tTop}px`;
         video.style.width = `${s.width + p * (c.width - s.width)}px`;
         video.style.height = `${s.height + p * (c.height - s.height)}px`;
+
       }
       raf = requestAnimationFrame(sync);
     };
@@ -134,7 +135,9 @@ export default function Hero({ data }: { data: HeroData }) {
           }}
         >
           <video
+            ref={videoElementRef}
             className="absolute inset-0 h-full w-full object-cover"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
             autoPlay
             muted
             loop
