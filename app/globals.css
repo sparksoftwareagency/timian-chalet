@@ -48,6 +48,7 @@ html {
   scroll-behavior: auto;
   overscroll-behavior: none;
   background: var(--background);
+  overflow-x: hidden;
 }
 
 body {

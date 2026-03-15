@@ -1,201 +1,218 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  animate,
-  MotionValue,
-  useAnimation,
-} from "framer-motion";
-import { useT } from "../i18n/LanguageContext";
-import { tr } from "../i18n/translations";
-import RevealText from "./RevealText";  
+import { animate, motion, useMotionValue, useTransform } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-// ==========================================
-// ANIMATION & LAYOUT CONFIGURATION
-// ==========================================
-
-// 1. Collapsed Video Dimensions (Tweak these to easily change the final size/position)
-const COLLAPSED_HEIGHT = "30vh"; // <-- Changed from 45vh to make it less tall
-const COLLAPSED_WIDTH = "46vw";
-const COLLAPSED_TOP = "14vh";    // <-- You may want to adjust this as you change the height
-const COLLAPSED_LEFT = "50vw";
-
-// 2. Scroll Triggers
 const ANIMATION_DURATION = 1.9;
 const TRIGGER_DOWN_DISTANCE = 120;
-const TRIGGER_UP_DISTANCE = 590; 
+const TRIGGER_UP_DISTANCE = 590;
 const SCROLL_JUMP_AMOUNT = 600;
 
 type Phase = "expanded" | "collapsed" | "animating";
 
-export default function Hero() {
+type HeroData = {
+  heroTitle: string;
+  heroSubtitle: string;
+  heroVideoUrl: string;
+  heroSecondaryImage: { url: string; alt: string };
+  heroCraftedLine: string;
+  heroRootedLine: string;
+  heroInNatureLine: string;
+};
+
+const FLUID_HEADING = "clamp(1.5rem, 3vw + 0.75rem, 4.5rem)";
+const MEDIA_ASPECT = "aspect-[5/2]";
+
+export default function Hero({ data }: { data: HeroData }) {
   const progress = useMotionValue(0);
   const [phase, setPhase] = useState<Phase>("expanded");
   const isAnimating = useRef(false);
-  const t = useT();
 
-  const [heroFinished, setHeroFinished] = useState(false);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const videoCellRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLDivElement>(null);
+
+  // On every frame, position the video between fullscreen and
+  // the grid cell's *current* viewport rect (which moves as the page scrolls).
+  useEffect(() => {
+    let raf: number;
+    const sync = () => {
+      const p = progress.get();
+      const video = videoRef.current;
+      const sticky = stickyRef.current;
+      const cell = videoCellRef.current;
+
+      if (video && sticky && cell) {
+        const s = sticky.getBoundingClientRect();
+        const c = cell.getBoundingClientRect();
+
+        const tLeft = c.left - s.left;
+        const tTop = c.top - s.top;
+
+        video.style.left = `${p * tLeft}px`;
+        video.style.top = `${p * tTop}px`;
+        video.style.width = `${s.width + p * (c.width - s.width)}px`;
+        video.style.height = `${s.height + p * (c.height - s.height)}px`;
+      }
+      raf = requestAnimationFrame(sync);
+    };
+    raf = requestAnimationFrame(sync);
+    return () => cancelAnimationFrame(raf);
+  }, [progress]);
 
   const animateTo = useCallback(
     (target: 0 | 1) => {
       if (isAnimating.current) return;
-
       isAnimating.current = true;
       setPhase("animating");
 
       const currentScroll = window.scrollY;
-      // If targeting 1 (shrinking), scroll down 300px from current position.
-      // If targeting 0 (expanding), push them all the way back to the top (0).
-      const targetScroll = target === 1 ? currentScroll + SCROLL_JUMP_AMOUNT : 0;
+      const targetScroll =
+        target === 1 ? currentScroll + SCROLL_JUMP_AMOUNT : 0;
 
-      // 1. Animate the visual shrinking/expanding
       animate(progress, target, {
         duration: ANIMATION_DURATION,
         ease: [0.22, 1, 0.36, 1],
         onComplete: () => {
           isAnimating.current = false;
           setPhase(target === 1 ? "collapsed" : "expanded");
-          if (target === 1) {
-            setHeroFinished(true); // ✅ unlock text animations
-          }
-          if (target === 0) {
-            setHeroFinished(true); // ✅ lock text animations
-          }
         },
       });
 
-      // 2. Animate the window scroll simultaneously
       animate(currentScroll, targetScroll, {
         duration: ANIMATION_DURATION,
         ease: [0.22, 1, 0.36, 1],
-        onUpdate: (latest) => window.scrollTo(0, latest),
+        onUpdate: (v) => window.scrollTo(0, v),
       });
     },
-    [progress]
+    [progress],
   );
 
   useEffect(() => {
     const handleScroll = () => {
       if (isAnimating.current) return;
-
       const scrollY = window.scrollY;
-
-      // Scroll down trigger
-      if (phase === "expanded" && scrollY > TRIGGER_DOWN_DISTANCE) {
+      if (phase === "expanded" && scrollY > TRIGGER_DOWN_DISTANCE)
         animateTo(1);
-      }
-
-      // Scroll up trigger
-      if (phase === "collapsed" && scrollY < TRIGGER_UP_DISTANCE) {
+      if (phase === "collapsed" && scrollY < TRIGGER_UP_DISTANCE)
         animateTo(0);
-      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [phase, animateTo]);
 
+  const contentOpacity = useTransform(progress, [0.4, 1], [0, 1]);
+  const titleOpacity = useTransform(progress, [0, 0.4], [1, 0]);
+
   return (
-    <>
-      {/* The relative wrapper determines how far the user has to scroll 
-        before the video unsticks and scrolls off the screen. 
-        150vh gives enough room for the 300px jump plus some scrolling room.
-      */}
-      <div data-theme="light" style={{ height: "190vh", position: "relative" }}>
-        {/* The sticky container pins the video to the screen until the wrapper ends */}
-        <div style={{ position: "sticky", top: 0, height: "100vh" }}>
-          <HeroVisual progress={progress} />
+    <div data-theme="light" style={{ height: "190vh", position: "relative" }}>
+      {/* Sticky layer — pinned to viewport top while inside the 190vh container */}
+      <div
+        ref={stickyRef}
+        style={{
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          zIndex: 10,
+          pointerEvents: "none",
+        }}
+      >
+        {/* Video overlay — rAF loop sets its position/size */}
+        <div
+          ref={videoRef}
+          data-theme="dark"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            overflow: "hidden",
+            pointerEvents: "auto",
+          }}
+        >
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src={data.heroVideoUrl} type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-black/40" />
+          <motion.div
+            style={{ opacity: titleOpacity }}
+            className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white px-4"
+          >
+            <h1
+              className="font-sans uppercase tracking-[0.25em]"
+              style={{ fontSize: "clamp(2rem, 6vw + 0.5rem, 6rem)" }}
+            >
+              {data.heroTitle}
+            </h1>
+            <p
+              className="mt-4 sm:mt-6 font-sans italic"
+              style={{ fontSize: "clamp(1rem, 1.5vw + 0.5rem, 1.5rem)" }}
+            >
+              {data.heroSubtitle}
+            </p>
+          </motion.div>
         </div>
+      </div>
 
-        <div className="flex items-center pl-40 pt-14" >
-          <RevealText text={t(tr.hero.craftedForEscape)} className="text-8xl" mode="char" enabled={heroFinished}/>
-        </div>
+      {/* Grid content — in normal document flow below the sticky area.
+          Scrolls into the viewport naturally as the page scrolls during animation. */}
+      <motion.div style={{ opacity: contentOpacity }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-6 md:py-10">
+          <div className="flex items-center order-2 md:order-1 py-6 md:py-12">
+            <h2
+              className="font-sans leading-tight"
+              style={{ fontSize: FLUID_HEADING }}
+            >
+              {data.heroCraftedLine}
+            </h2>
+          </div>
 
-        <div className="absolute right-0 flex items-center gap-10 translate-y-10 pr-40 pt-30">
-          {/* ── Hero nature image ── */}
-          {/* Adjust width/height for aspect ratio, objectPosition for cropping */}
-          <div className="relative w-[52vw] h-[30vh] overflow-hidden flex-shrink-0">
+          {/* Empty placeholder — the video in the sticky layer overlays this cell */}
+          <div
+            ref={videoCellRef}
+            className={`order-1 md:order-2 ${MEDIA_ASPECT} md:aspect-auto`}
+          />
+
+          <div
+            className={`relative w-full overflow-hidden order-3 ${MEDIA_ASPECT} md:aspect-auto`}
+          >
             <Image
-              src="/hero-nature.jpg"
-              alt="Nature"
+              src={data.heroSecondaryImage.url}
+              alt={data.heroSecondaryImage.alt}
               fill
               className="object-cover"
               style={{ objectPosition: "50% 75%" }}
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
 
-          <div>
-            <RevealText text={t(tr.hero.rooted)} mode="char" enabled={heroFinished} className="text-8xl"/>
-            <RevealText text={t(tr.hero.inNature)} mode="char" enabled={heroFinished} className="text-8xl"/>
+          <div className="flex items-center order-4 py-6 md:py-12">
+            <div>
+              <h2
+                className="font-sans leading-tight"
+                style={{ fontSize: FLUID_HEADING }}
+              >
+                {data.heroRootedLine}
+              </h2>
+              <h2
+                className="font-sans leading-tight"
+                style={{ fontSize: FLUID_HEADING }}
+              >
+                {data.heroInNatureLine}
+              </h2>
+            </div>
           </div>
         </div>
-
-        <div className="overflow-hidden">
-    </div>  
-
-      </div>
-    </>
-  );
-}
-
-function HeroVisual({ progress }: { progress: MotionValue<number> }) {
-  const t = useT();
-  const width = useTransform(progress, [0, 1], ["100vw", COLLAPSED_WIDTH]);
-  const height = useTransform(progress, [0, 1], ["100vh", COLLAPSED_HEIGHT]);
-  const left = useTransform(progress, [0, 1], ["0vw", COLLAPSED_LEFT]);
-  const top = useTransform(progress, [0, 1], ["0vh", COLLAPSED_TOP]);
-  
-  const opacity = useTransform(progress, [0, 0.4], [1, 0]);
-  const borderFrameOpacity = useTransform(progress, [0.6, 1], [0, 1]);
-
-  return (
-    <motion.section
-      data-theme="dark"
-      style={{
-        position: "absolute",
-        top,
-        left,
-        width,
-        height,
-        zIndex: 50,
-        overflow: "hidden",
-      }}
-    >
-      <VideoBackground />
-
-      <div className="absolute inset-0 bg-black/40" />
-
-      <motion.div
-        style={{ opacity }}
-        className="relative z-10 h-full flex flex-col items-center justify-center text-white text-center"
-      >
-        <h1 className="text-8xl tracking-[0.35em] uppercase font-sans">
-          {t(tr.hero.title)}
-        </h1>
-        <p className="mt-6 text-xl italic font-sans">
-          {t(tr.hero.subtitle)}
-        </p>
       </motion.div>
-    </motion.section>
-  );
-}
-
-function VideoBackground() {
-  return (
-    <div className="absolute inset-0 -z-10">
-      <video
-        className="absolute inset-0 w-full h-full object-cover"
-        autoPlay
-        muted
-        loop
-        playsInline
-      >
-        <source src="/Timian2.mp4" type="video/mp4" />
-      </video>
     </div>
   );
 }
