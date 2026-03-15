@@ -67,7 +67,7 @@ export default async function LocaleLayout({
   return (
     <>
       <FloatingMenu locale={lang} navigation={navigation} settings={settings} />
-      <div className="pt-20 md:pt-24">{children}</div>
+      {children}
       <Footer locale={lang} settings={settings} />
     </>
   );

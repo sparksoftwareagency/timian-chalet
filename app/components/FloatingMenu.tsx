@@ -189,7 +189,11 @@ export default function FloatingMenu({
               onMouseEnter={() => setMenuHover(true)}
               onMouseLeave={() => setMenuHover(false)}
               className="relative flex shrink-0 cursor-pointer items-center justify-center"
-              style={{ borderColor: colors.border, background: colors.primaryBg, color: colors.textPrimary }}
+              style={{
+                borderColor: effectiveTheme === "dark" ? tc.border : colors.border,
+                background: "transparent",
+                color: effectiveTheme === "dark" ? tc.fg : colors.textPrimary,
+              }}
             >
               <motion.span
                 className="pointer-events-none absolute hidden rounded-full md:block"
@@ -245,7 +249,7 @@ export default function FloatingMenu({
               transition={{ duration: 0.4, ease: EASE }}
               style={{ pointerEvents: showLogo ? "auto" : "none" }}
             >
-              <Logo color={colors.textPrimary} />
+              <Logo color={tc.fg} />
             </motion.a>
 
             <motion.div
