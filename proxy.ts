@@ -8,7 +8,7 @@ function hasFileExtension(pathname: string) {
   return lastSegment.includes(".");
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
