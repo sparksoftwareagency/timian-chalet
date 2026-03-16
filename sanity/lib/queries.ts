@@ -3,6 +3,21 @@ import {groq} from 'next-sanity'
 import {client} from './client'
 import {DEFAULT_LANGUAGE, type SiteLanguage} from './languages'
 
+const SANITY_TAGS = {
+  all: 'sanity',
+  siteSettings: 'sanity:siteSettings',
+  navigation: 'sanity:navigation',
+  homePage: 'sanity:homePage',
+  aboutPage: 'sanity:aboutPage',
+  culinaryPage: 'sanity:culinaryPage',
+  roomsPage: 'sanity:roomsPage',
+  room: 'sanity:room',
+} as const
+
+function roomSlugTag(slug: string) {
+  return `${SANITY_TAGS.room}:${slug}`
+}
+
 export type CmsImage = {
   alt: string
   url: string
@@ -314,49 +329,65 @@ const roomSlugsQuery = groq`*[_type == "room" && language == $language]{
   "slug": slug.current
 }`
 
-async function fetchWithFallback<T>(query: string, language: SiteLanguage, params: Record<string, unknown> = {}) {
-  const localized = await client.fetch<T | null>(query, {language, ...params})
+async function fetchWithFallback<T>(
+  query: string,
+  language: SiteLanguage,
+  tags: string[],
+  params: Record<string, unknown> = {},
+) {
+  const queryOptions = {
+    next: {
+      tags: [SANITY_TAGS.all, ...tags],
+    },
+  }
+
+  const localized = await client.fetch<T | null>(query, {language, ...params}, queryOptions)
 
   if (localized || language === DEFAULT_LANGUAGE) {
     return localized
   }
 
-  return client.fetch<T | null>(query, {language: DEFAULT_LANGUAGE, ...params})
+  return client.fetch<T | null>(query, {language: DEFAULT_LANGUAGE, ...params}, queryOptions)
 }
 
 export async function fetchSiteSettings(language: SiteLanguage) {
-  return fetchWithFallback<SiteSettingsData>(siteSettingsQuery, language)
+  return fetchWithFallback<SiteSettingsData>(siteSettingsQuery, language, [SANITY_TAGS.siteSettings])
 }
 
 export async function fetchNavigation(language: SiteLanguage) {
-  return fetchWithFallback<NavigationData>(navigationQuery, language)
+  return fetchWithFallback<NavigationData>(navigationQuery, language, [SANITY_TAGS.navigation])
 }
 
 export async function fetchHomePage(language: SiteLanguage) {
-  return fetchWithFallback<HomePageData>(homePageQuery, language)
+  return fetchWithFallback<HomePageData>(homePageQuery, language, [SANITY_TAGS.homePage])
 }
 
 export async function fetchAboutPage(language: SiteLanguage) {
-  return fetchWithFallback<AboutPageData>(aboutPageQuery, language)
+  return fetchWithFallback<AboutPageData>(aboutPageQuery, language, [SANITY_TAGS.aboutPage])
 }
 
 export async function fetchCulinaryPage(language: SiteLanguage) {
-  return fetchWithFallback<CulinaryPageData>(culinaryPageQuery, language)
+  return fetchWithFallback<CulinaryPageData>(culinaryPageQuery, language, [SANITY_TAGS.culinaryPage])
 }
 
 export async function fetchRoomsPage(language: SiteLanguage) {
-  return fetchWithFallback<RoomsPageData>(roomsPageQuery, language)
+  return fetchWithFallback<RoomsPageData>(roomsPageQuery, language, [SANITY_TAGS.roomsPage])
 }
 
 export async function fetchRooms(language: SiteLanguage) {
-  return (await fetchWithFallback<RoomCardData[]>(roomsQuery, language)) ?? []
+  return (await fetchWithFallback<RoomCardData[]>(roomsQuery, language, [SANITY_TAGS.room])) ?? []
 }
 
 export async function fetchRoom(language: SiteLanguage, slug: string) {
-  return fetchWithFallback<RoomPageData>(roomQuery, language, {slug})
+  return fetchWithFallback<RoomPageData>(
+    roomQuery,
+    language,
+    [SANITY_TAGS.room, roomSlugTag(slug)],
+    {slug},
+  )
 }
 
 export async function fetchRoomSlugs(language: SiteLanguage) {
-  const rows = await fetchWithFallback<Array<{slug: string}>>(roomSlugsQuery, language)
+  const rows = await fetchWithFallback<Array<{slug: string}>>(roomSlugsQuery, language, [SANITY_TAGS.room])
   return (rows ?? []).map((row) => row.slug)
 }
