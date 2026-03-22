@@ -50,9 +50,21 @@ function useRevealOnScroll() {
 function useScrollSnapJump() {
   const hasJumped = useRef(false);
   const isAnimating = useRef(false);
+  const canTriggerJump = useRef(false);
 
   useEffect(() => {
+    // Only enable the jump behavior when the user is at the very top.
+    // This prevents auto-jump after refresh/restore in the middle of the page.
+    canTriggerJump.current = window.scrollY <= TRIGGER_DOWN_DISTANCE;
+
     const onScroll = () => {
+      if (!canTriggerJump.current) {
+        if (window.scrollY <= TRIGGER_DOWN_DISTANCE) {
+          canTriggerJump.current = true;
+        }
+        return;
+      }
+
       if (hasJumped.current || isAnimating.current) {
         return;
       }
@@ -190,8 +202,17 @@ export default function AboutClientPage({
         </div>
       </section>
 
-      <section className="relative h-[50vh] w-full overflow-hidden">
-        <Image src={data.animalsBreakImage.url} alt={data.animalsBreakImage.alt} fill className="object-cover" />
+      <section data-theme="light">
+        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
+          <Image src={data.animalsBreakImage.url} alt={data.animalsBreakImage.alt} fill className="object-cover" sizes="100vw" />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
+            }}
+          />
+        </div>
       </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
