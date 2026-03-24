@@ -15,6 +15,7 @@ import {roomsPageType} from './roomsPage'
 import {siteSettingsType} from './siteSettings'
 import {statItem} from './statItem'
 import {teaserSection} from './teaserSection'
+import {wellnessPageType} from './wellnessPage'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -31,6 +32,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     aboutPageType,
     culinaryPageType,
     experiencesPageType,
+    wellnessPageType,
     roomsPageType,
     roomType,
   ],

@@ -11,6 +11,7 @@ const SANITY_TAGS = {
   aboutPage: 'sanity:aboutPage',
   culinaryPage: 'sanity:culinaryPage',
   experiencesPage: 'sanity:experiencesPage',
+  wellnessPage: 'sanity:wellnessPage',
   roomsPage: 'sanity:roomsPage',
   room: 'sanity:room',
 } as const
@@ -171,6 +172,32 @@ export type RoomsPageData = {
   bookThisRoomLabel: string
   galleryTitle: string
   discoverSpaceLabel: string
+}
+
+export type WellnessPageData = {
+  seoTitle?: string
+  seoDescription?: string
+  heroTitle: string
+  heroSubtitle: string
+  heroImage: CmsImage
+  introEyebrow: string
+  introTitle: string
+  introParagraphs: string[]
+  introImage: CmsImage
+  breakImage: CmsImage
+  highlightEyebrow: string
+  highlightTitle: string
+  highlightParagraphs: string[]
+  highlightImage: CmsImage
+  quote: string
+  featuresEyebrow: string
+  featuresTitle: string
+  features: Array<{
+    _key: string
+    title: string
+    description: string
+    image: CmsImage
+  }>
 }
 
 export type RoomCardData = {
@@ -334,6 +361,32 @@ const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $l
   closingQuote
 }`
 
+const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $language][0]{
+  seoTitle,
+  seoDescription,
+  heroTitle,
+  heroSubtitle,
+  heroImage ${imageProjection},
+  introEyebrow,
+  introTitle,
+  introParagraphs[],
+  introImage ${imageProjection},
+  breakImage ${imageProjection},
+  highlightEyebrow,
+  highlightTitle,
+  highlightParagraphs[],
+  highlightImage ${imageProjection},
+  quote,
+  featuresEyebrow,
+  featuresTitle,
+  features[]{
+    _key,
+    title,
+    description,
+    image ${imageProjection}
+  }
+}`
+
 const roomsPageQuery = groq`*[_type == "roomsPage" && language == $language][0]{
   seoTitle,
   seoDescription,
@@ -413,6 +466,10 @@ export async function fetchCulinaryPage(language: SiteLanguage) {
 
 export async function fetchExperiencesPage(language: SiteLanguage) {
   return fetchWithFallback<ExperiencesPageData>(experiencesPageQuery, language, [SANITY_TAGS.experiencesPage])
+}
+
+export async function fetchWellnessPage(language: SiteLanguage) {
+  return fetchWithFallback<WellnessPageData>(wellnessPageQuery, language, [SANITY_TAGS.wellnessPage])
 }
 
 export async function fetchRoomsPage(language: SiteLanguage) {
