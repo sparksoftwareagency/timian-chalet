@@ -2,6 +2,8 @@ import {type SchemaTypeDefinition} from 'sanity'
 
 import {aboutPageType} from './aboutPage'
 import {culinaryPageType} from './culinaryPage'
+import {experienceItem} from './experienceItem'
+import {experiencesPageType} from './experiencesPage'
 import {homePageType} from './homePage'
 import {imageBlock} from './imageBlock'
 import {linkObject} from './linkObject'
@@ -20,6 +22,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     imageBlock,
     navGroup,
     statItem,
+    experienceItem,
     teaserSection,
     roomFloorItem,
     siteSettingsType,
@@ -27,6 +30,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     homePageType,
     aboutPageType,
     culinaryPageType,
+    experiencesPageType,
     roomsPageType,
     roomType,
   ],
