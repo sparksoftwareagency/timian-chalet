@@ -12,6 +12,7 @@ import {navigationType} from './navigation'
 import {roomFloorItem} from './roomFloorItem'
 import {roomType} from './room'
 import {roomsPageType} from './roomsPage'
+import {restaurantPageType} from './restaurantPage'
 import {siteSettingsType} from './siteSettings'
 import {statItem} from './statItem'
 import {teaserSection} from './teaserSection'
@@ -30,6 +31,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     navigationType,
     homePageType,
     aboutPageType,
+    restaurantPageType,
     culinaryPageType,
     experiencesPageType,
     wellnessPageType,

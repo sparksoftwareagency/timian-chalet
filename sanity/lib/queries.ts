@@ -9,6 +9,7 @@ const SANITY_TAGS = {
   navigation: 'sanity:navigation',
   homePage: 'sanity:homePage',
   aboutPage: 'sanity:aboutPage',
+  restaurantPage: 'sanity:restaurantPage',
   culinaryPage: 'sanity:culinaryPage',
   experiencesPage: 'sanity:experiencesPage',
   wellnessPage: 'sanity:wellnessPage',
@@ -139,6 +140,33 @@ export type CulinaryPageData = {
   heroTitle: string
   heroSubtitle: string
   heroImage: CmsImage
+}
+
+export type RestaurantPageData = {
+  seoTitle?: string
+  seoDescription?: string
+  heroTitle: string
+  heroSubtitle: string
+  heroImage: CmsImage
+  originEyebrow: string
+  originTitle: string
+  originParagraphs: string[]
+  originPrimaryImage: CmsImage
+  ingredientsBreakImage: CmsImage
+  spiritsEyebrow: string
+  spiritsTitle: string
+  spiritsParagraphs: string[]
+  spiritsImage: CmsImage
+  quote: string
+  farmEyebrow: string
+  farmTitle: string
+  farmParagraphs: string[]
+  farmImages: CmsImage[]
+  atmosphereImage: CmsImage
+  atmosphereEyebrow: string
+  atmosphereTitle: string
+  atmosphereIntro: string
+  highlights: Array<{title: string; description: string}>
 }
 
 export type ExperiencesPageData = {
@@ -333,6 +361,36 @@ const aboutPageQuery = groq`*[_type == "aboutPage" && language == $language][0]{
   roomsLink ${linkProjection}
 }`
 
+const restaurantPageQuery = groq`*[_type == "restaurantPage" && language == $language][0]{
+  seoTitle,
+  seoDescription,
+  heroTitle,
+  heroSubtitle,
+  heroImage ${imageProjection},
+  originEyebrow,
+  originTitle,
+  originParagraphs[],
+  originPrimaryImage ${imageProjection},
+  ingredientsBreakImage ${imageProjection},
+  spiritsEyebrow,
+  spiritsTitle,
+  spiritsParagraphs[],
+  spiritsImage ${imageProjection},
+  quote,
+  farmEyebrow,
+  farmTitle,
+  farmParagraphs[],
+  farmImages[] ${imageProjection},
+  atmosphereImage ${imageProjection},
+  atmosphereEyebrow,
+  atmosphereTitle,
+  atmosphereIntro,
+  highlights[]{
+    title,
+    description
+  }
+}`
+
 const culinaryPageQuery = groq`*[_type == "culinaryPage" && language == $language][0]{
   seoTitle,
   seoDescription,
@@ -458,6 +516,10 @@ export async function fetchHomePage(language: SiteLanguage) {
 
 export async function fetchAboutPage(language: SiteLanguage) {
   return fetchWithFallback<AboutPageData>(aboutPageQuery, language, [SANITY_TAGS.aboutPage])
+}
+
+export async function fetchRestaurantPage(language: SiteLanguage) {
+  return fetchWithFallback<RestaurantPageData>(restaurantPageQuery, language, [SANITY_TAGS.restaurantPage])
 }
 
 export async function fetchCulinaryPage(language: SiteLanguage) {

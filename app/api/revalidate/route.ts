@@ -54,6 +54,10 @@ function revalidateTypePaths(type?: string, slug?: string | null) {
       revalidatePath(`/${locale}/about`)
     }
 
+    if (type === 'restaurantPage') {
+      revalidatePath(`/${locale}/restaurant`)
+    }
+
     if (type === 'culinaryPage') {
       revalidatePath(`/${locale}/culinary`)
     }
