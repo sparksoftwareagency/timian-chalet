@@ -9,7 +9,11 @@ const SANITY_TAGS = {
   navigation: 'sanity:navigation',
   homePage: 'sanity:homePage',
   aboutPage: 'sanity:aboutPage',
+  restaurantPage: 'sanity:restaurantPage',
   culinaryPage: 'sanity:culinaryPage',
+  experiencesPage: 'sanity:experiencesPage',
+  wellnessPage: 'sanity:wellnessPage',
+  localCheesePage: 'sanity:localCheesePage',
   roomsPage: 'sanity:roomsPage',
   room: 'sanity:room',
 } as const
@@ -139,6 +143,53 @@ export type CulinaryPageData = {
   heroImage: CmsImage
 }
 
+export type RestaurantPageData = {
+  seoTitle?: string
+  seoDescription?: string
+  heroTitle: string
+  heroSubtitle: string
+  heroImage: CmsImage
+  originEyebrow: string
+  originTitle: string
+  originParagraphs: string[]
+  originPrimaryImage: CmsImage
+  ingredientsBreakImage: CmsImage
+  spiritsEyebrow: string
+  spiritsTitle: string
+  spiritsParagraphs: string[]
+  spiritsImage: CmsImage
+  quote: string
+  farmEyebrow: string
+  farmTitle: string
+  farmParagraphs: string[]
+  farmImages: CmsImage[]
+  atmosphereImage: CmsImage
+  atmosphereEyebrow: string
+  atmosphereTitle: string
+  atmosphereIntro: string
+  highlights: Array<{title: string; description: string}>
+}
+
+export type ExperiencesPageData = {
+  seoTitle?: string
+  seoDescription?: string
+  heroTitle: string
+  heroSubtitle: string
+  heroImage: CmsImage
+  introEyebrow: string
+  introTitle: string
+  introParagraphs: string[]
+  activitiesEyebrow: string
+  activitiesTitle: string
+  activities: Array<{
+    _key: string
+    title: string
+    description: string
+    image: CmsImage
+  }>
+  closingQuote: string
+}
+
 export type RoomsPageData = {
   seoTitle?: string
   seoDescription?: string
@@ -150,6 +201,65 @@ export type RoomsPageData = {
   bookThisRoomLabel: string
   galleryTitle: string
   discoverSpaceLabel: string
+}
+
+export type WellnessPageData = {
+  seoTitle?: string
+  seoDescription?: string
+  heroTitle: string
+  heroSubtitle: string
+  heroImage: CmsImage
+  introEyebrow: string
+  introTitle: string
+  introParagraphs: string[]
+  introImage: CmsImage
+  breakImage: CmsImage
+  highlightEyebrow: string
+  highlightTitle: string
+  highlightParagraphs: string[]
+  highlightImage: CmsImage
+  quote: string
+  featuresEyebrow: string
+  featuresTitle: string
+  features: Array<{
+    _key: string
+    title: string
+    description: string
+    image: CmsImage
+  }>
+}
+
+export type LocalCheesePageData = {
+  seoTitle?: string
+  seoDescription?: string
+  heroTitle: string
+  heroSubtitle: string
+  heroImage: CmsImage
+  legacyEyebrow: string
+  legacyTitle: string
+  legacyParagraphs: string[]
+  legacyImage: CmsImage
+  cellarBreakImage: CmsImage
+  signatureEyebrow: string
+  signatureTitle: string
+  signatureParagraphs: string[]
+  signatureImage: CmsImage
+  quote: string
+  collectionEyebrow: string
+  collectionTitle: string
+  collections: Array<{
+    _key: string
+    title: string
+    milk: string
+    experience: string
+    variations: string
+    pairing: string
+    image: CmsImage
+  }>
+  seasonalityEyebrow: string
+  seasonalityTitle: string
+  seasonalityIntro: string
+  seasonalityNotes: string[]
 }
 
 export type RoomCardData = {
@@ -285,12 +395,121 @@ const aboutPageQuery = groq`*[_type == "aboutPage" && language == $language][0]{
   roomsLink ${linkProjection}
 }`
 
+const restaurantPageQuery = groq`*[_type == "restaurantPage" && language == $language][0]{
+  seoTitle,
+  seoDescription,
+  heroTitle,
+  heroSubtitle,
+  heroImage ${imageProjection},
+  originEyebrow,
+  originTitle,
+  originParagraphs[],
+  originPrimaryImage ${imageProjection},
+  ingredientsBreakImage ${imageProjection},
+  spiritsEyebrow,
+  spiritsTitle,
+  spiritsParagraphs[],
+  spiritsImage ${imageProjection},
+  quote,
+  farmEyebrow,
+  farmTitle,
+  farmParagraphs[],
+  farmImages[] ${imageProjection},
+  atmosphereImage ${imageProjection},
+  atmosphereEyebrow,
+  atmosphereTitle,
+  atmosphereIntro,
+  highlights[]{
+    title,
+    description
+  }
+}`
+
 const culinaryPageQuery = groq`*[_type == "culinaryPage" && language == $language][0]{
   seoTitle,
   seoDescription,
   heroTitle,
   heroSubtitle,
   heroImage ${imageProjection}
+}`
+
+const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $language][0]{
+  seoTitle,
+  seoDescription,
+  heroTitle,
+  heroSubtitle,
+  heroImage ${imageProjection},
+  introEyebrow,
+  introTitle,
+  introParagraphs[],
+  activitiesEyebrow,
+  activitiesTitle,
+  activities[]{
+    _key,
+    title,
+    description,
+    image ${imageProjection}
+  },
+  closingQuote
+}`
+
+const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $language][0]{
+  seoTitle,
+  seoDescription,
+  heroTitle,
+  heroSubtitle,
+  heroImage ${imageProjection},
+  introEyebrow,
+  introTitle,
+  introParagraphs[],
+  introImage ${imageProjection},
+  breakImage ${imageProjection},
+  highlightEyebrow,
+  highlightTitle,
+  highlightParagraphs[],
+  highlightImage ${imageProjection},
+  quote,
+  featuresEyebrow,
+  featuresTitle,
+  features[]{
+    _key,
+    title,
+    description,
+    image ${imageProjection}
+  }
+}`
+
+const localCheesePageQuery = groq`*[_type == "localCheesePage" && language == $language][0]{
+  seoTitle,
+  seoDescription,
+  heroTitle,
+  heroSubtitle,
+  heroImage ${imageProjection},
+  legacyEyebrow,
+  legacyTitle,
+  legacyParagraphs[],
+  legacyImage ${imageProjection},
+  cellarBreakImage ${imageProjection},
+  signatureEyebrow,
+  signatureTitle,
+  signatureParagraphs[],
+  signatureImage ${imageProjection},
+  quote,
+  collectionEyebrow,
+  collectionTitle,
+  collections[]{
+    _key,
+    title,
+    milk,
+    experience,
+    variations,
+    pairing,
+    image ${imageProjection}
+  },
+  seasonalityEyebrow,
+  seasonalityTitle,
+  seasonalityIntro,
+  seasonalityNotes[]
 }`
 
 const roomsPageQuery = groq`*[_type == "roomsPage" && language == $language][0]{
@@ -366,8 +585,24 @@ export async function fetchAboutPage(language: SiteLanguage) {
   return fetchWithFallback<AboutPageData>(aboutPageQuery, language, [SANITY_TAGS.aboutPage])
 }
 
+export async function fetchRestaurantPage(language: SiteLanguage) {
+  return fetchWithFallback<RestaurantPageData>(restaurantPageQuery, language, [SANITY_TAGS.restaurantPage])
+}
+
 export async function fetchCulinaryPage(language: SiteLanguage) {
   return fetchWithFallback<CulinaryPageData>(culinaryPageQuery, language, [SANITY_TAGS.culinaryPage])
+}
+
+export async function fetchExperiencesPage(language: SiteLanguage) {
+  return fetchWithFallback<ExperiencesPageData>(experiencesPageQuery, language, [SANITY_TAGS.experiencesPage])
+}
+
+export async function fetchWellnessPage(language: SiteLanguage) {
+  return fetchWithFallback<WellnessPageData>(wellnessPageQuery, language, [SANITY_TAGS.wellnessPage])
+}
+
+export async function fetchLocalCheesePage(language: SiteLanguage) {
+  return fetchWithFallback<LocalCheesePageData>(localCheesePageQuery, language, [SANITY_TAGS.localCheesePage])
 }
 
 export async function fetchRoomsPage(language: SiteLanguage) {

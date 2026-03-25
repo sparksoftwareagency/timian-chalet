@@ -8,7 +8,11 @@ export const localizedSchemaTypes = [
   'navigation',
   'homePage',
   'aboutPage',
+  'restaurantPage',
   'culinaryPage',
+  'experiencesPage',
+  'wellnessPage',
+  'localCheesePage',
   'roomsPage',
   'room',
 ] as const

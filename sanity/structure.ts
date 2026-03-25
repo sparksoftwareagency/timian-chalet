@@ -9,7 +9,11 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
       S.documentTypeListItem('homePage').title('Home page'),
       S.documentTypeListItem('aboutPage').title('About page'),
+      S.documentTypeListItem('restaurantPage').title('Restaurant page'),
       S.documentTypeListItem('culinaryPage').title('Culinary page'),
+      S.documentTypeListItem('experiencesPage').title('Experiences page'),
+      S.documentTypeListItem('wellnessPage').title('Wellness page'),
+      S.documentTypeListItem('localCheesePage').title('Local cheese page'),
       S.documentTypeListItem('roomsPage').title('Rooms page'),
       S.documentTypeListItem('room').title('Rooms'),
     ])

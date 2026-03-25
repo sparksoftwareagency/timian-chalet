@@ -5,9 +5,9 @@ import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const ANIMATION_DURATION = 1.9;
-const TRIGGER_DOWN_DISTANCE = 120;
-const TRIGGER_UP_DISTANCE = 590;
-const SCROLL_JUMP_AMOUNT = 600;
+const TRIGGER_DOWN_DISTANCE = 1;
+const TRIGGER_UP_DISTANCE = 890;
+const SCROLL_JUMP_AMOUNT = 900;
 
 type Phase = "expanded" | "collapsed" | "animating";
 

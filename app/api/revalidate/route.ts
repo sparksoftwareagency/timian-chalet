@@ -54,8 +54,20 @@ function revalidateTypePaths(type?: string, slug?: string | null) {
       revalidatePath(`/${locale}/about`)
     }
 
+    if (type === 'restaurantPage') {
+      revalidatePath(`/${locale}/restaurant`)
+    }
+
     if (type === 'culinaryPage') {
       revalidatePath(`/${locale}/culinary`)
+    }
+
+    if (type === 'wellnessPage') {
+      revalidatePath(`/${locale}/wellness`)
+    }
+
+    if (type === 'localCheesePage') {
+      revalidatePath(`/${locale}/local-cheese`)
     }
 
     if (type === 'roomsPage' || type === 'room') {

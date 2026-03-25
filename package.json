@@ -9,16 +9,17 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@sanity/document-internationalization": "^4.1.1",
+    "@sanity/document-internationalization": "^6.0.5",
     "@sanity/image-url": "^1.2.0",
-    "@sanity/vision": "^4.22.0",
+    "@sanity/vision": "^5.18.0",
     "framer-motion": "^12.29.2",
     "lucide-react": "^0.574.0",
     "next": "^16.1.6",
-    "next-sanity": "^11.6.12",
+    "next-sanity": "^12.1.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "sanity": "^4.22.0",
+    "sanity": "^5.18.0",
+    "sanity-plugin-internationalized-array": "^5.0.5",
     "styled-components": "^6.3.11"
   },
   "devDependencies": {

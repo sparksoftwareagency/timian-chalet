@@ -224,7 +224,7 @@ export default function FloatingMenu({
                       opacity: menuOpen && i === 1 ? 0 : 1,
                     }}
                     transition={{
-                      width: { duration: 0.5, delay: 4.3 + delay, ease: EASE },
+                      width: { duration: 0.5, delay, ease: EASE },
                       rotate: { duration: 0.35, ease: EASE },
                       y: { duration: 0.35, ease: EASE },
                       opacity: { duration: 0.2 },
@@ -399,9 +399,9 @@ export default function FloatingMenu({
                               target={link.openInNewTab ? "_blank" : undefined}
                               rel={link.openInNewTab ? "noopener noreferrer" : undefined}
                               onClick={closeMenu}
-                              className="group -mx-4 flex items-center justify-between rounded-lg border border-transparent px-4 py-2.5 transition-all duration-300 hover:border-white/[0.12]"
+                              className="group -mx-4 flex items-center justify-between rounded-lg border border-transparent px-5 py-3.5 transition-all duration-300 hover:border-white/[0.12]"
                             >
-                              <span className="font-serif text-lg text-white/70 transition-colors duration-300 group-hover:text-white lg:text-xl">
+                              <span className="font-serif text-xl text-white/70 transition-colors duration-300 group-hover:text-white lg:text-2xl">
                                 {link.label}
                               </span>
                               <ArrowRight
@@ -435,9 +435,9 @@ export default function FloatingMenu({
                             target={link.openInNewTab ? "_blank" : undefined}
                             rel={link.openInNewTab ? "noopener noreferrer" : undefined}
                             onClick={closeMenu}
-                            className="group -mx-3 flex items-center justify-between rounded-lg border border-transparent px-3 py-2.5 transition-all duration-300 hover:border-white/[0.12]"
+                            className="group -mx-3 flex items-center justify-between rounded-lg border border-transparent px-4 py-3 transition-all duration-300 hover:border-white/[0.12]"
                           >
-                            <span className="font-serif text-xl text-white/70 transition-colors duration-300 group-hover:text-white">
+                            <span className="font-serif text-2xl text-white/70 transition-colors duration-300 group-hover:text-white">
                               {link.label}
                             </span>
                             <ArrowRight
