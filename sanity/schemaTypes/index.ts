@@ -7,6 +7,8 @@ import {experiencesPageType} from './experiencesPage'
 import {homePageType} from './homePage'
 import {imageBlock} from './imageBlock'
 import {linkObject} from './linkObject'
+import {localCheeseItem} from './localCheeseItem'
+import {localCheesePageType} from './localCheesePage'
 import {navGroup} from './navGroup'
 import {navigationType} from './navigation'
 import {roomFloorItem} from './roomFloorItem'
@@ -22,6 +24,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
     linkObject,
     imageBlock,
+    localCheeseItem,
     navGroup,
     statItem,
     experienceItem,
@@ -35,6 +38,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     culinaryPageType,
     experiencesPageType,
     wellnessPageType,
+    localCheesePageType,
     roomsPageType,
     roomType,
   ],
