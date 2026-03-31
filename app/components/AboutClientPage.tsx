@@ -5,12 +5,15 @@ import Link from "next/link";
 import { animate } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 
+import {
+  HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
+  heroScrollStepPx,
+} from "@/app/lib/heroScrollStep";
 import { localizeHref, type SiteLocale } from "@/app/lib/locale";
 import { colors } from "@/app/theme/colors";
 import type { AboutPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
-const SCROLL_JUMP_AMOUNT = 900;
 const JUMP_DURATION = 1.9;
 
 function useRevealOnScroll() {
@@ -77,7 +80,8 @@ function useScrollSnapJump() {
       hasJumped.current = true;
 
       const currentScroll = window.scrollY;
-      const targetScroll = currentScroll + SCROLL_JUMP_AMOUNT;
+      const targetScroll =
+        currentScroll + heroScrollStepPx(HERO_SCROLL_VIEWPORT_MULT_SUBPAGE);
 
       animate(currentScroll, targetScroll, {
         duration: JUMP_DURATION,
