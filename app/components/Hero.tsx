@@ -4,10 +4,22 @@ import Image from "next/image";
 import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import {
+  HERO_SCROLL_VIEWPORT_MULT_LANDING,
+  heroScrollStepPx,
+} from "@/app/lib/heroScrollStep";
+
 const ANIMATION_DURATION = 1.9;
 const TRIGGER_DOWN_DISTANCE = 1;
-const TRIGGER_UP_DISTANCE = 890;
-const SCROLL_JUMP_AMOUNT = 900;
+/** Shrink the “collapsed” scroll threshold slightly below the snap distance to avoid expand/collapse thrashing. */
+const TRIGGER_UP_OFFSET = 10;
+
+function triggerUpThreshold(): number {
+  return Math.max(
+    TRIGGER_DOWN_DISTANCE,
+    heroScrollStepPx(HERO_SCROLL_VIEWPORT_MULT_LANDING) - TRIGGER_UP_OFFSET,
+  );
+}
 
 type Phase = "expanded" | "collapsed" | "animating";
 
@@ -70,7 +82,9 @@ export default function Hero({ data }: { data: HeroData }) {
 
       const currentScroll = window.scrollY;
       const targetScroll =
-        target === 1 ? currentScroll + SCROLL_JUMP_AMOUNT : 0;
+        target === 1
+          ? currentScroll + heroScrollStepPx(HERO_SCROLL_VIEWPORT_MULT_LANDING)
+          : 0;
 
       animate(progress, target, {
         duration: ANIMATION_DURATION,
@@ -96,7 +110,7 @@ export default function Hero({ data }: { data: HeroData }) {
       const scrollY = window.scrollY;
       if (phase === "expanded" && scrollY > TRIGGER_DOWN_DISTANCE)
         animateTo(1);
-      if (phase === "collapsed" && scrollY < TRIGGER_UP_DISTANCE)
+      if (phase === "collapsed" && scrollY < triggerUpThreshold())
         animateTo(0);
     };
 
