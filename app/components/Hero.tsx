@@ -8,6 +8,7 @@ import {
   HERO_SCROLL_VIEWPORT_MULT_LANDING,
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
+import { pageShell } from "@/app/theme/pageShell";
 
 const ANIMATION_DURATION = 1.9;
 const TRIGGER_DOWN_DISTANCE = 1;
@@ -183,7 +184,7 @@ export default function Hero({ data }: { data: HeroData }) {
       {/* Grid content — in normal document flow below the sticky area.
           Scrolls into the viewport naturally as the page scrolls during animation. */}
       <motion.div style={{ opacity: contentOpacity }}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-6 md:py-10">
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-6 md:py-10`}>
           <div className="flex items-center order-2 md:order-1 py-6 md:py-12">
             <h2
               className="font-sans leading-tight"

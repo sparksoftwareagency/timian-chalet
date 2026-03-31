@@ -46,6 +46,21 @@ export type CmsTeaserSection = {
   image: CmsImage
 }
 
+export type CmsHomeExperienceCard = {
+  _key: string
+  title: string
+  description: string
+  link: CmsLink
+  image: CmsImage
+}
+
+export type CmsHomeExperiencesBand = {
+  eyebrow: string
+  title: string
+  description: string
+  cards: CmsHomeExperienceCard[]
+}
+
 export type SiteSettingsData = {
   siteTitle: string
   siteDescription: string
@@ -103,7 +118,7 @@ export type HomePageData = {
   culinaryDividerImage: CmsImage
   culinarySection: CmsTeaserSection
   experiencesDividerImage: CmsImage
-  experiencesSection: CmsTeaserSection
+  experiencesBand: CmsHomeExperiencesBand
 }
 
 export type AboutPageData = {
@@ -300,6 +315,19 @@ const teaserProjection = groq`{
   image ${imageProjection}
 }`
 
+const homeExperiencesBandProjection = groq`{
+  eyebrow,
+  title,
+  description,
+  cards[]{
+    _key,
+    title,
+    description,
+    link ${linkProjection},
+    image ${imageProjection}
+  }
+}`
+
 const siteSettingsQuery = groq`*[_type == "siteSettings" && language == $language][0]{
   siteTitle,
   siteDescription,
@@ -360,7 +388,7 @@ const homePageQuery = groq`*[_type == "homePage" && language == $language][0]{
   culinaryDividerImage ${imageProjection},
   culinarySection ${teaserProjection},
   experiencesDividerImage ${imageProjection},
-  experiencesSection ${teaserProjection}
+  experiencesBand ${homeExperiencesBandProjection}
 }`
 
 const aboutPageQuery = groq`*[_type == "aboutPage" && language == $language][0]{

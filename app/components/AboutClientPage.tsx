@@ -11,6 +11,7 @@ import {
 } from "@/app/lib/heroScrollStep";
 import { localizeHref, type SiteLocale } from "@/app/lib/locale";
 import { colors } from "@/app/theme/colors";
+import { pageGutterX, pageShell } from "@/app/theme/pageShell";
 import type { AboutPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
@@ -174,7 +175,7 @@ export default function AboutClientPage({
       <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(0)}
-          className="reveal-section mx-auto max-w-7xl px-10 py-20 sm:px-12 sm:py-28 lg:px-16 lg:py-32"
+          className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="mb-16 text-center flash-on-reveal">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
@@ -222,7 +223,7 @@ export default function AboutClientPage({
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(1)}
-          className="reveal-section mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-10 py-20 sm:px-12 sm:py-28 lg:grid-cols-12 lg:gap-14 lg:px-16 lg:py-32"
+          className={`reveal-section ${pageShell} grid grid-cols-1 items-center gap-10 py-20 sm:py-28 lg:grid-cols-12 lg:gap-14 lg:py-32`}
         >
           <div className="order-2 lg:order-1 lg:col-span-6">
             <div className="relative aspect-[3/4] w-full max-h-[550px] overflow-hidden rounded-lg shadow-xl">
@@ -251,7 +252,7 @@ export default function AboutClientPage({
       </section>
 
       <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
-        <div ref={addRef(2)} className="mx-auto max-w-4xl px-10 py-20 sm:px-12 sm:py-28 lg:px-16">
+        <div ref={addRef(2)} className={`mx-auto max-w-4xl ${pageGutterX} py-20 sm:py-28`}>
           <blockquote className="reveal-quote font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
             &ldquo;{data.quote}&rdquo;
           </blockquote>
@@ -261,7 +262,7 @@ export default function AboutClientPage({
       <section style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(3)}
-          className="reveal-section mx-auto max-w-7xl px-10 py-20 sm:px-12 sm:py-28 lg:px-16 lg:py-32"
+          className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="mb-16 text-center">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
@@ -290,7 +291,7 @@ export default function AboutClientPage({
         <div className="relative h-[35vh] w-full overflow-hidden">
           <Image src={data.roomsImage.url} alt={data.roomsImage.alt} fill className="object-cover" />
         </div>
-        <div className="mx-auto max-w-7xl px-10 py-20 sm:px-12 sm:py-28 lg:px-16 lg:py-32">
+        <div className={`${pageShell} py-20 sm:py-28 lg:py-32`}>
           <div className="mb-6 text-center">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.roomsEyebrow}

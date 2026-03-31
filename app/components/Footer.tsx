@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { localizeHref, type SiteLocale } from "@/app/lib/locale";
 import { colors } from "@/app/theme/colors";
+import { pageShell } from "@/app/theme/pageShell";
 import type { SiteSettingsData } from "@/sanity/lib/queries";
 
 export default function Footer({
@@ -19,7 +20,7 @@ export default function Footer({
 
   return (
     <footer className="w-full" style={{ backgroundColor: colors.primaryBg }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className={`${pageShell} py-12`}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div>
@@ -129,7 +130,7 @@ export default function Footer({
       </div>
 
       <div className="border-t" style={{ borderColor: colors.border }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className={`${pageShell} py-6`}>
           <div className="flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
             <div className="text-sm" style={{ color: colors.textSecondary }}>
               {settings.copyright}

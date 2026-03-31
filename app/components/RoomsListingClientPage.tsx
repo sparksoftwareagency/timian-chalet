@@ -11,6 +11,7 @@ import {
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
 import { colors } from "@/app/theme/colors";
+import { pageShell } from "@/app/theme/pageShell";
 import type { RoomCardData, RoomsPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
@@ -164,7 +165,7 @@ export default function RoomsListingClientPage({ lang, page, rooms }: Props) {
         className="relative flex min-h-[70vh] w-full items-center justify-center"
         style={{ backgroundColor: colors.textPrimary }}
       >
-        <div className="mx-auto w-full max-w-7xl px-6 py-32 sm:px-10 sm:py-40 lg:px-16">
+        <div className={`${pageShell} py-32 sm:py-40`}>
           <div className="relative aspect-[21/9] w-full overflow-hidden rounded-xl shadow-2xl">
             <Image
               src={page.heroImage.url}
@@ -189,7 +190,7 @@ export default function RoomsListingClientPage({ lang, page, rooms }: Props) {
       <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(0)}
-          className="reveal-section mx-auto max-w-7xl px-10 py-20 sm:px-12 sm:py-28 lg:px-16"
+          className={`reveal-section ${pageShell} py-20 sm:py-28`}
         >
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
             {rooms.map((room) => (
