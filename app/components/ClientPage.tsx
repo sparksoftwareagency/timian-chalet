@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef } from "react";
 
 import { localizeHref, type SiteLocale } from "@/app/lib/locale";
 import { colors } from "@/app/theme/colors";
+import { pageGutterX, pageShell } from "@/app/theme/pageShell";
 import type { HomePageData } from "@/sanity/lib/queries";
 
 import Hero from "./Hero";
@@ -109,7 +110,7 @@ function SectionDivider({
     >
       <div
         ref={containerRef}
-        className="absolute top-1/2 -translate-y-1/2 right-10 sm:right-16 lg:right-24"
+        className="absolute top-1/2 -translate-y-1/2 right-6 sm:right-8 lg:right-10"
       >
         <div className="relative mr-16 w-36 h-24 sm:w-48 sm:h-32 md:w-56 md:h-36 rounded-lg overflow-hidden shadow-lg">
           <Image
@@ -190,18 +191,18 @@ export default function ClientPage({
       >
         <div
           ref={addRef(0)}
-          className="reveal-section max-w-7xl mx-auto px-10 sm:px-12 lg:px-16 py-20 sm:py-28 lg:py-32"
+          className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 flex flex-col items-center text-center">
               <h2
                 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight mb-3"
                 style={{ color: colors.accent }}
               >
                 {data.welcomeTitle}
               </h2>
-              <div className="w-16 h-0.5 mb-8" style={{ backgroundColor: colors.cta }} />
-              <div className="space-y-5">
+              <div className="w-16 h-0.5 mb-8 mx-auto shrink-0" style={{ backgroundColor: colors.cta }} />
+              <div className="space-y-5 max-w-2xl">
                 {data.welcomeParagraphs.map((paragraph) => (
                   <p key={paragraph} className="text-base sm:text-lg leading-relaxed" style={{ color: colors.textSecondary }}>
                     {paragraph}
@@ -210,7 +211,7 @@ export default function ClientPage({
               </div>
             </div>
 
-            <div className="flex-1 min-w-0 w-full lg:w-auto">
+            <div className="flex-1 min-w-0 w-full lg:w-auto flex justify-center">
               <div className="relative w-full aspect-[3/4] max-h-[600px] rounded-lg overflow-hidden shadow-xl">
                 <Image
                   src={data.welcomeImage.url}
@@ -228,14 +229,14 @@ export default function ClientPage({
 
       <section
         data-theme="light"
-        className="py-16 px-10 sm:px-12 lg:px-16"
+        className={`py-16 ${pageGutterX}`}
         style={{
           background: `linear-gradient(to bottom, ${colors.primaryBg}, ${colors.secondaryBg})`,
         }}
       >
         <div
           ref={addRef(1)}
-          className="reveal-section max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12"
+          className="reveal-section max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 place-items-center"
         >
           {data.stats.map((stat) => (
             <div key={`${stat.value}-${stat.label}`} className="text-center">
@@ -259,10 +260,10 @@ export default function ClientPage({
       <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(2)}
-          className="reveal-section max-w-7xl mx-auto px-10 sm:px-12 lg:px-16 py-14 sm:py-16"
+          className={`reveal-section ${pageShell} py-14 sm:py-16`}
         >
           <div className="flex flex-col-reverse lg:flex-row gap-12 lg:gap-16 items-center">
-            <div className="flex-1 min-w-0 w-full lg:w-auto">
+            <div className="flex-1 min-w-0 w-full lg:w-auto flex justify-center">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
                 <Image
                   src={data.hotelSection.image.url}
@@ -274,7 +275,7 @@ export default function ClientPage({
               </div>
             </div>
 
-            <div className="flex-1 min-w-0 reveal-section-delay">
+            <div className="flex-1 min-w-0 reveal-section-delay flex flex-col items-center text-center">
               <span
                 className="block text-xs uppercase tracking-[0.3em] mb-4 font-medium"
                 style={{ color: colors.cta }}
@@ -282,20 +283,22 @@ export default function ClientPage({
                 {data.hotelSection.eyebrow}
               </span>
               <h3
-                className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line"
+                className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line max-w-2xl"
                 style={{ color: colors.accent }}
               >
                 {data.hotelSection.title}
               </h3>
-              <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: colors.cta }} />
-              <p className="text-base sm:text-lg leading-relaxed mb-2" style={{ color: colors.textSecondary }}>
+              <div className="w-12 h-[1px] mb-6 shrink-0 mx-auto" style={{ backgroundColor: colors.cta }} />
+              <p className="text-base sm:text-lg leading-relaxed mb-2 max-w-2xl" style={{ color: colors.textSecondary }}>
                 {data.hotelSection.description}
               </p>
-              <SectionLink
-                href={localizeHref(locale, data.hotelSection.link.href)}
-                label={data.hotelSection.link.label}
-                color={colors.cta}
-              />
+              <div className="flex w-full justify-center">
+                <SectionLink
+                  href={localizeHref(locale, data.hotelSection.link.href)}
+                  label={data.hotelSection.link.label}
+                  color={colors.cta}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -310,10 +313,10 @@ export default function ClientPage({
       <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(3)}
-          className="reveal-section max-w-7xl mx-auto px-10 sm:px-12 lg:px-16 py-20 sm:py-24"
+          className={`reveal-section ${pageShell} py-20 sm:py-24`}
         >
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
-            <div className="flex-1 min-w-0 reveal-section-delay">
+            <div className="flex-1 min-w-0 reveal-section-delay flex flex-col items-center text-center">
               <span
                 className="block text-xs uppercase tracking-[0.3em] mb-4 font-medium"
                 style={{ color: colors.cta }}
@@ -321,23 +324,25 @@ export default function ClientPage({
                 {data.roomsSection.eyebrow}
               </span>
               <h3
-                className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line"
+                className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line max-w-2xl"
                 style={{ color: colors.accent }}
               >
                 {data.roomsSection.title}
               </h3>
-              <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: colors.cta }} />
-              <p className="text-base sm:text-lg leading-relaxed mb-2" style={{ color: colors.textSecondary }}>
+              <div className="w-12 h-[1px] mb-6 shrink-0 mx-auto" style={{ backgroundColor: colors.cta }} />
+              <p className="text-base sm:text-lg leading-relaxed mb-2 max-w-2xl" style={{ color: colors.textSecondary }}>
                 {data.roomsSection.description}
               </p>
-              <SectionLink
-                href={localizeHref(locale, data.roomsSection.link.href)}
-                label={data.roomsSection.link.label}
-                color={colors.cta}
-              />
+              <div className="flex w-full justify-center">
+                <SectionLink
+                  href={localizeHref(locale, data.roomsSection.link.href)}
+                  label={data.roomsSection.link.label}
+                  color={colors.cta}
+                />
+              </div>
             </div>
 
-            <div className="flex-1 min-w-0 w-full lg:w-auto">
+            <div className="flex-1 min-w-0 w-full lg:w-auto flex justify-center">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
                 <Image
                   src={data.roomsSection.image.url}
@@ -361,10 +366,10 @@ export default function ClientPage({
       <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
         <div
           ref={addRef(4)}
-          className="reveal-section max-w-7xl mx-auto px-10 sm:px-12 lg:px-16 py-20 sm:py-24"
+          className={`reveal-section ${pageShell} py-20 sm:py-24`}
         >
           <div className="flex flex-col-reverse lg:flex-row gap-12 lg:gap-16 items-center">
-            <div className="flex-1 min-w-0 w-full lg:w-auto">
+            <div className="flex-1 min-w-0 w-full lg:w-auto flex justify-center">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
                 <Image
                   src={data.culinarySection.image.url}
@@ -376,25 +381,27 @@ export default function ClientPage({
               </div>
             </div>
 
-            <div className="flex-1 min-w-0 reveal-section-delay">
+            <div className="flex-1 min-w-0 reveal-section-delay flex flex-col items-center text-center">
               <span
                 className="block text-xs uppercase tracking-[0.3em] mb-4 font-medium"
                 style={{ color: colors.cta }}
               >
                 {data.culinarySection.eyebrow}
               </span>
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line text-white">
+              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line text-white max-w-2xl">
                 {data.culinarySection.title}
               </h3>
-              <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: colors.cta }} />
-              <p className="text-base sm:text-lg leading-relaxed mb-2 text-white/80">
+              <div className="w-12 h-[1px] mb-6 shrink-0 mx-auto" style={{ backgroundColor: colors.cta }} />
+              <p className="text-base sm:text-lg leading-relaxed mb-2 text-white/80 max-w-2xl">
                 {data.culinarySection.description}
               </p>
-              <SectionLink
-                href={localizeHref(locale, data.culinarySection.link.href)}
-                label={data.culinarySection.link.label}
-                color={colors.cta}
-              />
+              <div className="flex w-full justify-center">
+                <SectionLink
+                  href={localizeHref(locale, data.culinarySection.link.href)}
+                  label={data.culinarySection.link.label}
+                  color={colors.cta}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -409,43 +416,62 @@ export default function ClientPage({
       <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(5)}
-          className="reveal-section max-w-7xl mx-auto px-10 sm:px-12 lg:px-16 py-20 sm:py-24"
+          className={`reveal-section ${pageShell} py-20 sm:py-24`}
         >
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
-            <div className="flex-1 min-w-0 reveal-section-delay">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-10 xl:gap-14 items-center">
+            <div className="w-full lg:w-[33%] lg:max-w-xl shrink-0 reveal-section-delay flex flex-col items-center text-center">
               <span
                 className="block text-xs uppercase tracking-[0.3em] mb-4 font-medium"
                 style={{ color: colors.cta }}
               >
-                {data.experiencesSection.eyebrow}
+                {data.experiencesBand.eyebrow}
               </span>
               <h3
-                className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line"
+                className="text-2xl sm:text-3xl lg:text-4xl font-serif leading-tight mb-6 max-w-2xl"
                 style={{ color: colors.accent }}
               >
-                {data.experiencesSection.title}
+                {data.experiencesBand.title.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim()}
               </h3>
-              <div className="w-12 h-[1px] mb-6" style={{ backgroundColor: colors.cta }} />
-              <p className="text-base sm:text-lg leading-relaxed mb-2" style={{ color: colors.textSecondary }}>
-                {data.experiencesSection.description}
+              <div className="w-12 h-[1px] mb-6 shrink-0" style={{ backgroundColor: colors.cta }} />
+              <p className="text-base sm:text-lg leading-relaxed max-w-2xl" style={{ color: colors.textSecondary }}>
+                {data.experiencesBand.description}
               </p>
-              <SectionLink
-                href={localizeHref(locale, data.experiencesSection.link.href)}
-                label={data.experiencesSection.link.label}
-                color={colors.cta}
-              />
             </div>
 
-            <div className="flex-1 min-w-0 w-full lg:w-auto">
-              <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
-                <Image
-                  src={data.experiencesSection.image.url}
-                  alt={data.experiencesSection.image.alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
-              </div>
+            <div className="w-full min-w-0 flex-1 grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-5 xl:gap-7">
+              {data.experiencesBand.cards.map((card) => (
+                <div key={card._key} className="flex flex-col h-full min-w-0 items-center text-center">
+                  <div className="relative w-full aspect-[3/4] sm:aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
+                    <Image
+                      src={card.image.url}
+                      alt={card.image.alt}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 34vw, 31vw"
+                    />
+                  </div>
+                  <h4
+                    className="text-lg sm:text-xl font-serif uppercase tracking-wide mt-5 mb-3"
+                    style={{ color: colors.accent }}
+                  >
+                    {card.title}
+                  </h4>
+                  <p
+                    className="text-sm sm:text-base leading-relaxed flex-1 max-w-sm"
+                    style={{ color: colors.textSecondary }}
+                  >
+                    {card.description}
+                  </p>
+                  <Link
+                    href={localizeHref(locale, card.link.href)}
+                    className="mt-5 text-xs uppercase tracking-[0.25em] font-medium transition-opacity hover:opacity-70"
+                    style={{ color: colors.accent }}
+                    {...(card.link.openInNewTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  >
+                    {card.link.label}
+                  </Link>
+                </div>
+              ))}
             </div>
           </div>
         </div>

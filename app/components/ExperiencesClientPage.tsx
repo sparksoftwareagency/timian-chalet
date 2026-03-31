@@ -9,6 +9,7 @@ import {
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
 import { colors } from "@/app/theme/colors";
+import { pageGutterX, pageShell } from "@/app/theme/pageShell";
 import type { ExperiencesPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
@@ -165,7 +166,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(0)}
-          className="reveal-section mx-auto max-w-7xl px-10 py-20 sm:px-12 sm:py-28 lg:px-16 lg:py-32"
+          className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="mb-16 text-center">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
@@ -188,7 +189,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(1)}
-          className="reveal-section mx-auto max-w-7xl px-10 py-20 sm:px-12 sm:py-28 lg:px-16 lg:py-32"
+          className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="mb-16 text-center">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
@@ -206,7 +207,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       </section>
 
       <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
-        <div ref={addRef(2)} className="mx-auto max-w-5xl px-10 py-20 text-center sm:px-12 sm:py-28 lg:px-16">
+        <div ref={addRef(2)} className={`mx-auto max-w-5xl ${pageGutterX} py-20 text-center sm:py-28`}>
           <blockquote className="reveal-quote font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
             &ldquo;{data.closingQuote}&rdquo;
           </blockquote>
@@ -217,7 +218,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         <section style={{ backgroundColor: colors.secondaryBg }}>
           <div
             ref={addRef(3)}
-            className="reveal-section mx-auto max-w-7xl px-10 py-20 sm:px-12 sm:py-28 lg:px-16 lg:py-32"
+            className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
           >
             <div className="space-y-16">
               {remainingActivities.map((activity, index) => renderActivity(activity, index + firstActivities.length))}

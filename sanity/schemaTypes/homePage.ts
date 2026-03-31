@@ -116,8 +116,18 @@ export const homePageType = defineType({
     }),
     defineField({
       name: 'experiencesSection',
-      title: 'Experiences section',
+      title: 'Experiences section (legacy)',
       type: 'teaserSection',
+      hidden: true,
+      deprecated: {
+        reason: 'Replaced by “Experiences band (landing cards)”. Safe to clear after content is migrated.',
+      },
+      readOnly: true,
+    }),
+    defineField({
+      name: 'experiencesBand',
+      title: 'Experiences band (landing cards)',
+      type: 'homeExperiencesBand',
       validation: (Rule) => Rule.required(),
     }),
   ],

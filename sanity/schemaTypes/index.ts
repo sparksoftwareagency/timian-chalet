@@ -4,6 +4,7 @@ import {aboutPageType} from './aboutPage'
 import {culinaryPageType} from './culinaryPage'
 import {experienceItem} from './experienceItem'
 import {experiencesPageType} from './experiencesPage'
+import {homeExperienceCard, homeExperiencesBand} from './homeExperienceCard'
 import {homePageType} from './homePage'
 import {imageBlock} from './imageBlock'
 import {linkObject} from './linkObject'
@@ -29,6 +30,8 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     statItem,
     experienceItem,
     teaserSection,
+    homeExperienceCard,
+    homeExperiencesBand,
     roomFloorItem,
     siteSettingsType,
     navigationType,
