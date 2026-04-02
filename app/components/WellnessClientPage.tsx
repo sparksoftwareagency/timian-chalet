@@ -223,7 +223,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         />
         <div className="absolute inset-0 bg-black/45" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
-          <h1 className="font-serif text-5xl font-light uppercase tracking-[0.2em] text-white sm:text-6xl md:text-7xl lg:text-8xl float-soft">
+          <h1 className="font-serif font-light uppercase tracking-[0.2em] text-white sm:text-4xl md:text-7xl lg:text-7xl float-soft">
             {data.heroTitle}
           </h1>
           <p className="mt-6 max-w-2xl text-lg font-light leading-relaxed text-white/80 sm:text-xl float-soft">
