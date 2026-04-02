@@ -41,3 +41,5 @@ yarn-error.log*
 next-env.d.ts
 public/Timian_Website_V2.mp4
 /.cursor
+/agent_guides
+/public
