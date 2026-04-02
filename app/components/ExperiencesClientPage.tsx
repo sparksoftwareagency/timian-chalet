@@ -258,9 +258,9 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(0)}
-          className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
+          className={`reveal-section ${pageShell} py-14 sm:py-16 lg:py-20`}
         >
-          <div className="mb-12 text-center">
+          <div className="mb-8 text-center">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.activitiesEyebrow}
             </span>
@@ -270,7 +270,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
           </div>
 
           {data.activities.length > 0 ? (
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-[86rem]">
               <div className="rounded-[2rem] border border-white/25 bg-white/40 p-4 shadow-xl backdrop-blur-sm sm:p-6">
                 <div
                   ref={carouselRef}
@@ -290,7 +290,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                     <article
                       key={activity._key}
                       data-activity-card
-                      className="w-[88%] shrink-0 snap-start select-none rounded-2xl bg-white/75 p-4 shadow-md sm:w-[72%] lg:w-[46%]"
+                      className="w-[88%] shrink-0 snap-start select-none rounded-2xl bg-white/75 p-4 shadow-md sm:w-[72%] lg:w-[30rem]"
                     >
                       <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-xl">
                         <Image
@@ -314,7 +314,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
               </div>
 
               {data.activities.length > 1 ? (
-                <div className="mt-5 flex justify-end gap-3">
+                <div className="mt-4 flex justify-end gap-3 sm:mt-5">
                   <button
                     type="button"
                     onClick={() => scrollByCard("prev")}
