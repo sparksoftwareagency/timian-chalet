@@ -72,6 +72,16 @@ export const experiencesPageType = defineType({
       options: {accept: 'video/*'},
     }),
     defineField({
+      name: 'experienceVideoSideImageLeft',
+      title: 'Experience video side image (left)',
+      type: 'imageBlock',
+    }),
+    defineField({
+      name: 'experienceVideoSideImageRight',
+      title: 'Experience video side image (right)',
+      type: 'imageBlock',
+    }),
+    defineField({
       name: 'closingQuote',
       title: 'Closing quote',
       type: 'string',

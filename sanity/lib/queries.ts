@@ -193,6 +193,8 @@ export type ExperiencesPageData = {
   heroSubtitle: string
   heroImage: CmsImage
   experienceVideoUrl?: string
+  experienceVideoSideImageLeft?: CmsImage
+  experienceVideoSideImageRight?: CmsImage
   introEyebrow: string
   introTitle: string
   introParagraphs: string[]
@@ -471,6 +473,8 @@ const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $l
   heroSubtitle,
   heroImage ${imageProjection},
   "experienceVideoUrl": experienceVideo.asset->url,
+  experienceVideoSideImageLeft ${imageProjection},
+  experienceVideoSideImageRight ${imageProjection},
   introEyebrow,
   introTitle,
   introParagraphs[],

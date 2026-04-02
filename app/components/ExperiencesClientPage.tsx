@@ -124,6 +124,8 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
     },
   };
   const videoCopy = videoCopyByLanguage[data.language] ?? videoCopyByLanguage.en;
+  const videoSideImageLeft = data.experienceVideoSideImageLeft?.url ? data.experienceVideoSideImageLeft : null;
+  const videoSideImageRight = data.experienceVideoSideImageRight?.url ? data.experienceVideoSideImageRight : null;
 
   const updateScrollControls = useCallback(() => {
     const element = carouselRef.current;
@@ -258,9 +260,9 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(0)}
-          className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
+          className={`reveal-section ${pageShell} py-14 sm:py-16 lg:py-20`}
         >
-          <div className="mb-12 text-center">
+          <div className="mb-8 text-center">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.activitiesEyebrow}
             </span>
@@ -270,7 +272,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
           </div>
 
           {data.activities.length > 0 ? (
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-[82rem]">
               <div className="rounded-[2rem] border border-white/25 bg-white/40 p-4 shadow-xl backdrop-blur-sm sm:p-6">
                 <div
                   ref={carouselRef}
@@ -290,9 +292,9 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                     <article
                       key={activity._key}
                       data-activity-card
-                      className="w-[88%] shrink-0 snap-start select-none rounded-2xl bg-white/75 p-4 shadow-md sm:w-[72%] lg:w-[46%]"
+                      className="w-[88%] shrink-0 snap-start select-none rounded-2xl bg-white/75 p-4 shadow-md sm:w-[72%] lg:w-[30rem]"
                     >
-                      <div className="relative mb-5 aspect-[4/3] w-full overflow-hidden rounded-xl">
+                      <div className="relative mb-5 aspect-[16/11] w-full overflow-hidden rounded-l">
                         <Image
                           src={activity.image.url}
                           alt={activity.image.alt}
@@ -314,7 +316,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
               </div>
 
               {data.activities.length > 1 ? (
-                <div className="mt-5 flex justify-end gap-3">
+                <div className="mt-4 flex justify-end gap-3 sm:mt-5">
                   <button
                     type="button"
                     onClick={() => scrollByCard("prev")}
@@ -388,23 +390,78 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
               </p>
             </div>
 
-            <div className="group relative mx-auto mt-12 max-w-4xl overflow-hidden rounded-[1.75rem] border border-white/35 bg-black/20 p-3 shadow-2xl sm:p-4">
-              <video
-                src={data.experienceVideoUrl}
-                autoPlay
-                loop
-                muted={isVideoMuted}
-                playsInline
-                className="h-full w-full rounded-[1.2rem] object-cover"
-              />
-              <button
-                type="button"
-                onClick={() => setIsVideoMuted((prev) => !prev)}
-                className="absolute bottom-7 right-7 inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition hover:bg-black/75 group-hover:opacity-100"
-                aria-label={isVideoMuted ? "Unmute video" : "Mute video"}
-              >
-                {isVideoMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-              </button>
+            <div className="mx-auto mt-12 max-w-6xl">
+              <div className="grid items-center gap-5 md:grid-cols-[minmax(0,0.45fr)_minmax(0,1fr)_minmax(0,0.45fr)]">
+                {videoSideImageLeft ? (
+                  <div className="relative hidden aspect-[5/4] overflow-hidden rounded-[1.4rem] border border-white/30 shadow-xl md:block">
+                    <Image
+                      src={videoSideImageLeft.url}
+                      alt={videoSideImageLeft.alt}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="hidden md:block" />
+                )}
+
+                <div className="group relative overflow-hidden rounded-[1.75rem] border border-white/35 bg-black/20 p-3 shadow-2xl sm:p-4">
+                  <video
+                    src={data.experienceVideoUrl}
+                    autoPlay
+                    loop
+                    muted={isVideoMuted}
+                    playsInline
+                    className="h-full w-full rounded-[1.2rem] object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setIsVideoMuted((prev) => !prev)}
+                    className="absolute bottom-7 right-7 inline-flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white opacity-0 transition hover:bg-black/75 group-hover:opacity-100"
+                    aria-label={isVideoMuted ? "Unmute video" : "Mute video"}
+                  >
+                    {isVideoMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                  </button>
+                </div>
+
+                {videoSideImageRight ? (
+                  <div className="relative hidden aspect-[5/4] overflow-hidden rounded-[1.4rem] border border-white/30 shadow-xl md:block">
+                    <Image
+                      src={videoSideImageRight.url}
+                      alt={videoSideImageRight.alt}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="hidden md:block" />
+                )}
+              </div>
+
+              {videoSideImageLeft || videoSideImageRight ? (
+                <div className="mt-5 grid gap-4 sm:grid-cols-2 md:hidden">
+                  {videoSideImageLeft ? (
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-[1.2rem] border border-white/30 shadow-lg">
+                      <Image
+                        src={videoSideImageLeft.url}
+                        alt={videoSideImageLeft.alt}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : null}
+                  {videoSideImageRight ? (
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-[1.2rem] border border-white/30 shadow-lg">
+                      <Image
+                        src={videoSideImageRight.url}
+                        alt={videoSideImageRight.alt}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           </div>
         </section>
