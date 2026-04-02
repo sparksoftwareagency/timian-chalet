@@ -238,7 +238,7 @@ export type WellnessPageData = {
   highlightEyebrow: string
   highlightTitle: string
   highlightParagraphs: string[]
-  highlightImage: CmsImage
+  highlightImages: CmsImage[]
   quote: string
   featuresEyebrow: string
   featuresTitle: string
@@ -543,7 +543,7 @@ const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $languag
   highlightEyebrow,
   highlightTitle,
   highlightParagraphs[],
-  highlightImage ${imageProjection},
+  highlightImages[] ${imageProjection},
   quote,
   featuresEyebrow,
   featuresTitle,

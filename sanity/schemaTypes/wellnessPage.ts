@@ -78,10 +78,12 @@ export const wellnessPageType = defineType({
       validation: (Rule) => Rule.required().length(2),
     }),
     defineField({
-      name: 'highlightImage',
-      title: 'Highlight image',
-      type: 'imageBlock',
-      validation: (Rule) => Rule.required(),
+      name: 'highlightImages',
+      title: 'Highlight image gallery',
+      description: 'Upload one or more images. One image renders as a static image; multiple images render as a slider.',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'quote',

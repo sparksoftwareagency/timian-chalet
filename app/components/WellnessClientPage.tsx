@@ -4,6 +4,7 @@ import Image from "next/image";
 import { animate } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 
+import ImageShow from "@/app/components/ImageShow";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
@@ -100,6 +101,9 @@ function useScrollSnapJump() {
 export default function WellnessClientPage({ data }: { data: WellnessPageData }) {
   const addRef = useRevealOnScroll();
   useScrollSnapJump();
+  const highlightImages = data.highlightImages.filter((image) => image?.url);
+  const hasImageShow = highlightImages.length > 1;
+  const singleHighlightImage = highlightImages[0];
 
   const firstTwoFeatures = data.features.slice(0, 2);
   const remainingFeatures = data.features.slice(2);
@@ -294,8 +298,26 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
             ))}
           </div>
           <div className="order-2 lg:order-2 lg:col-span-6">
-            <div className="relative aspect-[3/4] w-full max-h-[550px] overflow-hidden rounded-lg shadow-xl">
-              <Image src={data.highlightImage.url} alt={data.highlightImage.alt} fill className="flash-on-reveal object-cover" />
+            <div className="w-full">
+              {hasImageShow ? (
+                <ImageShow
+                  images={highlightImages}
+                  aspectRatioClassName="aspect-[3/4]"
+                  frameClassName="max-h-[550px] shadow-xl"
+                  className="w-full"
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                />
+              ) : singleHighlightImage ? (
+                <div className="relative aspect-[3/4] w-full max-h-[550px] overflow-hidden rounded-lg shadow-xl">
+                  <Image
+                    src={singleHighlightImage.url}
+                    alt={singleHighlightImage.alt}
+                    fill
+                    className="flash-on-reveal object-cover"
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                  />
+                </div>
+              ) : null}
             </div>
           </div>
         </div>
