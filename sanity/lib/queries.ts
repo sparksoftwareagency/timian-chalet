@@ -186,11 +186,13 @@ export type RestaurantPageData = {
 }
 
 export type ExperiencesPageData = {
+  language: string
   seoTitle?: string
   seoDescription?: string
   heroTitle: string
   heroSubtitle: string
   heroImage: CmsImage
+  experienceVideoUrl?: string
   introEyebrow: string
   introTitle: string
   introParagraphs: string[]
@@ -462,11 +464,13 @@ const culinaryPageQuery = groq`*[_type == "culinaryPage" && language == $languag
 }`
 
 const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $language][0]{
+  language,
   seoTitle,
   seoDescription,
   heroTitle,
   heroSubtitle,
   heroImage ${imageProjection},
+  "experienceVideoUrl": experienceVideo.asset->url,
   introEyebrow,
   introTitle,
   introParagraphs[],

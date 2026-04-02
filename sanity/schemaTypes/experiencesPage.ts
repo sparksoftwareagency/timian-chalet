@@ -63,7 +63,13 @@ export const experiencesPageType = defineType({
       title: 'Activities',
       type: 'array',
       of: [{type: 'experienceItem'}],
-      validation: (Rule) => Rule.required().length(4),
+      validation: (Rule) => Rule.required().min(4),
+    }),
+    defineField({
+      name: 'experienceVideo',
+      title: 'Experience video',
+      type: 'file',
+      options: {accept: 'video/*'},
     }),
     defineField({
       name: 'closingQuote',
