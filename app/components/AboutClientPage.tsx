@@ -253,7 +253,7 @@ export default function AboutClientPage({
 
       <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
         <div ref={addRef(2)} className={`mx-auto max-w-4xl ${pageGutterX} py-20 sm:py-28`}>
-          <blockquote className="reveal-quote font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
+          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
             &ldquo;{data.quote}&rdquo;
           </blockquote>
         </div>

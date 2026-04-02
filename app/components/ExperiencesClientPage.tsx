@@ -346,7 +346,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
 
       <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
         <div ref={addRef(1)} className={`mx-auto max-w-5xl ${pageGutterX} py-20 text-center sm:py-28`}>
-          <blockquote className="reveal-quote font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
+          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
             &ldquo;{data.closingQuote}&rdquo;
           </blockquote>
         </div>
