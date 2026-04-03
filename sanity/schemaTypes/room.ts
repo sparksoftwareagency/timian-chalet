@@ -49,7 +49,7 @@ export const roomType = defineType({
       title: 'Gallery images',
       type: 'array',
       of: [{type: 'imageBlock'}],
-      validation: (Rule) => Rule.required().min(7),
+      validation: (Rule) => Rule.required().min(6).max(6),
     }),
   ],
   orderings: [
