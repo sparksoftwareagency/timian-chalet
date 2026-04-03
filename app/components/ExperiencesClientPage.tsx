@@ -257,7 +257,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         </div>
       </section>
 
-      <section style={{ backgroundColor: colors.secondaryBg }}>
+      <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(0)}
           className={`reveal-section ${pageShell} py-14 sm:py-16 lg:py-20`}
@@ -266,13 +266,13 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.activitiesEyebrow}
             </span>
-            <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
+            <h2 className="whitespace-pre-line font-serif text-3xl sm:text-3xl lg:text-4xl" style={{ color: colors.accent }}>
               {data.activitiesTitle}
             </h2>
           </div>
 
           {data.activities.length > 0 ? (
-            <div className="mx-auto max-w-[82rem]">
+            <div className="mx-auto max-w-[76rem]">
               <div className="rounded-[2rem] border border-white/25 bg-white/40 p-4 shadow-xl backdrop-blur-sm sm:p-6">
                 <div
                   ref={carouselRef}
@@ -292,7 +292,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                     <article
                       key={activity._key}
                       data-activity-card
-                      className="w-[88%] shrink-0 snap-start select-none rounded-2xl bg-white/75 p-4 shadow-md sm:w-[72%] lg:w-[30rem]"
+                      className="shrink-0 snap-start select-none rounded-2xl bg-white/75 p-4 shadow-md sm:w-[68%] lg:w-[24rem]"
                     >
                       <div className="relative mb-5 aspect-[16/11] w-full overflow-hidden rounded-l">
                         <Image
@@ -304,10 +304,10 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                           draggable={false}
                         />
                       </div>
-                      <h3 className="mb-3 font-serif text-2xl leading-tight sm:text-3xl" style={{ color: colors.accent }}>
+                      <h3 className="mb-3 font-serif text-xl leading-tight sm:text-xl" style={{ color: colors.accent }}>
                         {activity.title}
                       </h3>
-                      <p className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+                      <p className="text-sm leading-relaxed sm:text-base" style={{ color: colors.textSecondary }}>
                         {activity.description}
                       </p>
                     </article>

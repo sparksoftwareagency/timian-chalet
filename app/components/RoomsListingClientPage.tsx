@@ -160,30 +160,22 @@ export default function RoomsListingClientPage({ lang, page, rooms }: Props) {
         }
       `}</style>
 
-      <section
-        data-theme="dark"
-        className="relative flex min-h-[70vh] w-full items-center justify-center"
-        style={{ backgroundColor: colors.textPrimary }}
-      >
-        <div className={`${pageShell} py-32 sm:py-40`}>
-          <div className="relative aspect-[21/9] w-full overflow-hidden rounded-xl shadow-2xl">
-            <Image
-              src={page.heroImage.url}
-              alt={page.heroImage.alt}
-              fill
-              priority
-              className="hero-image-enter object-cover"
-            />
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-              <h1 className="font-serif text-4xl font-light tracking-wide text-white sm:text-5xl md:text-6xl lg:text-7xl">
-                {page.heroTitle}
-              </h1>
-              <p className="mt-4 max-w-2xl text-base font-light text-white/80 sm:text-lg">
-                {page.heroSubtitle}
-              </p>
-            </div>
-          </div>
+      <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
+        <Image
+          src={page.heroImage.url}
+          alt={page.heroImage.alt}
+          fill
+          priority
+          className="hero-image-enter object-cover"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
+          <h1 className="font-serif text-4xl font-light tracking-wide text-white sm:text-5xl md:text-6xl lg:text-7xl">
+            {page.heroTitle}
+          </h1>
+          <p className="mt-4 max-w-2xl text-base font-light text-white/80 sm:text-lg">
+            {page.heroSubtitle}
+          </p>
         </div>
       </section>
 
