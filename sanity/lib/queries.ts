@@ -1,6 +1,7 @@
 import {groq} from 'next-sanity'
 
 import {client} from './client'
+import {urlFor} from './image'
 import {DEFAULT_LANGUAGE, type SiteLanguage} from './languages'
 
 const SANITY_TAGS = {
@@ -25,6 +26,7 @@ function roomSlugTag(slug: string) {
 export type CmsImage = {
   alt: string
   url: string
+  image?: unknown
 }
 
 export type CmsLink = {
@@ -232,19 +234,22 @@ export type WellnessPageData = {
   introTitle: string
   introParagraphs: string[]
   introImage: CmsImage
-  breakImage: CmsImage
+  breakImages: CmsImage[]
   highlightEyebrow: string
   highlightTitle: string
   highlightParagraphs: string[]
-  highlightImage: CmsImage
+  flyerButtonLabel: string
+  flyerPdfUrl: string
+  highlightImages: CmsImage[]
   quote: string
   featuresEyebrow: string
   featuresTitle: string
+  featuresBreakImages: CmsImage[]
   features: Array<{
     _key: string
     title: string
     description: string
-    image: CmsImage
+    images: CmsImage[]
   }>
 }
 
@@ -308,8 +313,46 @@ const linkProjection = groq`{
 
 const imageProjection = groq`{
   alt,
-  "url": image.asset->url
+  image
 }`
+
+function buildImageUrl(source: unknown): string {
+  if (!source) {
+    return ''
+  }
+
+  try {
+    return urlFor(source).url()
+  } catch {
+    return ''
+  }
+}
+
+function withCmsImageUrls<T>(value: T): T {
+  if (Array.isArray(value)) {
+    return value.map((item) => withCmsImageUrls(item)) as T
+  }
+
+  if (!value || typeof value !== 'object') {
+    return value
+  }
+
+  const record = value as Record<string, unknown>
+  const mapped: Record<string, unknown> = {}
+
+  for (const [key, entry] of Object.entries(record)) {
+    mapped[key] = withCmsImageUrls(entry)
+  }
+
+  if ('image' in mapped && mapped.image && typeof mapped.image === 'object') {
+    const url = buildImageUrl(mapped.image)
+    if (url) {
+      mapped.url = url
+    }
+  }
+
+  return mapped as T
+}
 
 const teaserProjection = groq`{
   eyebrow,
@@ -499,19 +542,31 @@ const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $languag
   introTitle,
   introParagraphs[],
   introImage ${imageProjection},
-  breakImage ${imageProjection},
+  "breakImages": coalesce(
+    breakImages[] ${imageProjection},
+    select(defined(breakImage) => [breakImage ${imageProjection}], [])
+  ),
   highlightEyebrow,
   highlightTitle,
   highlightParagraphs[],
-  highlightImage ${imageProjection},
+  "flyerButtonLabel": coalesce(flyerButtonLabel, "View Massage Flyer"),
+  "flyerPdfUrl": coalesce(flyerPdf.asset->url, flyerPdfUrl, "/massage_flyer.pdf"),
+  "highlightImages": coalesce(
+    highlightImages[] ${imageProjection},
+    select(defined(highlightImage) => [highlightImage ${imageProjection}], [])
+  ),
   quote,
   featuresEyebrow,
   featuresTitle,
+  "featuresBreakImages": coalesce(featuresBreakImages[] ${imageProjection}, []),
   features[]{
     _key,
     title,
     description,
-    image ${imageProjection}
+    "images": coalesce(
+      images[] ${imageProjection},
+      select(defined(image) => [image ${imageProjection}], [])
+    )
   }
 }`
 
@@ -597,12 +652,18 @@ async function fetchWithFallback<T>(
   }
 
   const localized = await client.fetch<T | null>(query, {language, ...params}, queryOptions)
+  const localizedWithImageUrls = localized ? withCmsImageUrls(localized) : localized
 
-  if (localized || language === DEFAULT_LANGUAGE) {
-    return localized
+  if (localizedWithImageUrls || language === DEFAULT_LANGUAGE) {
+    return localizedWithImageUrls
   }
 
-  return client.fetch<T | null>(query, {language: DEFAULT_LANGUAGE, ...params}, queryOptions)
+  const fallback = await client.fetch<T | null>(
+    query,
+    {language: DEFAULT_LANGUAGE, ...params},
+    queryOptions,
+  )
+  return fallback ? withCmsImageUrls(fallback) : fallback
 }
 
 export async function fetchSiteSettings(language: SiteLanguage) {
