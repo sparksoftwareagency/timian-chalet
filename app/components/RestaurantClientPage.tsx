@@ -216,7 +216,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
             </h2>
           </div>
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
-            <div className="flash-on-reveal space-y-6 lg:col-span-5">
+            <div className="flash-on-reveal mx-auto max-w-2xl space-y-6 text-center lg:col-span-5">
               {data.originParagraphs.map((paragraph) => (
                 <p key={paragraph} className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
                   {paragraph}
@@ -266,7 +266,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
               <Image src={data.spiritsImage.url} alt={data.spiritsImage.alt} fill className="flash-on-reveal object-cover" />
             </div>
           </div>
-          <div className="flash-on-reveal order-1 lg:order-2 lg:col-span-6">
+          <div className="flash-on-reveal order-1 mx-auto max-w-3xl text-center lg:order-2 lg:col-span-6">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.spiritsEyebrow}
             </span>
@@ -343,7 +343,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
             <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
               {data.atmosphereTitle}
             </h2>
-            <p className="mx-auto mt-8 max-w-3xl text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+            <p className="mx-auto mt-8 max-w-3xl text-center text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
               {data.atmosphereIntro}
             </p>
           </div>

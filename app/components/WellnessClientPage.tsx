@@ -161,7 +161,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           </div>
         ) : null}
       </div>
-      <div className={`lg:col-span-5 ${index % 2 === 0 ? "lg:order-1" : "lg:order-2"}`}>
+      <div className={`mx-auto max-w-2xl text-center lg:col-span-5 ${index % 2 === 0 ? "lg:order-1" : "lg:order-2"}`}>
         <h3 className="mb-4 font-serif text-2xl sm:text-3xl float-soft" style={{ color: colors.accent }}>
           {feature.title}
         </h3>
@@ -312,15 +312,19 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
               {data.introTitle}
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl">
                 <Image src={data.introImage.url} alt={data.introImage.alt} fill className="donkey-blur-in object-cover" />
               </div>
             </div>
-            <div className="flash-on-reveal space-y-6 lg:col-span-5">
+            <div className="flash-on-reveal mx-auto max-w-2xl space-y-6 text-center lg:col-span-5">
               {data.introParagraphs.map((paragraph) => (
-                <p key={paragraph} className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+                <p
+                  key={paragraph}
+                  className="mx-auto max-w-md text-base leading-relaxed sm:text-lg"
+                  style={{ color: colors.textSecondary }}
+                >
                   {paragraph}
                 </p>
               ))}
@@ -348,7 +352,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           ref={addRef(1)}
           className={`reveal-section ${pageShell} grid grid-cols-1 items-center gap-10 py-20 sm:py-28 lg:grid-cols-12 lg:gap-14 lg:py-32`}
         >
-          <div className="flash-on-reveal order-1 lg:order-1 lg:col-span-6">
+          <div className="flash-on-reveal order-1 mx-auto max-w-3xl text-center lg:order-1 lg:col-span-6">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.highlightEyebrow}
             </span>

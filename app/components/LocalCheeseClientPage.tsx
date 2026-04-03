@@ -206,7 +206,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
               <Image src={data.legacyImage.url} alt={data.legacyImage.alt} fill className="donkey-blur-in object-cover" />
             </div>
           </div>
-          <div className="flash-on-reveal order-1 lg:order-2 lg:col-span-5">
+          <div className="flash-on-reveal order-1 mx-auto max-w-2xl text-center lg:order-2 lg:col-span-5">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.legacyEyebrow}
             </span>
@@ -240,7 +240,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
           ref={addRef(1)}
           className={`reveal-section ${pageShell} grid grid-cols-1 items-center gap-10 py-20 sm:py-28 lg:grid-cols-12 lg:gap-14 lg:py-32`}
         >
-          <div className="flash-on-reveal order-1 lg:col-span-6">
+          <div className="flash-on-reveal order-1 mx-auto max-w-3xl text-center lg:col-span-6">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.signatureEyebrow}
             </span>
@@ -292,7 +292,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
                   <Image src={collection.image.url} alt={collection.image.alt} fill className="object-cover" />
                 </div>
-                <div className="space-y-3 p-7">
+                <div className="space-y-3 p-7 text-center">
                   <h3 className="font-serif text-2xl" style={{ color: colors.accent }}>
                     {collection.title}
                   </h3>
@@ -330,13 +330,13 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
             <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
               {data.seasonalityTitle}
             </h2>
-            <p className="mx-auto mt-8 max-w-3xl text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+            <p className="mx-auto mt-8 max-w-3xl text-center text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
               {data.seasonalityIntro}
             </p>
           </div>
           <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2">
             {data.seasonalityNotes.map((note) => (
-              <div key={note} className="rounded-lg p-8" style={{ backgroundColor: colors.primaryBg }}>
+              <div key={note} className="rounded-lg p-8 text-center" style={{ backgroundColor: colors.primaryBg }}>
                 <p className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
                   {note}
                 </p>
