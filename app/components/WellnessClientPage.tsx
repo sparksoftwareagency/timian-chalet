@@ -2,7 +2,13 @@
 
 import Image from "next/image";
 import { animate } from "framer-motion";
-import { useCallback, useEffect, useRef } from "react";
+import { FlipbookViewer } from "react-pdf-flipbook-viewer";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import ImageShow from "@/app/components/ImageShow";
 import {
@@ -15,6 +21,7 @@ import type { WellnessPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
 const JUMP_DURATION = 1.1;
+const FALLBACK_MASSAGE_FLYER_PATH = "/massage_flyer.pdf";
 
 function useRevealOnScroll() {
   const refs = useRef<(HTMLElement | null)[]>([]);
@@ -101,14 +108,36 @@ function useScrollSnapJump() {
 export default function WellnessClientPage({ data }: { data: WellnessPageData }) {
   const addRef = useRevealOnScroll();
   useScrollSnapJump();
+  const [isFlyerOpen, setIsFlyerOpen] = useState(false);
   const breakImages = data.breakImages.filter((image) => image?.url);
   const hasBreakImageShow = breakImages.length > 1;
   const highlightImages = data.highlightImages.filter((image) => image?.url);
   const hasImageShow = highlightImages.length > 1;
   const singleHighlightImage = highlightImages[0];
+  const flyerPdfPath = data.flyerPdfUrl || FALLBACK_MASSAGE_FLYER_PATH;
 
   const firstTwoFeatures = data.features.slice(0, 2);
   const remainingFeatures = data.features.slice(2);
+  const featuresBreakImages = data.featuresBreakImages.filter((image) => image?.url).slice(0, 5);
+
+  useEffect(() => {
+    if (!isFlyerOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsFlyerOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, [isFlyerOpen]);
 
   const renderFeature = (feature: WellnessPageData["features"][number], index: number) => (
     <article key={feature._key} className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
@@ -232,6 +261,23 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
             animation: none;
           }
         }
+        .massage-flyer-viewer {
+          width: min(100%, 64rem) !important;
+          height: min(82vh, 56rem) !important;
+          min-height: 26rem !important;
+          background-color: #16110c !important;
+        }
+        .massage-flyer-viewer > div {
+          height: 100% !important;
+        }
+        .massage-flyer-viewer.bg-gray-800,
+        .massage-flyer-viewer .bg-gray-700,
+        .massage-flyer-viewer .bg-gray-800 {
+          background-color: #16110c !important;
+        }
+        .massage-flyer-viewer .mb-1 {
+          display: none !important;
+        }
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
@@ -323,6 +369,15 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
                 {paragraph}
               </p>
             ))}
+            <button
+              type="button"
+              onClick={() => {
+                setIsFlyerOpen(true);
+              }}
+              className="mt-7 inline-flex items-center justify-center rounded-md border border-[#6B7C6A] bg-[#FAF7F2] px-6 py-3 text-sm font-medium tracking-[0.08em] text-[#6B7C6A] transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#6B7C6A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#E8E0D5]"
+            >
+              {data.flyerButtonLabel}
+            </button>
           </div>
           <div className="order-2 lg:order-2 lg:col-span-6">
             <div className="w-full">
@@ -358,7 +413,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
-      <section style={{ backgroundColor: colors.primaryBg }}>
+      <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(3)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
@@ -377,6 +432,20 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
+      {featuresBreakImages.length === 5 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+              {featuresBreakImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(4)}
@@ -387,6 +456,48 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           </div>
         </div>
       </section>
+
+      {isFlyerOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 sm:p-8">
+          <div
+            className="absolute inset-0"
+            aria-hidden="true"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 30%, rgba(253, 230, 186, 0.3) 0%, rgba(0, 0, 0, 0.8) 65%)",
+            }}
+          />
+          <div className="relative z-10 w-full max-w-6xl overflow-hidden rounded-2xl border border-white/15 bg-[#16110c]/90 shadow-[0_25px_80px_rgba(0,0,0,0.55)] backdrop-blur-sm">
+            <div className="flex items-center justify-between border-b border-white/10 px-4 py-3 sm:px-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f0ddbe]">Massage Flyer Preview</p>
+              <div className="flex items-center gap-2">
+                <a
+                  href={flyerPdfPath}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full border border-[#c7a766]/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-[#f0ddbe] transition hover:bg-[#c7a766]/15"
+                >
+                  Open PDF
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setIsFlyerOpen(false)}
+                  className="rounded-full border border-white/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white transition hover:bg-white/10"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col items-center gap-4 px-3 py-5 sm:px-6 sm:py-8">
+              <FlipbookViewer
+                pdfUrl={flyerPdfPath}
+                disableShare
+                className="massage-flyer-viewer w-full overflow-hidden rounded-xl border border-white/10 shadow-[0_18px_60px_rgba(0,0,0,0.45)]"
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }

@@ -94,6 +94,39 @@ export const wellnessPageType = defineType({
       validation: (Rule) => Rule.required().length(2),
     }),
     defineField({
+      name: 'flyerButtonLabel',
+      title: 'Flyer button label',
+      description: 'Label for the flyer CTA button shown on the wellness page.',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'flyerPdf',
+      title: 'Flyer PDF file',
+      description:
+        'Upload the PDF shown in the flyer modal. Use this instead of a raw URL.',
+      type: 'file',
+      options: {
+        accept: 'application/pdf',
+      },
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const hasLegacyUrl = Boolean((context.document as {flyerPdfUrl?: unknown})?.flyerPdfUrl)
+          return value || hasLegacyUrl ? true : 'Upload a flyer PDF file'
+        }),
+    }),
+    defineField({
+      // Legacy URL field kept hidden for migration compatibility.
+      name: 'flyerPdfUrl',
+      title: 'Flyer PDF URL (legacy)',
+      type: 'string',
+      hidden: true,
+      readOnly: true,
+      deprecated: {
+        reason: 'Use "Flyer PDF file" instead.',
+      },
+    }),
+    defineField({
       name: 'highlightImages',
       title: 'Highlight image gallery',
       description: 'Upload one or more images. One image renders as a static image; multiple images render as a slider.',
@@ -132,6 +165,14 @@ export const wellnessPageType = defineType({
       title: 'Features title',
       type: 'string',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'featuresBreakImages',
+      title: 'Features break images',
+      description: 'Five images shown side-by-side between the first two and remaining features.',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
+      validation: (Rule) => Rule.required().min(5).max(5),
     }),
     defineField({
       name: 'features',
