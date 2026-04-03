@@ -289,7 +289,14 @@ export default function AboutClientPage({
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div className="relative h-[35vh] w-full overflow-hidden">
-          <Image src={data.roomsImage.url} alt={data.roomsImage.alt} fill className="object-cover" />
+          <Image src={data.roomsImage.url} alt={data.roomsImage.alt} fill className="object-cover" sizes="100vw" />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
+            }}
+          />
         </div>
         <div className={`${pageShell} py-20 sm:py-28 lg:py-32`}>
           <div className="mb-6 text-center">
