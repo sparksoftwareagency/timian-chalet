@@ -329,28 +329,19 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
-      <section data-theme="light">
-        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
-          {breakImages.length === 0 ? null : hasBreakImageShow ? (
-            <ImageShow
-              images={breakImages}
-              className="h-full w-full"
-              aspectRatioClassName="h-full"
-              frameClassName="rounded-none"
-              sizes="100vw"
-            />
-          ) : (
-            <Image src={breakImages[0].url} alt={breakImages[0].alt} fill className="object-cover" sizes="100vw" />
-          )}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
-            }}
-          />
-        </div>
-      </section>
+      {featuresBreakImages.length === 5 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+              {featuresBreakImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
@@ -432,19 +423,28 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
-      {featuresBreakImages.length === 5 ? (
-        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
-          <div className="w-full pb-8 sm:pb-12">
-            <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
-              {featuresBreakImages.map((image, index) => (
-                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
+      <section data-theme="light">
+        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
+          {breakImages.length === 0 ? null : hasBreakImageShow ? (
+            <ImageShow
+              images={breakImages}
+              className="h-full w-full"
+              aspectRatioClassName="h-full"
+              frameClassName="rounded-none"
+              sizes="100vw"
+            />
+          ) : (
+            <Image src={breakImages[0].url} alt={breakImages[0].alt} fill className="object-cover" sizes="100vw" />
+          )}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
+            }}
+          />
+        </div>
+      </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
