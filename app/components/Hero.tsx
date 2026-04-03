@@ -34,10 +34,129 @@ type HeroData = {
   heroInNatureLine: string;
 };
 
-const FLUID_HEADING = "clamp(1.5rem, 3vw + 0.75rem, 4.5rem)";
 const MEDIA_ASPECT = "aspect-[5/2]";
+const SVG_HEADING_TINT = "rgba(118, 109, 103, 0.45)";
+const SVG_HEADING_TINT_STRONG = "rgba(118, 109, 103, 0.75)";
+
+function splitPrimaryAndSecondary(line: string): { primary: string; secondary: string } {
+  const clean = line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
+  const words = clean.split(" ").filter(Boolean);
+
+  if (words.length >= 3) {
+    return {
+      primary: words.slice(0, -1).join(" "),
+      secondary: words.slice(-1).join(" "),
+    };
+  }
+
+  return { primary: clean, secondary: "" };
+}
+
+function SvgWordmarkHeading({
+  primary,
+  secondary,
+  height,
+}: {
+  primary: string;
+  secondary: string;
+  height: string;
+}) {
+  return (
+    <svg
+      aria-label={`${primary}${secondary ? ` ${secondary}` : ""}`}
+      role="img"
+      width="100%"
+      height={height}
+      viewBox="0 0 1200 220"
+      preserveAspectRatio="xMinYMid meet"
+      className="block overflow-visible"
+    >
+      <text
+        x="0"
+        y="132"
+        className="font-sans uppercase leading-none"
+        style={{
+          fill: SVG_HEADING_TINT,
+          fontSize: "154px",
+          fontWeight: 300,
+          letterSpacing: "0.04em",
+        }}
+      >
+        {primary}
+      </text>
+      {secondary ? (
+        <text
+          x="640"
+          y="178"
+          className="font-sans uppercase leading-none"
+          style={{
+            fill: SVG_HEADING_TINT_STRONG,
+            fontSize: "72px",
+            fontWeight: 300,
+            letterSpacing: "0.03em",
+          }}
+        >
+          {secondary}
+        </text>
+      ) : null}
+    </svg>
+  );
+}
+
+function SvgTextHeading({
+  lines,
+  height,
+  stretchToWidth = false,
+}: {
+  lines: string[];
+  height: string;
+  stretchToWidth?: boolean;
+}) {
+  const cleanLines = lines.map((line) => line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim());
+  const viewBoxHeight = cleanLines.length > 1 ? 320 : 150;
+  const firstLineY = cleanLines.length > 1 ? 130 : 112;
+  const lineGap = 136;
+
+  return (
+    <svg
+      aria-label={cleanLines.join(" ")}
+      role="img"
+      width="100%"
+      height={height}
+      viewBox={`0 0 1200 ${viewBoxHeight}`}
+      preserveAspectRatio="xMinYMid meet"
+      className="block overflow-visible"
+    >
+      {cleanLines.map((line, index) => (
+        <text
+          key={`${line}-${index}`}
+          x="0"
+          y={firstLineY + index * lineGap}
+          {...(stretchToWidth
+            ? {
+                textLength: "1120",
+                lengthAdjust: "spacing" as const,
+              }
+            : {})}
+          className="font-sans uppercase leading-none"
+          style={{
+            fill: SVG_HEADING_TINT,
+            fontSize: cleanLines.length > 1 ? "138px" : "400px",
+            fontWeight: 300,
+            letterSpacing: cleanLines.length > 1 ? "0.035em" : "0.005em",
+          }}
+        >
+          {line}
+        </text>
+      ))}
+    </svg>
+  );
+}
 
 export default function Hero({ data }: { data: HeroData }) {
+  const craftedParts = splitPrimaryAndSecondary(data.heroCraftedLine);
+  const liveLine = data.heroRootedLine.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
+
   const progress = useMotionValue(0);
   const [phase, setPhase] = useState<Phase>("expanded");
   const isAnimating = useRef(false);
@@ -184,24 +303,23 @@ export default function Hero({ data }: { data: HeroData }) {
       {/* Grid content — in normal document flow below the sticky area.
           Scrolls into the viewport naturally as the page scrolls during animation. */}
       <motion.div style={{ opacity: contentOpacity }}>
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-6 md:py-10`}>
-          <div className="flex items-center order-2 md:order-1 py-6 md:py-12">
-            <h2
-              className="font-sans leading-tight"
-              style={{ fontSize: FLUID_HEADING }}
-            >
-              {data.heroCraftedLine}
-            </h2>
+        <div className={`grid grid-cols-1 md:grid-cols-10 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-6 md:py-10`}>
+          <div className="flex items-center order-2 md:order-none md:col-span-5 py-6 md:py-12">
+            <SvgWordmarkHeading
+              primary={craftedParts.primary}
+              secondary={craftedParts.secondary}
+              height="clamp(5.8rem, 14vw, 10.5rem)"
+            />
           </div>
 
           {/* Empty placeholder — the video in the sticky layer overlays this cell */}
           <div
             ref={videoCellRef}
-            className={`order-1 md:order-2 ${MEDIA_ASPECT} md:aspect-auto`}
+            className={`order-1 md:order-none md:col-span-5 ${MEDIA_ASPECT} md:aspect-auto`}
           />
 
           <div
-            className={`relative w-full overflow-hidden order-3 ${MEDIA_ASPECT} md:aspect-auto`}
+            className={`relative w-full overflow-hidden order-3 md:col-span-7 ${MEDIA_ASPECT} md:aspect-auto`}
           >
             <Image
               src={data.heroSecondaryImage.url}
@@ -213,21 +331,12 @@ export default function Hero({ data }: { data: HeroData }) {
             />
           </div>
 
-          <div className="flex items-center order-4 py-6 md:py-12">
-            <div>
-              <h2
-                className="font-sans leading-tight"
-                style={{ fontSize: FLUID_HEADING }}
-              >
-                {data.heroRootedLine}
-              </h2>
-              <h2
-                className="font-sans leading-tight"
-                style={{ fontSize: FLUID_HEADING }}
-              >
-                {data.heroInNatureLine}
-              </h2>
-            </div>
+          <div className="flex items-center order-4 md:col-span-3 py-6 md:py-12">
+            <SvgTextHeading
+              lines={[liveLine]}
+              height="clamp(8.2rem, 10vw, 15.5rem)"
+              stretchToWidth
+            />
           </div>
         </div>
       </motion.div>
