@@ -53,10 +53,30 @@ export const restaurantPageType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'ingredientsBreakImages',
+      title: 'Ingredients break images',
+      description: 'Five images shown side-by-side between the origin and spirits sections.',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const hasGalleryImages = Array.isArray(value) && value.length === 5
+          const hasLegacyImage = Boolean(
+            (context.document as {ingredientsBreakImage?: unknown})?.ingredientsBreakImage,
+          )
+
+          return hasGalleryImages || hasLegacyImage
+            ? true
+            : 'Add exactly five ingredients break images'
+        }),
+    }),
+    defineField({
+      // Legacy single-image field kept hidden for migration compatibility.
       name: 'ingredientsBreakImage',
-      title: 'Ingredients break image',
+      title: 'Ingredients break image (legacy)',
       type: 'imageBlock',
-      validation: (Rule) => Rule.required(),
+      hidden: true,
+      readOnly: true,
     }),
     defineField({
       name: 'spiritsEyebrow',
