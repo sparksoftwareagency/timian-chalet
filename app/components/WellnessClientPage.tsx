@@ -101,6 +101,8 @@ function useScrollSnapJump() {
 export default function WellnessClientPage({ data }: { data: WellnessPageData }) {
   const addRef = useRevealOnScroll();
   useScrollSnapJump();
+  const breakImages = data.breakImages.filter((image) => image?.url);
+  const hasBreakImageShow = breakImages.length > 1;
   const highlightImages = data.highlightImages.filter((image) => image?.url);
   const hasImageShow = highlightImages.length > 1;
   const singleHighlightImage = highlightImages[0];
@@ -111,9 +113,24 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
   const renderFeature = (feature: WellnessPageData["features"][number], index: number) => (
     <article key={feature._key} className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
       <div className={`lg:col-span-7 ${index % 2 === 0 ? "lg:order-2" : "lg:order-1"}`}>
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl float-soft">
-          <Image src={feature.image.url} alt={feature.image.alt} fill className="image-lift object-cover" />
-        </div>
+        {feature.images.length > 1 ? (
+          <ImageShow
+            images={feature.images}
+            aspectRatioClassName="aspect-[4/3]"
+            frameClassName="shadow-xl image-lift"
+            className="w-full float-soft"
+            sizes="(min-width: 1024px) 58vw, 100vw"
+          />
+        ) : feature.images[0] ? (
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl float-soft">
+            <Image
+              src={feature.images[0].url}
+              alt={feature.images[0].alt}
+              fill
+              className="image-lift object-cover"
+            />
+          </div>
+        ) : null}
       </div>
       <div className={`lg:col-span-5 ${index % 2 === 0 ? "lg:order-1" : "lg:order-2"}`}>
         <h3 className="mb-4 font-serif text-2xl sm:text-3xl float-soft" style={{ color: colors.accent }}>
@@ -268,7 +285,17 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
 
       <section data-theme="light">
         <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
-          <Image src={data.breakImage.url} alt={data.breakImage.alt} fill className="object-cover" sizes="100vw" />
+          {breakImages.length === 0 ? null : hasBreakImageShow ? (
+            <ImageShow
+              images={breakImages}
+              className="h-full w-full"
+              aspectRatioClassName="h-full"
+              frameClassName="rounded-none"
+              sizes="100vw"
+            />
+          ) : (
+            <Image src={breakImages[0].url} alt={breakImages[0].alt} fill className="object-cover" sizes="100vw" />
+          )}
           <div
             aria-hidden="true"
             className="absolute inset-0"

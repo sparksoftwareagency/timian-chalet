@@ -19,6 +19,7 @@ import {restaurantPageType} from './restaurantPage'
 import {siteSettingsType} from './siteSettings'
 import {statItem} from './statItem'
 import {teaserSection} from './teaserSection'
+import {wellnessFeatureItem} from './wellnessFeatureItem'
 import {wellnessPageType} from './wellnessPage'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
@@ -29,6 +30,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     navGroup,
     statItem,
     experienceItem,
+    wellnessFeatureItem,
     teaserSection,
     homeExperienceCard,
     homeExperiencesBand,

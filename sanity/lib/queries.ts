@@ -234,7 +234,7 @@ export type WellnessPageData = {
   introTitle: string
   introParagraphs: string[]
   introImage: CmsImage
-  breakImage: CmsImage
+  breakImages: CmsImage[]
   highlightEyebrow: string
   highlightTitle: string
   highlightParagraphs: string[]
@@ -246,7 +246,7 @@ export type WellnessPageData = {
     _key: string
     title: string
     description: string
-    image: CmsImage
+    images: CmsImage[]
   }>
 }
 
@@ -539,11 +539,17 @@ const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $languag
   introTitle,
   introParagraphs[],
   introImage ${imageProjection},
-  breakImage ${imageProjection},
+  "breakImages": coalesce(
+    breakImages[] ${imageProjection},
+    select(defined(breakImage) => [breakImage ${imageProjection}], [])
+  ),
   highlightEyebrow,
   highlightTitle,
   highlightParagraphs[],
-  highlightImages[] ${imageProjection},
+  "highlightImages": coalesce(
+    highlightImages[] ${imageProjection},
+    select(defined(highlightImage) => [highlightImage ${imageProjection}], [])
+  ),
   quote,
   featuresEyebrow,
   featuresTitle,
@@ -551,7 +557,10 @@ const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $languag
     _key,
     title,
     description,
-    image ${imageProjection}
+    "images": coalesce(
+      images[] ${imageProjection},
+      select(defined(image) => [image ${imageProjection}], [])
+    )
   }
 }`
 
