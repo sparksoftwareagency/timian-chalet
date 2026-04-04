@@ -161,7 +161,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           </div>
         ) : null}
       </div>
-      <div className={`lg:col-span-5 ${index % 2 === 0 ? "lg:order-1" : "lg:order-2"}`}>
+      <div className={`mx-auto max-w-2xl text-center lg:col-span-5 ${index % 2 === 0 ? "lg:order-1" : "lg:order-2"}`}>
         <h3 className="mb-4 font-serif text-2xl sm:text-3xl float-soft" style={{ color: colors.accent }}>
           {feature.title}
         </h3>
@@ -312,15 +312,19 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
               {data.introTitle}
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl">
                 <Image src={data.introImage.url} alt={data.introImage.alt} fill className="donkey-blur-in object-cover" />
               </div>
             </div>
-            <div className="flash-on-reveal space-y-6 lg:col-span-5">
+            <div className="flash-on-reveal mx-auto max-w-2xl space-y-6 text-center lg:col-span-5">
               {data.introParagraphs.map((paragraph) => (
-                <p key={paragraph} className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+                <p
+                  key={paragraph}
+                  className="mx-auto max-w-md text-base leading-relaxed sm:text-lg"
+                  style={{ color: colors.textSecondary }}
+                >
                   {paragraph}
                 </p>
               ))}
@@ -329,35 +333,26 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
-      <section data-theme="light">
-        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
-          {breakImages.length === 0 ? null : hasBreakImageShow ? (
-            <ImageShow
-              images={breakImages}
-              className="h-full w-full"
-              aspectRatioClassName="h-full"
-              frameClassName="rounded-none"
-              sizes="100vw"
-            />
-          ) : (
-            <Image src={breakImages[0].url} alt={breakImages[0].alt} fill className="object-cover" sizes="100vw" />
-          )}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
-            }}
-          />
-        </div>
-      </section>
+      {featuresBreakImages.length === 5 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+              {featuresBreakImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(1)}
           className={`reveal-section ${pageShell} grid grid-cols-1 items-center gap-10 py-20 sm:py-28 lg:grid-cols-12 lg:gap-14 lg:py-32`}
         >
-          <div className="flash-on-reveal order-1 lg:order-1 lg:col-span-6">
+          <div className="flash-on-reveal order-1 mx-auto max-w-3xl text-center lg:order-1 lg:col-span-6">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.highlightEyebrow}
             </span>
@@ -432,19 +427,28 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
-      {featuresBreakImages.length === 5 ? (
-        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
-          <div className="w-full pb-8 sm:pb-12">
-            <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
-              {featuresBreakImages.map((image, index) => (
-                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
+      <section data-theme="light">
+        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
+          {breakImages.length === 0 ? null : hasBreakImageShow ? (
+            <ImageShow
+              images={breakImages}
+              className="h-full w-full"
+              aspectRatioClassName="h-full"
+              frameClassName="rounded-none"
+              sizes="100vw"
+            />
+          ) : (
+            <Image src={breakImages[0].url} alt={breakImages[0].alt} fill className="object-cover" sizes="100vw" />
+          )}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
+            }}
+          />
+        </div>
+      </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div

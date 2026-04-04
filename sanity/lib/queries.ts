@@ -170,7 +170,7 @@ export type RestaurantPageData = {
   originTitle: string
   originParagraphs: string[]
   originPrimaryImage: CmsImage
-  ingredientsBreakImage: CmsImage
+  ingredientsBreakImages: CmsImage[]
   spiritsEyebrow: string
   spiritsTitle: string
   spiritsParagraphs: string[]
@@ -480,7 +480,10 @@ const restaurantPageQuery = groq`*[_type == "restaurantPage" && language == $lan
   originTitle,
   originParagraphs[],
   originPrimaryImage ${imageProjection},
-  ingredientsBreakImage ${imageProjection},
+  "ingredientsBreakImages": coalesce(
+    ingredientsBreakImages[] ${imageProjection},
+    select(defined(ingredientsBreakImage) => [ingredientsBreakImage ${imageProjection}], [])
+  ),
   spiritsEyebrow,
   spiritsTitle,
   spiritsParagraphs[],

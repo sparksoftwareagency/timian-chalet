@@ -461,7 +461,7 @@ export default function ClientPage({
               </p>
               <div className="flex w-full justify-center">
                 <SectionLink
-                  href={localizeHref(locale, data.culinarySection.link.href)}
+                  href={localizeHref(locale, "/restaurant")}
                   label={data.culinarySection.link.label}
                   color={colors.cta}
                 />

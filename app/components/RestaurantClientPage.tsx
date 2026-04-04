@@ -98,6 +98,9 @@ function useScrollSnapJump() {
 export default function RestaurantClientPage({ data }: { data: RestaurantPageData }) {
   const addRef = useRevealOnScroll();
   useScrollSnapJump();
+  const ingredientsBreakImages = data.ingredientsBreakImages
+    .filter((image) => image?.url)
+    .slice(0, 5);
 
   return (
     <main className="w-full">
@@ -215,8 +218,8 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
               {data.originTitle}
             </h2>
           </div>
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
-            <div className="flash-on-reveal space-y-6 lg:col-span-5">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
+            <div className="flash-on-reveal mx-auto max-w-2xl space-y-6 text-center lg:col-span-5">
               {data.originParagraphs.map((paragraph) => (
                 <p key={paragraph} className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
                   {paragraph}
@@ -237,24 +240,19 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
         </div>
       </section>
 
-      <section data-theme="light">
-        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
-          <Image
-            src={data.ingredientsBreakImage.url}
-            alt={data.ingredientsBreakImage.alt}
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
-            }}
-          />
-        </div>
-      </section>
+      {ingredientsBreakImages.length === 5 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+              {ingredientsBreakImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
@@ -266,7 +264,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
               <Image src={data.spiritsImage.url} alt={data.spiritsImage.alt} fill className="flash-on-reveal object-cover" />
             </div>
           </div>
-          <div className="flash-on-reveal order-1 lg:order-2 lg:col-span-6">
+          <div className="flash-on-reveal order-1 mx-auto max-w-3xl text-center lg:order-2 lg:col-span-6">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
               {data.spiritsEyebrow}
             </span>
@@ -320,7 +318,20 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div className="relative h-[35vh] w-full overflow-hidden">
-          <Image src={data.atmosphereImage.url} alt={data.atmosphereImage.alt} fill className="object-cover" />
+          <Image
+            src={data.atmosphereImage.url}
+            alt={data.atmosphereImage.alt}
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
+            }}
+          />
         </div>
         <div className={`${pageShell} py-20 sm:py-28 lg:py-32`}>
           <div className="mb-6 text-center">
@@ -330,7 +341,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
             <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
               {data.atmosphereTitle}
             </h2>
-            <p className="mx-auto mt-8 max-w-3xl text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+            <p className="mx-auto mt-8 max-w-3xl text-center text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
               {data.atmosphereIntro}
             </p>
           </div>
