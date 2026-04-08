@@ -118,6 +118,16 @@ export const localCheesePageType = defineType({
       validation: (Rule) => Rule.required().length(4),
     }),
     defineField({
+      name: 'seasonalityVideo',
+      title: 'Seasonality video',
+      description: 'Video file for the final seasonality split section (9:16).',
+      type: 'file',
+      options: {
+        accept: 'video/*',
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'seasonalityEyebrow',
       title: 'Seasonality eyebrow',
       type: 'string',

@@ -356,7 +356,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
             <div className="relative mx-auto w-full max-w-[520px] overflow-hidden rounded-lg shadow-xl lg:max-w-none">
               <div className="aspect-[9/16] w-full">
                 <video
-                  src="/local_cheese/Nature_1_v1.mov"
+                  src={data.seasonalityVideoUrl}
                   className="h-full w-full object-cover"
                   autoPlay
                   muted
