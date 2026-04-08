@@ -285,14 +285,14 @@ export default function Hero({ data }: { data: HeroData }) {
             className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white px-4"
           >
             <h1
-              className="font-sans uppercase tracking-[0.25em]"
-              style={{ fontSize: "clamp(2rem, 6vw + 0.5rem, 6rem)" }}
+              className="font-serif font-light uppercase tracking-[0.2em]"
+              style={{ fontSize: "clamp(2.5rem, 5.2vw + 0.75rem, 6rem)" }}
             >
               {data.heroTitle}
             </h1>
             <p
-              className="mt-4 sm:mt-6 font-sans italic"
-              style={{ fontSize: "clamp(1rem, 1.5vw + 0.5rem, 1.5rem)" }}
+              className="mt-4 max-w-2xl font-light leading-relaxed text-white/80 sm:mt-6"
+              style={{ fontSize: "clamp(1.05rem, 1.25vw + 0.55rem, 1.5rem)" }}
             >
               {data.heroSubtitle}
             </p>
