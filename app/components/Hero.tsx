@@ -56,10 +56,12 @@ function SvgWordmarkHeading({
   primary,
   secondary,
   height,
+  shouldAnimate,
 }: {
   primary: string;
   secondary: string;
   height: string;
+  shouldAnimate: boolean;
 }) {
   return (
     <svg
@@ -71,33 +73,39 @@ function SvgWordmarkHeading({
       preserveAspectRatio="xMinYMid meet"
       className="block overflow-visible"
     >
-      <text
+      <motion.text
         x="0"
-        y="132"
+        y="112"
         className="font-sans uppercase leading-none"
+        initial={{ y: 172, opacity: 0 }}
+        animate={shouldAnimate ? { y: 112, opacity: 1 } : { y: 172, opacity: 0 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         style={{
           fill: SVG_HEADING_TINT,
-          fontSize: "154px",
+          fontSize: "134px",
           fontWeight: 300,
           letterSpacing: "0.04em",
         }}
       >
         {primary}
-      </text>
+      </motion.text>
       {secondary ? (
-        <text
+        <motion.text
           x="640"
-          y="178"
+          y="163"
           className="font-sans uppercase leading-none"
+          initial={{ y: 231, opacity: 0 }}
+          animate={shouldAnimate ? { y: 163, opacity: 1 } : { y: 231, opacity: 0 }}
+          transition={{ duration: 0.9, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fill: SVG_HEADING_TINT_STRONG,
-            fontSize: "72px",
+            fontSize: "60px",
             fontWeight: 300,
             letterSpacing: "0.03em",
           }}
         >
           {secondary}
-        </text>
+        </motion.text>
       ) : null}
     </svg>
   );
@@ -107,10 +115,16 @@ function SvgTextHeading({
   lines,
   height,
   stretchToWidth = false,
+  shouldAnimate,
+  baseDelay = 0.1,
+  singleLineFontSize = "400px",
 }: {
   lines: string[];
   height: string;
   stretchToWidth?: boolean;
+  shouldAnimate: boolean;
+  baseDelay?: number;
+  singleLineFontSize?: string;
 }) {
   const cleanLines = lines.map((line) => line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim());
   const viewBoxHeight = cleanLines.length > 1 ? 320 : 150;
@@ -128,7 +142,7 @@ function SvgTextHeading({
       className="block overflow-visible"
     >
       {cleanLines.map((line, index) => (
-        <text
+        <motion.text
           key={`${line}-${index}`}
           x="0"
           y={firstLineY + index * lineGap}
@@ -139,15 +153,26 @@ function SvgTextHeading({
               }
             : {})}
           className="font-sans uppercase leading-none"
+          initial={{ y: firstLineY + index * lineGap + 72, opacity: 0 }}
+          animate={
+            shouldAnimate
+              ? { y: firstLineY + index * lineGap, opacity: 1 }
+              : { y: firstLineY + index * lineGap + 72, opacity: 0 }
+          }
+          transition={{
+            duration: 0.9,
+            delay: baseDelay + index * 0.06,
+            ease: [0.22, 1, 0.36, 1],
+          }}
           style={{
             fill: SVG_HEADING_TINT,
-            fontSize: cleanLines.length > 1 ? "138px" : "400px",
+            fontSize: cleanLines.length > 1 ? "138px" : singleLineFontSize,
             fontWeight: 300,
             letterSpacing: cleanLines.length > 1 ? "0.035em" : "0.005em",
           }}
         >
           {line}
-        </text>
+        </motion.text>
       ))}
     </svg>
   );
@@ -156,6 +181,7 @@ function SvgTextHeading({
 export default function Hero({ data }: { data: HeroData }) {
   const craftedParts = splitPrimaryAndSecondary(data.heroCraftedLine);
   const liveLine = data.heroRootedLine.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
+  const inNatureLine = data.heroInNatureLine.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
 
   const progress = useMotionValue(0);
   const [phase, setPhase] = useState<Phase>("expanded");
@@ -240,6 +266,7 @@ export default function Hero({ data }: { data: HeroData }) {
 
   const contentOpacity = useTransform(progress, [0.4, 1], [0, 1]);
   const titleOpacity = useTransform(progress, [0, 0.4], [1, 0]);
+  const showFlowingHeadings = phase === "collapsed";
 
   return (
     <div data-theme="light" style={{ height: "190vh", position: "relative" }}>
@@ -308,7 +335,8 @@ export default function Hero({ data }: { data: HeroData }) {
             <SvgWordmarkHeading
               primary={craftedParts.primary}
               secondary={craftedParts.secondary}
-              height="clamp(5.8rem, 14vw, 10.5rem)"
+              height="clamp(6.5rem, 15vw, 12rem)"
+              shouldAnimate={showFlowingHeadings}
             />
           </div>
 
@@ -334,8 +362,19 @@ export default function Hero({ data }: { data: HeroData }) {
           <div className="flex items-center order-4 md:col-span-3 py-6 md:py-12">
             <SvgTextHeading
               lines={[liveLine]}
-              height="clamp(8.2rem, 10vw, 15.5rem)"
+              height="clamp(6rem, 7.5vw, 11rem)"
               stretchToWidth
+              shouldAnimate={showFlowingHeadings}
+            />
+          </div>
+
+          <div className="flex items-center order-5 md:col-span-10 py-6 md:py-6">
+            <SvgTextHeading
+              lines={[inNatureLine]}
+              height="clamp(7rem, 7vw, 16rem)"
+              shouldAnimate={showFlowingHeadings}
+              baseDelay={0.2}
+              singleLineFontSize="138px"
             />
           </div>
         </div>

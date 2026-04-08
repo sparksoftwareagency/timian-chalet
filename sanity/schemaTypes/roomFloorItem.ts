@@ -18,11 +18,17 @@ export const roomFloorItem = defineType({
       rows: 4,
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'image',
+      title: 'Image',
+      type: 'imageBlock',
+    }),
   ],
   preview: {
     select: {
       title: 'title',
       subtitle: 'description',
+      media: 'image.image',
     },
   },
 })

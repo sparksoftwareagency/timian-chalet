@@ -9,11 +9,17 @@ import {
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
 import { colors } from "@/app/theme/colors";
-import { pageGutterX, pageShell } from "@/app/theme/pageShell";
+import { pageShell } from "@/app/theme/pageShell";
 import type { RestaurantPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
 const JUMP_DURATION = 1.9;
+const HIGHLIGHT_IMAGE_BY_TITLE: Record<string, string> = {
+  atmosphere: "/three_columns/atmosphere.jpg",
+  authenticity: "/three_columns/authenticity.jpg",
+  view: "/three_columns/view.jpg",
+  views: "/three_columns/view.jpg",
+};
 
 function useRevealOnScroll() {
   const refs = useRef<(HTMLElement | null)[]>([]);
@@ -133,15 +139,6 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
           opacity: 0;
           transform: scale(1.05);
           animation: hero-enter 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-        .reveal-quote {
-          opacity: 0;
-          clip-path: inset(0 100% 0 0);
-          transition: clip-path 0.9s ease-out, opacity 0.6s ease-out;
-        }
-        .revealed .reveal-quote {
-          opacity: 1;
-          clip-path: inset(0 0 0 0);
         }
         .float-soft {
           animation: soft-float 7.5s ease-in-out infinite;
@@ -280,17 +277,9 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
         </div>
       </section>
 
-      <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
-        <div ref={addRef(2)} className={`mx-auto max-w-4xl ${pageGutterX} py-20 sm:py-28`}>
-          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
-            &ldquo;{data.quote}&rdquo;
-          </blockquote>
-        </div>
-      </section>
-
       <section style={{ backgroundColor: colors.primaryBg }}>
         <div
-          ref={addRef(3)}
+          ref={addRef(2)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="mb-16 text-center">
@@ -347,13 +336,30 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
           </div>
           <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
             {data.highlights.map((feature) => (
-              <div key={feature.title} className="rounded-lg p-8 text-center" style={{ backgroundColor: colors.primaryBg }}>
-                <h3 className="mb-4 font-serif text-lg sm:text-xl" style={{ color: colors.accent }}>
-                  {feature.title}
-                </h3>
-                <p className="text-sm leading-relaxed sm:text-base" style={{ color: colors.textSecondary }}>
-                  {feature.description}
-                </p>
+              <div key={feature.title} className="text-center">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-lg shadow-lg">
+                  <Image
+                    src={
+                      feature.image?.url ||
+                      HIGHLIGHT_IMAGE_BY_TITLE[feature.title.trim().toLowerCase()] ||
+                      "/three_columns/view.jpg"
+                    }
+                    alt={feature.title}
+                    fill
+                    className="object-cover blur-[2px] scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/45" />
+                  <div className="absolute inset-0 flex items-center justify-center px-4 text-center">
+                    <div className="max-w-[90%]">
+                      <h4 className="mb-3 font-serif text-xl text-white sm:text-2xl">
+                        {feature.title}
+                      </h4>
+                      <p className="text-sm leading-relaxed text-white sm:text-base">
+                        {feature.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

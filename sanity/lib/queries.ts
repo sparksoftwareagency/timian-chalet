@@ -113,10 +113,12 @@ export type HomePageData = {
   welcomeTitle: string
   welcomeParagraphs: string[]
   welcomeImage: CmsImage
+  welcomeDividerImages: CmsImage[]
   stats: CmsStat[]
   hotelSection: CmsTeaserSection
   roomsDividerImage: CmsImage
   roomsSection: CmsTeaserSection
+  roomsBreakImages: CmsImage[]
   culinaryDividerImage: CmsImage
   culinarySection: CmsTeaserSection
   experiencesDividerImage: CmsImage
@@ -184,7 +186,7 @@ export type RestaurantPageData = {
   atmosphereEyebrow: string
   atmosphereTitle: string
   atmosphereIntro: string
-  highlights: Array<{title: string; description: string}>
+  highlights: Array<{title: string; description: string; image?: CmsImage}>
 }
 
 export type ExperiencesPageData = {
@@ -425,6 +427,14 @@ const homePageQuery = groq`*[_type == "homePage" && language == $language][0]{
   welcomeTitle,
   welcomeParagraphs[],
   welcomeImage ${imageProjection},
+  "welcomeDividerImages": coalesce(
+    welcomeDividerImages[]{
+      "alt": coalesce(alt, ""),
+      image,
+      "url": select(defined(image.asset) => image.asset->url, url)
+    },
+    []
+  ),
   stats[]{
     value,
     label
@@ -432,6 +442,14 @@ const homePageQuery = groq`*[_type == "homePage" && language == $language][0]{
   hotelSection ${teaserProjection},
   roomsDividerImage ${imageProjection},
   roomsSection ${teaserProjection},
+  "roomsBreakImages": coalesce(
+    roomsBreakImages[]{
+      "alt": coalesce(alt, ""),
+      image,
+      "url": select(defined(image.asset) => image.asset->url, url)
+    },
+    []
+  ),
   culinaryDividerImage ${imageProjection},
   culinarySection ${teaserProjection},
   experiencesDividerImage ${imageProjection},
@@ -499,7 +517,11 @@ const restaurantPageQuery = groq`*[_type == "restaurantPage" && language == $lan
   atmosphereIntro,
   highlights[]{
     title,
-    description
+    description,
+    image {
+      alt,
+      image
+    }
   }
 }`
 
