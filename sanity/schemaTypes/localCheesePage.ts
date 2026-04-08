@@ -109,6 +109,15 @@ export const localCheesePageType = defineType({
       validation: (Rule) => Rule.required().length(4),
     }),
     defineField({
+      name: 'collectionsBreakImages',
+      title: 'Collections break images',
+      description:
+        'Four images shown side-by-side between the collections and seasonality sections.',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
+      validation: (Rule) => Rule.required().length(4),
+    }),
+    defineField({
       name: 'seasonalityEyebrow',
       title: 'Seasonality eyebrow',
       type: 'string',

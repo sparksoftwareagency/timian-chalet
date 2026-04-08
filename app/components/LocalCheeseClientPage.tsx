@@ -108,6 +108,9 @@ function useScrollSnapJump() {
 export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageData }) {
   const addRef = useRevealOnScroll();
   useScrollSnapJump();
+  const collectionsBreakImages = data.collectionsBreakImages
+    .filter((image) => image?.url)
+    .slice(0, 4);
 
   return (
     <main className="w-full">
@@ -329,6 +332,20 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
           </div>
         </div>
       </section>
+
+      {collectionsBreakImages.length === 4 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+              {collectionsBreakImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="25vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
