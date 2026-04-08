@@ -139,12 +139,12 @@ export default function AboutClientPage({
         }
         .reveal-quote {
           opacity: 0;
-          clip-path: inset(0 100% 0 0);
-          transition: clip-path 0.9s ease-out, opacity 0.6s ease-out;
+          transform: translateY(32px);
+          transition: opacity 0.85s ease-out, transform 0.85s ease-out;
         }
         .revealed .reveal-quote {
           opacity: 1;
-          clip-path: inset(0 0 0 0);
+          transform: translateY(0);
         }
         @keyframes section-flash {
           0% {
@@ -155,6 +155,12 @@ export default function AboutClientPage({
           }
           100% {
             filter: brightness(1) saturate(1);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .reveal-quote {
+            transform: translateY(0);
+            transition: opacity 0.35s ease-out;
           }
         }
       `}</style>
