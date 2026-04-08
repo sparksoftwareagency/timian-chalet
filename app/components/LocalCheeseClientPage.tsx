@@ -8,12 +8,21 @@ import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
-import { colors } from "@/app/theme/colors";
+import { colors, palette } from "@/app/theme/colors";
 import { pageGutterX, pageShell } from "@/app/theme/pageShell";
 import type { LocalCheesePageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
 const JUMP_DURATION = 1.9;
+
+/** Temporary quote color previews — remove extras once you pick one. */
+const QUOTE_COLOR_VARIANTS = [
+  { label: "colors.accent · deepSage", color: palette.deepSage },
+  { label: "colors.cta · dustyRoseGold", color: palette.dustyRoseGold },
+  { label: "colors.textPrimary · charcoalBlack", color: palette.charcoalBlack },
+  { label: "colors.textSecondary · warmGray", color: palette.warmGray },
+  { label: "colors.border · pearl", color: palette.pearl },
+] as const;
 
 function useRevealOnScroll() {
   const refs = useRef<(HTMLElement | null)[]>([]);
@@ -133,12 +142,12 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
         }
         .reveal-quote {
           opacity: 0;
-          clip-path: inset(0 100% 0 0);
-          transition: clip-path 0.9s ease-out, opacity 0.6s ease-out;
+          transform: translateY(32px);
+          transition: opacity 0.85s ease-out, transform 0.85s ease-out;
         }
         .revealed .reveal-quote {
           opacity: 1;
-          clip-path: inset(0 0 0 0);
+          transform: translateY(0);
         }
         .float-soft {
           animation: soft-float 7.5s ease-in-out infinite;
@@ -179,6 +188,10 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
           .hero-image-enter,
           .float-soft {
             animation: none;
+          }
+          .reveal-quote {
+            transform: translateY(0);
+            transition: opacity 0.35s ease-out;
           }
         }
       `}</style>
@@ -261,9 +274,12 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
         </div>
       </section>
 
-      <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
+      <section data-theme="dark" style={{ backgroundColor: colors.primaryBg }}>
         <div ref={addRef(2)} className={`mx-auto max-w-4xl ${pageGutterX} py-20 sm:py-28`}>
-          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
+          <blockquote
+            className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug sm:text-3xl lg:text-4xl"
+            style={{ color: colors.accent }}
+          >
             &ldquo;{data.quote}&rdquo;
           </blockquote>
         </div>

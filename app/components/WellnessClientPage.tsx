@@ -16,7 +16,7 @@ import {
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
 import { colors } from "@/app/theme/colors";
-import { pageGutterX, pageShell } from "@/app/theme/pageShell";
+import { pageShell } from "@/app/theme/pageShell";
 import type { WellnessPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
@@ -211,15 +211,6 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         .reveal-section.revealed .image-lift {
           transform: scale(1);
         }
-        .reveal-quote {
-          opacity: 0;
-          clip-path: inset(0 100% 0 0);
-          transition: clip-path 0.9s ease-out, opacity 0.6s ease-out;
-        }
-        .revealed .reveal-quote {
-          opacity: 1;
-          clip-path: inset(0 0 0 0);
-        }
         .float-soft {
           animation: soft-float 7.5s ease-in-out infinite;
           animation-delay: 0.25s;
@@ -400,17 +391,9 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
-      <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
-        <div ref={addRef(2)} className={`mx-auto max-w-4xl ${pageGutterX} py-20 sm:py-28`}>
-          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
-            &ldquo;{data.quote}&rdquo;
-          </blockquote>
-        </div>
-      </section>
-
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
-          ref={addRef(3)}
+          ref={addRef(2)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="mb-16 text-center">
@@ -452,7 +435,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
-          ref={addRef(4)}
+          ref={addRef(3)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="space-y-16">
