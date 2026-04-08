@@ -5,6 +5,7 @@ import Link from "next/link";
 import { animate } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 
+import FullBleedParallaxDivider from "@/app/components/FullBleedParallaxDivider";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
@@ -214,16 +215,11 @@ export default function AboutClientPage({
       </section>
 
       <section data-theme="light">
-        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
-          <Image src={data.animalsBreakImage.url} alt={data.animalsBreakImage.alt} fill className="object-cover" sizes="100vw" />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
-            }}
-          />
-        </div>
+        <FullBleedParallaxDivider
+          gradientTop={colors.primaryBg}
+          gradientBottom={colors.secondaryBg}
+          image={data.animalsBreakImage}
+        />
       </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
@@ -294,16 +290,11 @@ export default function AboutClientPage({
       </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
-        <div className="relative h-[35vh] w-full overflow-hidden">
-          <Image src={data.roomsImage.url} alt={data.roomsImage.alt} fill className="object-cover" sizes="100vw" />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
-            }}
-          />
-        </div>
+        <FullBleedParallaxDivider
+          gradientTop={colors.primaryBg}
+          gradientBottom={colors.secondaryBg}
+          image={data.roomsImage}
+        />
         <div className={`${pageShell} py-20 sm:py-28 lg:py-32`}>
           <div className="mb-6 text-center">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>

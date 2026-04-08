@@ -4,6 +4,7 @@ import Image from "next/image";
 import { animate } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 
+import FullBleedParallaxDivider from "@/app/components/FullBleedParallaxDivider";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
@@ -236,16 +237,11 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
       </section>
 
       <section data-theme="light">
-        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
-          <Image src={data.cellarBreakImage.url} alt={data.cellarBreakImage.alt} fill className="object-cover" sizes="100vw" />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
-            }}
-          />
-        </div>
+        <FullBleedParallaxDivider
+          gradientTop={colors.primaryBg}
+          gradientBottom={colors.secondaryBg}
+          image={data.cellarBreakImage}
+        />
       </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>

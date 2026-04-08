@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 
+import FullBleedParallaxDivider from "@/app/components/FullBleedParallaxDivider";
 import ImageShow from "@/app/components/ImageShow";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
@@ -410,28 +411,25 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
-      <section data-theme="light">
-        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
-          {breakImages.length === 0 ? null : hasBreakImageShow ? (
-            <ImageShow
-              images={breakImages}
-              className="h-full w-full"
-              aspectRatioClassName="h-full"
-              frameClassName="rounded-none"
-              sizes="100vw"
-            />
-          ) : (
-            <Image src={breakImages[0].url} alt={breakImages[0].alt} fill className="object-cover" sizes="100vw" />
-          )}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
-            }}
-          />
-        </div>
-      </section>
+      {breakImages.length > 0 ? (
+        <section data-theme="light">
+          <FullBleedParallaxDivider
+            gradientTop={colors.primaryBg}
+            gradientBottom={colors.secondaryBg}
+            image={hasBreakImageShow ? undefined : breakImages[0]}
+          >
+            {hasBreakImageShow ? (
+              <ImageShow
+                images={breakImages}
+                className="h-full w-full"
+                aspectRatioClassName="h-full"
+                frameClassName="rounded-none"
+                sizes="100vw"
+              />
+            ) : null}
+          </FullBleedParallaxDivider>
+        </section>
+      ) : null}
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
