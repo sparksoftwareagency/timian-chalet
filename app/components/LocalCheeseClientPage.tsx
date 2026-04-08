@@ -352,25 +352,42 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
           ref={addRef(4)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
-          <div className="mb-8 text-center">
-            <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
-              {data.seasonalityEyebrow}
-            </span>
-            <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
-              {data.seasonalityTitle}
-            </h2>
-            <p className="mx-auto mt-8 max-w-3xl text-center text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
-              {data.seasonalityIntro}
-            </p>
-          </div>
-          <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2">
-            {data.seasonalityNotes.map((note) => (
-              <div key={note} className="rounded-lg p-8 text-center" style={{ backgroundColor: colors.primaryBg }}>
-                <p className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
-                  {note}
-                </p>
+          <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-14">
+            <div className="relative mx-auto w-full max-w-[520px] overflow-hidden rounded-lg shadow-xl lg:max-w-none">
+              <div className="aspect-[9/16] w-full">
+                <video
+                  src="/local_cheese/Nature_1_v1.mov"
+                  className="h-full w-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                />
               </div>
-            ))}
+            </div>
+
+            <div className="lg:sticky lg:top-0 lg:flex lg:h-screen lg:items-center">
+              <div className="mx-auto max-w-3xl text-center">
+                <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
+                  {data.seasonalityEyebrow}
+                </span>
+                <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
+                  {data.seasonalityTitle}
+                </h2>
+                <p className="mx-auto mt-8 max-w-3xl text-center text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+                  {data.seasonalityIntro}
+                </p>
+                <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2">
+                  {data.seasonalityNotes.map((note) => (
+                    <div key={note} className="rounded-lg p-8 text-center" style={{ backgroundColor: colors.primaryBg }}>
+                      <p className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+                        {note}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
