@@ -212,6 +212,13 @@ export type ExperiencesPageData = {
   }>
   experienceDividerImages: CmsImage[]
   closingQuote: string
+  moreExperiencesTitle: string
+  moreExperiences: Array<{
+    _key: string
+    title: string
+    description: string
+    image: CmsImage
+  }>
 }
 
 export type RoomsPageData = {
@@ -557,7 +564,17 @@ const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $l
     image ${imageProjection}
   },
   "experienceDividerImages": coalesce(experienceDividerImages[] ${imageProjection}, []),
-  closingQuote
+  closingQuote,
+  moreExperiencesTitle,
+  "moreExperiences": coalesce(
+    moreExperiences[]{
+      _key,
+      title,
+      description,
+      image ${imageProjection}
+    },
+    []
+  )
 }`
 
 const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $language][0]{

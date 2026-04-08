@@ -132,6 +132,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
   const videoSideImageLeft = data.experienceVideoSideImageLeft?.url ? data.experienceVideoSideImageLeft : null;
   const videoSideImageRight = data.experienceVideoSideImageRight?.url ? data.experienceVideoSideImageRight : null;
   const experienceDividerImages = data.experienceDividerImages.filter((image) => image?.url).slice(0, 4);
+  const moreExperiences = data.moreExperiences.filter((experience) => experience.image?.url);
   const chapterHeightVh = Math.max(data.activities.length * 90, 320);
   const revealWindow = 0.2;
   const chapterRevealProgress = clamp(activitiesProgress / revealWindow, 0, 1);
@@ -428,6 +429,42 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
           </div>
         </section>
       ) : null}
+
+      <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+        <div className={`${pageShell} py-20 sm:py-24 lg:py-28`}>
+          <div className="mb-12 text-center">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
+              {data.moreExperiencesTitle}
+            </h2>
+          </div>
+          <div className="grid gap-x-6 gap-y-36 sm:grid-cols-2 lg:grid-cols-3">
+            {moreExperiences.map((experience, index) => (
+              <article
+                key={experience._key}
+                className={`mx-auto w-full max-w-[19rem] overflow-hidden ${
+                  index === moreExperiences.length - 1 && moreExperiences.length % 3 === 1 ? "lg:col-start-2" : ""
+                }`}
+              >
+                <div className="relative aspect-[4/5] w-full overflow-hidden">
+                  <Image
+                    src={experience.image.url}
+                    alt={experience.image.alt || experience.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </div>
+                <h3 className="mt-4 font-serif text-xl leading-tight sm:text-2xl" style={{ color: colors.accent }}>
+                  {experience.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed" style={{ color: colors.textSecondary }}>
+                  {experience.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

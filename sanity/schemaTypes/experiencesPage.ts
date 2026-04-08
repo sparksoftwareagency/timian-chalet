@@ -94,6 +94,19 @@ export const experiencesPageType = defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'moreExperiencesTitle',
+      title: 'More experiences title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'moreExperiences',
+      title: 'More experiences',
+      type: 'array',
+      of: [{type: 'experienceItem'}],
+      validation: (Rule) => Rule.required().min(1),
+    }),
   ],
   preview: {
     select: {
