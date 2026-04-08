@@ -10,7 +10,7 @@ import {
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
 import { colors } from "@/app/theme/colors";
-import { pageGutterX, pageShell } from "@/app/theme/pageShell";
+import { pageShell } from "@/app/theme/pageShell";
 import type { ExperiencesPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
@@ -235,15 +235,6 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
           opacity: 1;
           transform: translateY(0);
         }
-        .reveal-quote {
-          opacity: 0;
-          clip-path: inset(0 100% 0 0);
-          transition: clip-path 0.9s ease-out, opacity 0.6s ease-out;
-        }
-        .revealed .reveal-quote {
-          opacity: 1;
-          clip-path: inset(0 0 0 0);
-        }
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
@@ -344,17 +335,9 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         </div>
       </section>
 
-      <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
-        <div ref={addRef(1)} className={`mx-auto max-w-5xl ${pageGutterX} py-20 text-center sm:py-28`}>
-          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
-            &ldquo;{data.closingQuote}&rdquo;
-          </blockquote>
-        </div>
-      </section>
-
       <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
         <div
-          ref={addRef(2)}
+          ref={addRef(1)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="mb-16 text-center">
@@ -376,9 +359,9 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       </section>
 
       {data.experienceVideoUrl ? (
-        <section style={{ backgroundColor: colors.secondaryBg }}>
+        <section style={{ backgroundColor: colors.primaryBg }}>
           <div
-            ref={addRef(3)}
+            ref={addRef(2)}
             className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
           >
             <div className="mx-auto max-w-5xl text-center">
