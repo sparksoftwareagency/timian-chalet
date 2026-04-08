@@ -210,7 +210,6 @@ export type ExperiencesPageData = {
     description: string
     image: CmsImage
   }>
-  closingQuote: string
 }
 
 export type RoomsPageData = {
@@ -243,7 +242,6 @@ export type WellnessPageData = {
   flyerButtonLabel: string
   flyerPdfUrl: string
   highlightImages: CmsImage[]
-  quote: string
   featuresEyebrow: string
   featuresTitle: string
   featuresBreakImages: CmsImage[]
@@ -282,6 +280,8 @@ export type LocalCheesePageData = {
     pairing: string
     image: CmsImage
   }>
+  collectionsBreakImages: CmsImage[]
+  seasonalityVideoUrl: string
   seasonalityEyebrow: string
   seasonalityTitle: string
   seasonalityIntro: string
@@ -553,8 +553,7 @@ const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $l
     title,
     description,
     image ${imageProjection}
-  },
-  closingQuote
+  }
 }`
 
 const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $language][0]{
@@ -580,7 +579,6 @@ const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $languag
     highlightImages[] ${imageProjection},
     select(defined(highlightImage) => [highlightImage ${imageProjection}], [])
   ),
-  quote,
   featuresEyebrow,
   featuresTitle,
   "featuresBreakImages": coalesce(featuresBreakImages[] ${imageProjection}, []),
@@ -622,6 +620,8 @@ const localCheesePageQuery = groq`*[_type == "localCheesePage" && language == $l
     pairing,
     image ${imageProjection}
   },
+  "collectionsBreakImages": coalesce(collectionsBreakImages[] ${imageProjection}, []),
+  "seasonalityVideoUrl": seasonalityVideo.asset->url,
   seasonalityEyebrow,
   seasonalityTitle,
   seasonalityIntro,
