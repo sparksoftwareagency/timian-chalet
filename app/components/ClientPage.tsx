@@ -139,6 +139,8 @@ export default function ClientPage({
   loadingText: string;
 }) {
   const addRef = useRevealOnScroll();
+  const welcomeDividerImages = data.welcomeDividerImages.filter((image) => image?.url);
+  const roomsBreakImages = data.roomsBreakImages.filter((image) => image?.url);
 
   useEffect(() => {
     if ("scrollRestoration" in history) {
@@ -194,7 +196,7 @@ export default function ClientPage({
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
-            <div className="flex-1 min-w-0 flex flex-col items-center text-center">
+            <div className="w-full lg:w-[35%] min-w-0 flex flex-col items-center text-center">
               <h2
                 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-normal tracking-tight mb-3"
                 style={{ color: colors.accent }}
@@ -211,7 +213,7 @@ export default function ClientPage({
               </div>
             </div>
 
-            <div className="flex-1 min-w-0 w-full lg:w-auto flex justify-center">
+            <div className="w-full lg:w-[65%] min-w-0 flex justify-center">
               <div className="relative w-full aspect-[3/4] max-h-[600px] rounded-lg overflow-hidden shadow-xl">
                 <Image
                   src={data.welcomeImage.url}
@@ -226,6 +228,20 @@ export default function ClientPage({
           </div>
         </div>
       </section>
+
+      {welcomeDividerImages.length > 0 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+              {welcomeDividerImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section
         data-theme="light"
@@ -318,7 +334,7 @@ export default function ClientPage({
                 {data.experiencesBand.eyebrow}
               </span>
               <h3
-                className="text-2xl sm:text-3xl lg:text-4xl font-serif leading-tight mb-6 max-w-2xl"
+                className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 max-w-2xl"
                 style={{ color: colors.accent }}
               >
                 {data.experiencesBand.title.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim()}
@@ -380,7 +396,7 @@ export default function ClientPage({
           className={`reveal-section ${pageShell} py-20 sm:py-24`}
         >
           <div className="flex flex-col-reverse lg:flex-row-reverse gap-12 lg:gap-16 items-center">
-            <div className="flex-1 min-w-0 reveal-section-delay flex flex-col items-center text-center">
+            <div className="w-full lg:w-[35%] min-w-0 reveal-section-delay flex flex-col items-center text-center">
               <span
                 className="block text-xs uppercase tracking-[0.3em] mb-4 font-medium"
                 style={{ color: colors.cta }}
@@ -406,7 +422,7 @@ export default function ClientPage({
               </div>
             </div>
 
-            <div className="flex-1 min-w-0 w-full lg:w-auto flex justify-center">
+            <div className="w-full lg:w-[65%] min-w-0 flex justify-center">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
                 <Image
                   src={data.roomsSection.image.url}
@@ -421,13 +437,21 @@ export default function ClientPage({
         </div>
       </section>
 
-      <SectionDivider
-        image={data.culinaryDividerImage}
-        bgTop={colors.primaryBg}
-        bgBottom={colors.accent}
-      />
+      {roomsBreakImages.length > 0 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+          <div className="w-full pb-8 sm:pt-25 sm:pb-12">
+            <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+              {roomsBreakImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
-      <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
+      <section data-theme="dark" style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(4)}
           className={`reveal-section ${pageShell} py-20 sm:py-24`}
@@ -452,11 +476,17 @@ export default function ClientPage({
               >
                 {data.culinarySection.eyebrow}
               </span>
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line text-white max-w-2xl">
+              <h3
+                className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line max-w-2xl"
+                style={{ color: colors.accent }}
+              >
                 {data.culinarySection.title}
               </h3>
               <div className="w-12 h-[1px] mb-6 shrink-0 mx-auto" style={{ backgroundColor: colors.cta }} />
-              <p className="text-base sm:text-lg leading-relaxed mb-2 text-white/80 max-w-2xl">
+              <p
+                className="text-base sm:text-lg leading-relaxed mb-2 max-w-2xl"
+                style={{ color: colors.textSecondary }}
+              >
                 {data.culinarySection.description}
               </p>
               <div className="flex w-full justify-center">
