@@ -1,6 +1,6 @@
 "use client";
 
-import { animate } from "framer-motion";
+import { animate, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -83,6 +83,7 @@ export default function RoomClientPage({
   next,
 }: Props) {
   useScrollSnapJump();
+  const reduceMotion = useReducedMotion();
 
   const [first, second, third, fourth, fifth, sixth] = room.galleryImages;
 
@@ -103,7 +104,17 @@ export default function RoomClientPage({
       <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
         <div className={`${pageShell} py-20 sm:py-28 lg:py-32`}>
           <div className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-16">
-            <div className="flex-1">
+            <motion.div
+              className="flex-1"
+              initial={reduceMotion ? false : { opacity: 0, y: 48 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.85,
+                ease: [0.22, 1, 0.36, 1],
+                delay: 0,
+              }}
+            >
               <h2 className="mb-3 font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
                 {room.title}
               </h2>
@@ -113,12 +124,22 @@ export default function RoomClientPage({
               <p className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
                 {room.description}
               </p>
-            </div>
-            <div className="flex-1">
+            </motion.div>
+            <motion.div
+              className="flex-1"
+              initial={reduceMotion ? false : { opacity: 0, y: 48 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.85,
+                ease: [0.22, 1, 0.36, 1],
+                delay: reduceMotion ? 0 : 0.1,
+              }}
+            >
               <div className="relative aspect-[3/4] max-h-[600px] w-full overflow-hidden rounded-lg shadow-xl">
                 <Image src={second?.url ?? first.url} alt={second?.alt ?? first.alt} fill className="object-cover" />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -136,11 +157,22 @@ export default function RoomClientPage({
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-12 lg:gap-6">
             {[third, fourth, fifth, sixth].filter(Boolean).map((image, index) => (
-              <div key={`${image?.url}-${index}`} className={index % 2 === 0 ? "md:col-span-7" : "md:col-span-5"}>
+              <motion.div
+                key={`${image?.url}-${index}`}
+                className={index % 2 === 0 ? "md:col-span-7" : "md:col-span-5"}
+                initial={reduceMotion ? false : { opacity: 0, y: 48 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: reduceMotion ? 0 : 0.85,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: reduceMotion ? 0 : index * 0.07,
+                }}
+              >
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-lg">
                   <Image src={image!.url} alt={image!.alt} fill className="object-cover" />
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
