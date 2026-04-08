@@ -104,9 +104,51 @@ function useScrollSnapJump() {
 export default function RestaurantClientPage({ data }: { data: RestaurantPageData }) {
   const addRef = useRevealOnScroll();
   useScrollSnapJump();
+  const secondDividerRef = useRef<HTMLDivElement>(null);
+  const secondDividerImageLayerRef = useRef<HTMLDivElement>(null);
   const ingredientsBreakImages = data.ingredientsBreakImages
     .filter((image) => image?.url)
     .slice(0, 5);
+
+  useEffect(() => {
+    const dividerEl = secondDividerRef.current;
+    const imageLayerEl = secondDividerImageLayerRef.current;
+    if (!dividerEl || !imageLayerEl) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      imageLayerEl.style.transform = "translate3d(0, 0, 0)";
+      return;
+    }
+
+    const maxLiftPx = 204;
+    let rafId = 0;
+
+    const updateParallax = () => {
+      const rect = dividerEl.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || 1;
+      const progress = (viewportHeight - rect.top) / (viewportHeight + rect.height);
+      const clampedProgress = Math.max(0, Math.min(1, progress));
+      const translateYPx = -maxLiftPx * clampedProgress;
+
+      imageLayerEl.style.transform = `translate3d(0, ${translateYPx}px, 0)`;
+      rafId = 0;
+    };
+
+    const onScrollOrResize = () => {
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(updateParallax);
+    };
+
+    updateParallax();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+
+    return () => {
+      if (rafId) window.cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+  }, []);
 
   return (
     <main className="w-full">
@@ -306,14 +348,16 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
       </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
-        <div className="relative h-[35vh] w-full overflow-hidden">
-          <Image
-            src={data.atmosphereImage.url}
-            alt={data.atmosphereImage.alt}
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
+        <div ref={secondDividerRef} className="relative h-[95vh] w-full overflow-hidden">
+          <div ref={secondDividerImageLayerRef} className="absolute -inset-y-8 inset-x-0 will-change-transform">
+            <Image
+              src={data.atmosphereImage.url}
+              alt={data.atmosphereImage.alt}
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
           <div
             aria-hidden="true"
             className="absolute inset-0"
