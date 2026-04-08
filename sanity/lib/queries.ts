@@ -210,6 +210,8 @@ export type ExperiencesPageData = {
     description: string
     image: CmsImage
   }>
+  experienceDividerImages: CmsImage[]
+  closingQuote: string
 }
 
 export type RoomsPageData = {
@@ -553,7 +555,9 @@ const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $l
     title,
     description,
     image ${imageProjection}
-  }
+  },
+  "experienceDividerImages": coalesce(experienceDividerImages[] ${imageProjection}, []),
+  closingQuote
 }`
 
 const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $language][0]{

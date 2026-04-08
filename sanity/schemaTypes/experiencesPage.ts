@@ -66,6 +66,13 @@ export const experiencesPageType = defineType({
       validation: (Rule) => Rule.required().min(4),
     }),
     defineField({
+      name: 'experienceDividerImages',
+      title: 'Experience divider images',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
+      validation: (Rule) => Rule.required().min(4).max(4),
+    }),
+    defineField({
       name: 'experienceVideo',
       title: 'Experience video',
       type: 'file',

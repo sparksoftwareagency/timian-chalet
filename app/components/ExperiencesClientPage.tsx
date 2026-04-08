@@ -126,6 +126,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
   const videoCopy = videoCopyByLanguage[data.language] ?? videoCopyByLanguage.en;
   const videoSideImageLeft = data.experienceVideoSideImageLeft?.url ? data.experienceVideoSideImageLeft : null;
   const videoSideImageRight = data.experienceVideoSideImageRight?.url ? data.experienceVideoSideImageRight : null;
+  const experienceDividerImages = data.experienceDividerImages.filter((image) => image?.url).slice(0, 4);
 
   const updateScrollControls = useCallback(() => {
     const element = carouselRef.current;
@@ -335,6 +336,17 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         </div>
       </section>
 
+      <section data-theme="dark" style={{ backgroundColor: colors.primaryBg }}>
+        <div className={`${pageShell} py-20 sm:py-24 lg:py-28`}>
+          <blockquote
+            className="mx-auto max-w-4xl text-center font-serif text-2xl font-light italic leading-snug sm:text-3xl lg:text-4xl"
+            style={{ color: colors.accent }}
+          >
+            &ldquo;{data.closingQuote}&rdquo;
+          </blockquote>
+        </div>
+      </section>
+
       <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(1)}
@@ -357,6 +369,20 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
           </div>
         </div>
       </section>
+
+      {experienceDividerImages.length === 4 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 lg:gap-5">
+              {experienceDividerImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="25vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {data.experienceVideoUrl ? (
         <section style={{ backgroundColor: colors.primaryBg }}>
