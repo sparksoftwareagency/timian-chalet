@@ -173,6 +173,47 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
     </article>
   );
 
+  const renderSplitFeature = (feature: WellnessPageData["features"][number], index: number) => {
+    const isImageLeft = index % 2 === 0;
+    const firstImage = feature.images[0];
+
+    return (
+      <article
+        key={feature._key}
+        className={`flex flex-col overflow-hidden rounded-2xl border border-white/35 bg-white/55 shadow-lg ${
+          isImageLeft ? "lg:flex-row" : "lg:flex-row-reverse"
+        }`}
+      >
+        <div className="w-full lg:w-1/2">
+          {feature.images.length > 1 ? (
+            <ImageShow
+              images={feature.images}
+              className="h-full w-full"
+              aspectRatioClassName="aspect-[3/4] w-full"
+              frameClassName="rounded-none"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          ) : firstImage ? (
+            <div className="relative aspect-[3/4] w-full">
+              <Image src={firstImage.url} alt={firstImage.alt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+            </div>
+          ) : null}
+        </div>
+
+        <div className="flex min-h-[18rem] w-full items-center justify-center p-8 text-center sm:p-10 lg:w-1/2 lg:p-12">
+          <div className="max-w-xl">
+            <h3 className="font-serif text-2xl leading-tight sm:text-3xl" style={{ color: colors.accent }}>
+              {feature.title}
+            </h3>
+            <p className="mx-auto mt-4 text-sm leading-relaxed sm:text-base" style={{ color: colors.textSecondary }}>
+              {feature.description}
+            </p>
+          </div>
+        </div>
+      </article>
+    );
+  };
+
   return (
     <main className="w-full">
       <style>{`
@@ -436,8 +477,8 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           ref={addRef(3)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
-          <div className="space-y-16">
-            {remainingFeatures.map((feature, index) => renderFeature(feature, index + firstTwoFeatures.length))}
+          <div className="space-y-12 sm:space-y-14">
+            {remainingFeatures.map((feature, index) => renderSplitFeature(feature, index))}
           </div>
         </div>
       </section>
