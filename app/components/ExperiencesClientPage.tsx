@@ -133,6 +133,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
   const videoSideImageRight = data.experienceVideoSideImageRight?.url ? data.experienceVideoSideImageRight : null;
   const experienceDividerImages = data.experienceDividerImages.filter((image) => image?.url).slice(0, 4);
   const moreExperiences = data.moreExperiences.filter((experience) => experience.image?.url);
+  const nearbyAttractions = data.nearbyAttractions.filter((experience) => experience.image?.url);
   const chapterHeightVh = Math.max(data.activities.length * 90, 320);
   const revealWindow = 0.2;
   const chapterRevealProgress = clamp(activitiesProgress / revealWindow, 0, 1);
@@ -465,6 +466,58 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
           </div>
         </div>
       </section>
+
+      {nearbyAttractions.length > 0 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+          <div
+            className={`${pageShell} py-20 sm:py-24 lg:py-28`}
+          >
+            <div className="mb-14 text-center">
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
+                {data.nearbyAttractionsTitle}
+              </h2>
+            </div>
+
+            <div className="space-y-12 sm:space-y-14">
+              {nearbyAttractions.map((item, index) => {
+                const isImageLeft = index % 2 === 0;
+
+                return (
+                  <article
+                    key={item._key}
+                    className={`flex flex-col overflow-hidden rounded-2xl border border-white/35 bg-white/55 shadow-lg ${
+                      isImageLeft ? "lg:flex-row" : "lg:flex-row-reverse"
+                    }`}
+                  >
+                    <div className="w-full lg:w-1/2">
+                      <div className="relative aspect-[3/4] w-full">
+                        <Image
+                          src={item.image.url}
+                          alt={item.image.alt || item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex min-h-[18rem] w-full items-center justify-center p-8 text-center sm:p-10 lg:w-1/2 lg:p-12">
+                      <div className="max-w-xl">
+                        <h3 className="font-serif text-2xl leading-tight sm:text-3xl" style={{ color: colors.accent }}>
+                          {item.title}
+                        </h3>
+                        <p className="mx-auto mt-4 text-sm leading-relaxed sm:text-base" style={{ color: colors.textSecondary }}>
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }

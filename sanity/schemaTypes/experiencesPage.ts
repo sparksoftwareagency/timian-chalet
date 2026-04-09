@@ -107,6 +107,19 @@ export const experiencesPageType = defineType({
       of: [{type: 'experienceItem'}],
       validation: (Rule) => Rule.required().min(1),
     }),
+    defineField({
+      name: 'nearbyAttractionsTitle',
+      title: 'Nearby attractions title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'nearbyAttractions',
+      title: 'Nearby attractions',
+      type: 'array',
+      of: [{type: 'experienceItem'}],
+      validation: (Rule) => Rule.required().min(10).max(10),
+    }),
   ],
   preview: {
     select: {

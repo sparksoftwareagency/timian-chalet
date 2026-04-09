@@ -219,6 +219,13 @@ export type ExperiencesPageData = {
     description: string
     image: CmsImage
   }>
+  nearbyAttractionsTitle: string
+  nearbyAttractions: Array<{
+    _key: string
+    title: string
+    description: string
+    image: CmsImage
+  }>
 }
 
 export type RoomsPageData = {
@@ -568,6 +575,16 @@ const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $l
   moreExperiencesTitle,
   "moreExperiences": coalesce(
     moreExperiences[]{
+      _key,
+      title,
+      description,
+      image ${imageProjection}
+    },
+    []
+  ),
+  nearbyAttractionsTitle,
+  "nearbyAttractions": coalesce(
+    nearbyAttractions[]{
       _key,
       title,
       description,
