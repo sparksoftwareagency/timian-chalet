@@ -109,10 +109,14 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
   const activitiesTrackViewportRef = useRef<HTMLDivElement | null>(null);
   const activitiesTrackRef = useRef<HTMLDivElement | null>(null);
   const activitiesAnimationFrameRef = useRef<number | null>(null);
+  const activitiesIsDraggingRef = useRef(false);
+  const activitiesDragStartXRef = useRef(0);
+  const activitiesDragStartProgressRef = useRef(0);
   const activitiesTargetProgressRef = useRef(0);
   const activitiesDisplayProgressRef = useRef(0);
   const [activitiesProgress, setActivitiesProgress] = useState(0);
   const [maxTrackTranslate, setMaxTrackTranslate] = useState(0);
+  const [isDraggingActivities, setIsDraggingActivities] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const videoCopyByLanguage: Record<string, { title: string; description: string }> = {
     en: {
@@ -203,6 +207,60 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
     };
   }, []);
 
+  const scrollActivitiesChapterToProgress = useCallback((progress: number) => {
+    const chapter = activitiesChapterRef.current;
+    if (!chapter) return;
+
+    const viewportHeight = window.innerHeight;
+    const scrollWindow = Math.max(chapter.offsetHeight - viewportHeight, 1);
+    const chapterTop = window.scrollY + chapter.getBoundingClientRect().top;
+    const clampedProgress = clamp(progress, 0, 1);
+    const nextScrollTop = chapterTop + scrollWindow * clampedProgress;
+
+    activitiesTargetProgressRef.current = clampedProgress;
+    activitiesDisplayProgressRef.current = clampedProgress;
+    setActivitiesProgress(clampedProgress);
+    window.scrollTo({ top: nextScrollTop, behavior: "auto" });
+  }, []);
+
+  const handleActivitiesPointerDown = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      if (maxTrackTranslate <= 0) return;
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+
+      activitiesIsDraggingRef.current = true;
+      setIsDraggingActivities(true);
+      activitiesDragStartXRef.current = event.clientX;
+      activitiesDragStartProgressRef.current = activitiesProgress;
+      event.currentTarget.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    },
+    [activitiesProgress, maxTrackTranslate],
+  );
+
+  const handleActivitiesPointerMove = useCallback(
+    (event: React.PointerEvent<HTMLDivElement>) => {
+      if (!activitiesIsDraggingRef.current || maxTrackTranslate <= 0) return;
+
+      const deltaX = event.clientX - activitiesDragStartXRef.current;
+      const startCardsProgress = clamp(
+        (activitiesDragStartProgressRef.current - revealWindow) / (1 - revealWindow),
+        0,
+        1,
+      );
+      const nextCardsProgress = clamp(startCardsProgress - deltaX / maxTrackTranslate, 0, 1);
+      const nextProgress = revealWindow + nextCardsProgress * (1 - revealWindow);
+      scrollActivitiesChapterToProgress(nextProgress);
+      event.preventDefault();
+    },
+    [maxTrackTranslate, revealWindow, scrollActivitiesChapterToProgress],
+  );
+
+  const handleActivitiesPointerEnd = useCallback(() => {
+    activitiesIsDraggingRef.current = false;
+    setIsDraggingActivities(false);
+  }, []);
+
   return (
     <main className="w-full">
       <style>{`
@@ -231,7 +289,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       <section
         ref={activitiesChapterRef}
         data-theme="light"
-        style={{ backgroundColor: colors.secondaryBg, height: `${chapterHeightVh}vh` }}
+        style={{ backgroundColor: colors.primaryBg, height: `${chapterHeightVh}vh` }}
       >
         <div className="sticky top-0 h-screen overflow-hidden">
           <div className={`${pageShell} flex h-full flex-col justify-center py-12 sm:py-16`}>
@@ -253,7 +311,15 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                     opacity: 0.72 + chapterRevealProgress * 0.28,
                   }}
                 >
-                  <div ref={activitiesTrackViewportRef} className="overflow-hidden">
+                  <div
+                    ref={activitiesTrackViewportRef}
+                    className={`overflow-hidden ${isDraggingActivities ? "cursor-grabbing select-none" : "cursor-grab"}`}
+                    onPointerDown={handleActivitiesPointerDown}
+                    onPointerMove={handleActivitiesPointerMove}
+                    onPointerUp={handleActivitiesPointerEnd}
+                    onPointerCancel={handleActivitiesPointerEnd}
+                    onLostPointerCapture={handleActivitiesPointerEnd}
+                  >
                     <div
                       ref={activitiesTrackRef}
                       className="flex gap-6 will-change-transform"
@@ -302,7 +368,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         </div>
       </section>
 
-      {data.experienceVideoUrl ? (
+      {/* {data.experienceVideoUrl ? (
         <section style={{ backgroundColor: colors.primaryBg }}>
           <div
             ref={addRef(2)}
@@ -392,9 +458,9 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
             </div>
           </div>
         </section>
-      ) : null}
+      ) : null} */}
 
-      <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+      {/* <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(1)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
@@ -415,15 +481,15 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {experienceDividerImages.length === 4 ? (
         <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
           <div className="w-full pb-8 sm:pb-12">
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 lg:gap-5">
+            <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {experienceDividerImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="25vw" />
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
                 </div>
               ))}
             </div>

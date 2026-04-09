@@ -3,9 +3,6 @@
 import Image from "next/image";
 import { useEffect, useRef, type ReactNode } from "react";
 
-/** Visible height of the parallax strip (Tailwind height utility). */
-const FULL_BLEED_PARALLAX_DIVIDER_HEIGHT_CLASS = "h-[80vh]";
-
 /** Share of viewport height used as max upward travel (stronger, consistent across breakpoints). */
 const PARALLAX_LIFT_VH_RATIO = 0.35;
 const PARALLAX_LIFT_MIN_PX = 280;
@@ -17,8 +14,8 @@ export type FullBleedParallaxDividerImage = {
 };
 
 export type FullBleedParallaxDividerProps = {
-  gradientTop: string;
-  gradientBottom: string;
+  /** Tailwind height utility for the strip, e.g. `h-[95vh]` or `min-h-[80vh]`. */
+  height: string;
   /** When `children` is not set, a single full-bleed image is rendered. */
   image?: FullBleedParallaxDividerImage;
   sizes?: string;
@@ -28,8 +25,7 @@ export type FullBleedParallaxDividerProps = {
 };
 
 export default function FullBleedParallaxDivider({
-  gradientTop,
-  gradientBottom,
+  height,
   image,
   sizes = "100vw",
   children,
@@ -107,7 +103,7 @@ export default function FullBleedParallaxDivider({
   return (
     <div
       ref={rootRef}
-      className={`relative ${FULL_BLEED_PARALLAX_DIVIDER_HEIGHT_CLASS} w-full overflow-hidden ${className}`.trim()}
+      className={`relative ${height} w-full overflow-hidden ${className}`.trim()}
     >
       <div
         ref={layerRef}
@@ -123,13 +119,6 @@ export default function FullBleedParallaxDivider({
             <Image src={image.url} alt={image.alt} fill className="object-cover" sizes={sizes} />
           ) : null)}
       </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background: `linear-gradient(to bottom, ${gradientTop} 0%, transparent 15%, transparent 85%, ${gradientBottom} 100%)`,
-        }}
-      />
     </div>
   );
 }

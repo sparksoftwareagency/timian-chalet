@@ -108,6 +108,7 @@ export default function AboutClientPage({
   data: AboutPageData;
 }) {
   const addRef = useRevealOnScroll();
+  const animalsBreakImages = data.animalsBreakImages.filter((image) => image?.url).slice(0, 5);
 
   useScrollSnapJump();
 
@@ -128,15 +129,6 @@ export default function AboutClientPage({
         }
         .reveal-section.revealed .flash-on-reveal {
           animation: section-flash 0.9s ease-out both;
-        }
-        .donkey-blur-in {
-          filter: blur(14px);
-          transform: scale(1.04);
-          transition: filter 1s ease, transform 1s ease;
-        }
-        .reveal-section.revealed .donkey-blur-in {
-          filter: blur(0);
-          transform: scale(1);
         }
         .reveal-quote {
           opacity: 0;
@@ -206,7 +198,7 @@ export default function AboutClientPage({
                   src={data.originPrimaryImage.url}
                   alt={data.originPrimaryImage.alt}
                   fill
-                  className="donkey-blur-in object-cover"
+                  className="object-cover"
                 />
               </div>
             </div>
@@ -214,15 +206,21 @@ export default function AboutClientPage({
         </div>
       </section>
 
-      <section data-theme="light">
-        <FullBleedParallaxDivider
-          gradientTop={colors.primaryBg}
-          gradientBottom={colors.secondaryBg}
-          image={data.animalsBreakImage}
-        />
-      </section>
+      {animalsBreakImages.length === 5 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+              {animalsBreakImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
-      <section style={{ backgroundColor: colors.secondaryBg }}>
+      <section style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(1)}
           className={`reveal-section ${pageShell} grid grid-cols-1 items-center gap-10 py-20 sm:py-28 lg:grid-cols-12 lg:gap-14 lg:py-32`}
@@ -253,9 +251,12 @@ export default function AboutClientPage({
         </div>
       </section>
 
-      <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
+      <section data-theme="dark" style={{ backgroundColor: colors.primaryBg }}>
         <div ref={addRef(2)} className={`mx-auto max-w-4xl ${pageGutterX} py-20 sm:py-28`}>
-          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
+          <blockquote
+            className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug sm:text-3xl lg:text-4xl"
+            style={{ color: colors.accent }}
+          >
             &ldquo;{data.quote}&rdquo;
           </blockquote>
         </div>
@@ -290,11 +291,7 @@ export default function AboutClientPage({
       </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
-        <FullBleedParallaxDivider
-          gradientTop={colors.primaryBg}
-          gradientBottom={colors.secondaryBg}
-          image={data.roomsImage}
-        />
+        <FullBleedParallaxDivider height="h-[95vh]" image={data.roomsImage} />
         <div className={`${pageShell} py-20 sm:py-28 lg:py-32`}>
           <div className="mb-6 text-center">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>

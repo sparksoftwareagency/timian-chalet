@@ -127,26 +127,31 @@ export const wellnessPageType = defineType({
       },
     }),
     defineField({
-      name: 'highlightImages',
-      title: 'Highlight image gallery',
-      description: 'Upload one or more images. One image renders as a static image; multiple images render as a slider.',
-      type: 'array',
-      of: [{type: 'imageBlock'}],
+      name: 'highlightImage',
+      title: 'Highlight image',
+      description: 'Single background image used for the treatment list download section.',
+      type: 'imageBlock',
       validation: (Rule) =>
         Rule.custom((value, context) => {
-          const hasGalleryImages = Array.isArray(value) && value.length > 0
-          const hasLegacyImage = Boolean((context.document as {highlightImage?: unknown})?.highlightImage)
+          const hasLegacyGallery = Boolean(
+            Array.isArray((context.document as {highlightImages?: unknown[]})?.highlightImages) &&
+              (context.document as {highlightImages?: unknown[]})?.highlightImages?.length,
+          )
 
-          return hasGalleryImages || hasLegacyImage ? true : 'Add at least one highlight image'
+          return value || hasLegacyGallery ? true : 'Add a highlight image'
         }),
     }),
     defineField({
-      // Legacy single-image field kept hidden for migration compatibility.
-      name: 'highlightImage',
-      title: 'Highlight image (legacy)',
-      type: 'imageBlock',
+      // Legacy multi-image gallery field kept hidden for migration compatibility.
+      name: 'highlightImages',
+      title: 'Highlight image gallery (legacy)',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
       hidden: true,
       readOnly: true,
+      deprecated: {
+        reason: 'Use "Highlight image" instead.',
+      },
     }),
     defineField({
       name: 'quote',

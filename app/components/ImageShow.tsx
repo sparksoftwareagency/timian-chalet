@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { CmsImage } from "@/sanity/lib/queries";
 
@@ -14,6 +14,8 @@ type ImageShowProps = {
   className?: string;
   frameClassName?: string;
   priorityFirstImage?: boolean;
+  /** When false, prev/next arrows still show but dot indicators are hidden. */
+  showPaginationDots?: boolean;
 };
 
 export function mergeImageShowImages(primaryImage?: CmsImage | null, galleryImages?: CmsImage[] | null) {
@@ -36,10 +38,12 @@ export default function ImageShow({
   className = "",
   frameClassName = "",
   priorityFirstImage = true,
+  showPaginationDots = true,
 }: ImageShowProps) {
   const slides = useMemo(() => images.filter((image) => image?.url), [images]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   if (slides.length === 0) {
@@ -49,20 +53,34 @@ export default function ImageShow({
   const hasControls = slides.length > 1;
   const activeSlide = slides[activeIndex];
 
+  useEffect(() => {
+    if (!hasControls || shouldReduceMotion || hasUserInteracted) return;
+
+    const timeoutId = window.setTimeout(() => {
+      setDirection(1);
+      setActiveIndex((current) => (current + 1) % slides.length);
+    }, 4000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [activeIndex, hasControls, hasUserInteracted, shouldReduceMotion, slides.length]);
+
   const goToIndex = (nextIndex: number) => {
     if (!hasControls || nextIndex === activeIndex) return;
+    setHasUserInteracted(true);
     setDirection(nextIndex > activeIndex ? 1 : -1);
     setActiveIndex(nextIndex);
   };
 
   const showNext = () => {
     if (!hasControls) return;
+    setHasUserInteracted(true);
     setDirection(1);
     setActiveIndex((current) => (current + 1) % slides.length);
   };
 
   const showPrev = () => {
     if (!hasControls) return;
+    setHasUserInteracted(true);
     setDirection(-1);
     setActiveIndex((current) => (current - 1 + slides.length) % slides.length);
   };
@@ -124,7 +142,7 @@ export default function ImageShow({
         ) : null}
       </div>
 
-      {hasControls ? (
+      {hasControls && showPaginationDots ? (
         <div className="mt-3 flex items-center justify-center gap-2">
           {slides.map((slide, index) => {
             const isActive = index === activeIndex;

@@ -240,11 +240,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
       </section>
 
       <section data-theme="light">
-        <FullBleedParallaxDivider
-          gradientTop={colors.primaryBg}
-          gradientBottom={colors.secondaryBg}
-          image={data.cellarBreakImage}
-        />
+        <FullBleedParallaxDivider height="h-[60vh]" image={data.cellarBreakImage} />
       </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
@@ -334,7 +330,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
       </section>
 
       {collectionsBreakImages.length === 4 ? (
-        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+        <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
           <div className="w-full pb-8 sm:pb-12">
             <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {collectionsBreakImages.map((image, index) => (
@@ -347,7 +343,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
         </section>
       ) : null}
 
-      <section style={{ backgroundColor: colors.secondaryBg }}>
+      <section style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(4)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}

@@ -53,16 +53,26 @@ export const aboutPageType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'originSecondaryImage',
-      title: 'Origin secondary image',
-      type: 'imageBlock',
-      validation: (Rule) => Rule.required(),
+      name: 'animalsBreakImages',
+      title: 'Animals break images',
+      description: 'Five images shown side-by-side as the first divider section.',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const hasGalleryImages = Array.isArray(value) && value.length === 5
+          const hasLegacyImage = Boolean((context.document as {animalsBreakImage?: unknown})?.animalsBreakImage)
+
+          return hasGalleryImages || hasLegacyImage ? true : 'Add exactly five animals break images'
+        }),
     }),
     defineField({
+      // Legacy single-image field kept hidden for migration compatibility.
       name: 'animalsBreakImage',
-      title: 'Animals break image',
+      title: 'Animals break image (legacy)',
       type: 'imageBlock',
-      validation: (Rule) => Rule.required(),
+      hidden: true,
+      readOnly: true,
     }),
     defineField({
       name: 'transformEyebrow',
