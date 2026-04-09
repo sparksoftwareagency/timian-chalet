@@ -307,11 +307,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
       </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
-        <FullBleedParallaxDivider
-          gradientTop={colors.primaryBg}
-          gradientBottom={colors.secondaryBg}
-          image={data.atmosphereImage}
-        />
+        <FullBleedParallaxDivider height="h-[95vh]" image={data.atmosphereImage} />
         <div className={`${pageShell} py-20 sm:py-28 lg:py-32`}>
           <div className="mb-6 text-center">
             <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
