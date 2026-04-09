@@ -239,7 +239,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
       </section>
 
       {ingredientsBreakImages.length === 5 ? (
-        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+        <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
           <div className="w-full pb-8 sm:pb-12">
             <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
               {ingredientsBreakImages.map((image, index) => (
@@ -252,7 +252,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
         </section>
       ) : null}
 
-      <section style={{ backgroundColor: colors.secondaryBg }}>
+      <section style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(1)}
           className={`reveal-section ${pageShell} grid grid-cols-1 items-center gap-10 py-20 sm:py-28 lg:grid-cols-12 lg:gap-14 lg:py-32`}
