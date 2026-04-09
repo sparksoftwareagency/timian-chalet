@@ -72,6 +72,14 @@ export const homePageType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'welcomeDividerImages',
+      title: 'Welcome divider images',
+      description: 'Vertical images shown after the welcome section.',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
+      validation: (Rule) => Rule.required().min(1),
+    }),
+    defineField({
       name: 'stats',
       title: 'Stats',
       type: 'array',
@@ -95,6 +103,14 @@ export const homePageType = defineType({
       title: 'Rooms section',
       type: 'teaserSection',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'roomsBreakImages',
+      title: 'Rooms break images',
+      description: 'Vertical images shown after the rooms section.',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'culinaryDividerImage',

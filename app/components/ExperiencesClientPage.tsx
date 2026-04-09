@@ -2,19 +2,23 @@
 
 import Image from "next/image";
 import { animate } from "framer-motion";
-import { ArrowLeft, ArrowRight, Volume2, VolumeX } from "lucide-react";
-import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { Volume2, VolumeX } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
 import { colors } from "@/app/theme/colors";
-import { pageGutterX, pageShell } from "@/app/theme/pageShell";
+import { pageShell } from "@/app/theme/pageShell";
 import type { ExperiencesPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
 const JUMP_DURATION = 1.15;
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
 
 function useRevealOnScroll() {
   const refs = useRef<(HTMLElement | null)[]>([]);
@@ -101,14 +105,15 @@ function useScrollSnapJump() {
 export default function ExperiencesClientPage({ data }: { data: ExperiencesPageData }) {
   const addRef = useRevealOnScroll();
   useScrollSnapJump();
-  const carouselRef = useRef<HTMLDivElement | null>(null);
-  const isDraggingRef = useRef(false);
-  const dragStartXRef = useRef(0);
-  const dragStartScrollLeftRef = useRef(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const activitiesChapterRef = useRef<HTMLElement | null>(null);
+  const activitiesTrackViewportRef = useRef<HTMLDivElement | null>(null);
+  const activitiesTrackRef = useRef<HTMLDivElement | null>(null);
+  const activitiesAnimationFrameRef = useRef<number | null>(null);
+  const activitiesTargetProgressRef = useRef(0);
+  const activitiesDisplayProgressRef = useRef(0);
+  const [activitiesProgress, setActivitiesProgress] = useState(0);
+  const [maxTrackTranslate, setMaxTrackTranslate] = useState(0);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(data.activities.length > 1);
   const videoCopyByLanguage: Record<string, { title: string; description: string }> = {
     en: {
       title: "Savour the Journey",
@@ -126,102 +131,77 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
   const videoCopy = videoCopyByLanguage[data.language] ?? videoCopyByLanguage.en;
   const videoSideImageLeft = data.experienceVideoSideImageLeft?.url ? data.experienceVideoSideImageLeft : null;
   const videoSideImageRight = data.experienceVideoSideImageRight?.url ? data.experienceVideoSideImageRight : null;
+  const experienceDividerImages = data.experienceDividerImages.filter((image) => image?.url).slice(0, 4);
+  const moreExperiences = data.moreExperiences.filter((experience) => experience.image?.url);
+  const nearbyAttractions = data.nearbyAttractions.filter((experience) => experience.image?.url);
+  const chapterHeightVh = Math.max(data.activities.length * 90, 320);
+  const revealWindow = 0.2;
+  const chapterRevealProgress = clamp(activitiesProgress / revealWindow, 0, 1);
+  const chapterCardsProgress = clamp((activitiesProgress - revealWindow) / (1 - revealWindow), 0, 1);
+  const chapterTranslateX = -(maxTrackTranslate * chapterCardsProgress);
 
-  const updateScrollControls = useCallback(() => {
-    const element = carouselRef.current;
-    if (!element) return;
+  const updateTrackMetrics = useCallback(() => {
+    const viewport = activitiesTrackViewportRef.current;
+    const track = activitiesTrackRef.current;
+    if (!viewport || !track) return;
 
-    const maxScrollLeft = element.scrollWidth - element.clientWidth;
-    setCanScrollPrev(element.scrollLeft > 4);
-    setCanScrollNext(element.scrollLeft < maxScrollLeft - 4);
-  }, []);
-
-  const scrollByCard = useCallback((direction: "prev" | "next") => {
-    const element = carouselRef.current;
-    if (!element) return;
-
-    const firstCard = element.querySelector<HTMLElement>("[data-activity-card]");
-    const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : element.clientWidth * 0.8;
-    const gap = 24;
-    const delta = direction === "next" ? cardWidth + gap : -(cardWidth + gap);
-
-    element.scrollBy({ left: delta, behavior: "smooth" });
-  }, []);
-
-  const snapToNearestCard = useCallback(() => {
-    const element = carouselRef.current;
-    if (!element) return;
-
-    const cards = Array.from(element.querySelectorAll<HTMLElement>("[data-activity-card]"));
-    if (cards.length === 0) return;
-
-    const currentScrollLeft = element.scrollLeft;
-    let nearestOffset = cards[0].offsetLeft;
-    let nearestDistance = Math.abs(nearestOffset - currentScrollLeft);
-
-    for (let i = 1; i < cards.length; i += 1) {
-      const offset = cards[i].offsetLeft;
-      const distance = Math.abs(offset - currentScrollLeft);
-      if (distance < nearestDistance) {
-        nearestDistance = distance;
-        nearestOffset = offset;
-      }
-    }
-
-    element.scrollTo({ left: nearestOffset, behavior: "smooth" });
+    const maxTranslate = Math.max(track.scrollWidth - viewport.clientWidth, 0);
+    setMaxTrackTranslate(maxTranslate);
   }, []);
 
   useEffect(() => {
-    const element = carouselRef.current;
-    if (!element) return;
-
-    updateScrollControls();
-
-    const onScroll = () => updateScrollControls();
-    const onResize = () => updateScrollControls();
-
-    element.addEventListener("scroll", onScroll, { passive: true });
+    updateTrackMetrics();
+    const onResize = () => updateTrackMetrics();
     window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [updateTrackMetrics]);
+
+  useEffect(() => {
+    const onScrollOrResize = () => {
+      const chapter = activitiesChapterRef.current;
+      if (!chapter) return;
+
+      const sectionHeight = chapter.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const scrollWindow = Math.max(sectionHeight - viewportHeight, 1);
+      const sectionTopInViewport = chapter.getBoundingClientRect().top;
+      const progressedPixels = clamp(-sectionTopInViewport, 0, scrollWindow);
+      activitiesTargetProgressRef.current = clamp(progressedPixels / scrollWindow, 0, 1);
+
+      if (activitiesAnimationFrameRef.current !== null) return;
+
+      const step = () => {
+        const target = activitiesTargetProgressRef.current;
+        const current = activitiesDisplayProgressRef.current;
+        const next = current + (target - current) * 0.18;
+
+        if (Math.abs(target - next) < 0.001) {
+          activitiesDisplayProgressRef.current = target;
+          setActivitiesProgress(target);
+          activitiesAnimationFrameRef.current = null;
+          return;
+        }
+
+        activitiesDisplayProgressRef.current = next;
+        setActivitiesProgress(next);
+        activitiesAnimationFrameRef.current = window.requestAnimationFrame(step);
+      };
+
+      activitiesAnimationFrameRef.current = window.requestAnimationFrame(step);
+    };
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+    onScrollOrResize();
 
     return () => {
-      element.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+      if (activitiesAnimationFrameRef.current !== null) {
+        window.cancelAnimationFrame(activitiesAnimationFrameRef.current);
+        activitiesAnimationFrameRef.current = null;
+      }
     };
-  }, [updateScrollControls]);
-
-  const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const element = carouselRef.current;
-    if (!element) return;
-
-    isDraggingRef.current = true;
-    setIsDragging(true);
-    dragStartXRef.current = event.clientX;
-    dragStartScrollLeftRef.current = element.scrollLeft;
-    element.setPointerCapture(event.pointerId);
-  };
-
-  const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const element = carouselRef.current;
-    if (!element || !isDraggingRef.current) return;
-
-    event.preventDefault();
-    const deltaX = event.clientX - dragStartXRef.current;
-    element.scrollLeft = dragStartScrollLeftRef.current - deltaX;
-  };
-
-  const endDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const element = carouselRef.current;
-    if (!element) return;
-
-    if (!isDraggingRef.current) return;
-    isDraggingRef.current = false;
-    setIsDragging(false);
-    if (element.hasPointerCapture(event.pointerId)) {
-      element.releasePointerCapture(event.pointerId);
-    }
-    snapToNearestCard();
-    updateScrollControls();
-  };
+  }, []);
 
   return (
     <main className="w-full">
@@ -234,15 +214,6 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         .reveal-section.revealed {
           opacity: 1;
           transform: translateY(0);
-        }
-        .reveal-quote {
-          opacity: 0;
-          clip-path: inset(0 100% 0 0);
-          transition: clip-path 0.9s ease-out, opacity 0.6s ease-out;
-        }
-        .revealed .reveal-quote {
-          opacity: 1;
-          clip-path: inset(0 0 0 0);
         }
       `}</style>
 
@@ -257,128 +228,84 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         </div>
       </section>
 
-      <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
-        <div
-          ref={addRef(0)}
-          className={`reveal-section ${pageShell} py-14 sm:py-16 lg:py-20`}
-        >
-          <div className="mb-8 text-center">
-            <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
-              {data.activitiesEyebrow}
-            </span>
-            <h2 className="whitespace-pre-line font-serif text-3xl sm:text-3xl lg:text-4xl" style={{ color: colors.accent }}>
-              {data.activitiesTitle}
-            </h2>
-          </div>
+      <section
+        ref={activitiesChapterRef}
+        data-theme="light"
+        style={{ backgroundColor: colors.secondaryBg, height: `${chapterHeightVh}vh` }}
+      >
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <div className={`${pageShell} flex h-full flex-col justify-center py-12 sm:py-16`}>
+            <div className="mb-8 text-center sm:mb-10">
+              <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
+                {data.activitiesEyebrow}
+              </span>
+              <h2 className="whitespace-pre-line font-serif text-3xl sm:text-3xl lg:text-4xl" style={{ color: colors.accent }}>
+                {data.activitiesTitle}
+              </h2>
+            </div>
 
-          {data.activities.length > 0 ? (
-            <div className="mx-auto max-w-[76rem]">
-              <div className="rounded-[2rem] border border-white/25 bg-white/40 p-4 shadow-xl backdrop-blur-sm sm:p-6">
+            {data.activities.length > 0 ? (
+              <div className="mx-auto w-full max-w-[88rem]">
                 <div
-                  ref={carouselRef}
-                  className="flex snap-x gap-6 overflow-x-auto pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                  className="rounded-[2rem] border border-white/25 bg-white/40 p-4 shadow-xl backdrop-blur-sm sm:p-6"
                   style={{
-                    touchAction: "pan-y",
-                    cursor: isDragging ? "grabbing" : "grab",
-                    scrollSnapType: isDragging ? "none" : "x mandatory",
+                    transform: `scale(${0.92 + chapterRevealProgress * 0.08})`,
+                    opacity: 0.72 + chapterRevealProgress * 0.28,
                   }}
-                  onPointerDown={onPointerDown}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={endDrag}
-                  onPointerCancel={endDrag}
-                  onDragStart={(event) => event.preventDefault()}
                 >
-                  {data.activities.map((activity, index) => (
-                    <article
-                      key={activity._key}
-                      data-activity-card
-                      className="shrink-0 snap-start select-none rounded-2xl bg-white/75 p-4 shadow-md sm:w-[68%] lg:w-[24rem]"
+                  <div ref={activitiesTrackViewportRef} className="overflow-hidden">
+                    <div
+                      ref={activitiesTrackRef}
+                      className="flex gap-6 will-change-transform"
+                      style={{ transform: `translate3d(${chapterTranslateX}px, 0, 0)` }}
                     >
-                      <div className="relative mb-5 aspect-[16/11] w-full overflow-hidden rounded-l">
-                        <Image
-                          src={activity.image.url}
-                          alt={activity.image.alt}
-                          fill
-                          className="object-cover"
-                          priority={index === 0}
-                          draggable={false}
-                        />
-                      </div>
-                      <h3 className="mb-3 font-serif text-xl leading-tight sm:text-xl" style={{ color: colors.accent }}>
-                        {activity.title}
-                      </h3>
-                      <p className="text-sm leading-relaxed sm:text-base" style={{ color: colors.textSecondary }}>
-                        {activity.description}
-                      </p>
-                    </article>
-                  ))}
+                      {data.activities.map((activity, index) => (
+                        <article
+                          key={activity._key}
+                          data-activity-card
+                          className="shrink-0 rounded-2xl bg-white/75 p-4 shadow-md sm:w-[68%] lg:w-[24rem]"
+                        >
+                          <div className="relative mb-5 aspect-[16/11] w-full overflow-hidden rounded-l">
+                            <Image
+                              src={activity.image.url}
+                              alt={activity.image.alt}
+                              fill
+                              className="object-cover"
+                              priority={index === 0}
+                            />
+                          </div>
+                          <h3 className="mb-3 font-serif text-xl leading-tight sm:text-xl" style={{ color: colors.accent }}>
+                            {activity.title}
+                          </h3>
+                          <p className="text-sm leading-relaxed sm:text-base" style={{ color: colors.textSecondary }}>
+                            {activity.description}
+                          </p>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              {data.activities.length > 1 ? (
-                <div className="mt-4 flex justify-end gap-3 sm:mt-5">
-                  <button
-                    type="button"
-                    onClick={() => scrollByCard("prev")}
-                    disabled={!canScrollPrev}
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-full border transition disabled:cursor-not-allowed disabled:opacity-35 hover:bg-white/60"
-                    style={{ borderColor: colors.accent, color: colors.accent }}
-                    aria-label="Previous experiences"
-                  >
-                    <ArrowLeft size={18} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => scrollByCard("next")}
-                    disabled={!canScrollNext}
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-full border transition disabled:cursor-not-allowed disabled:opacity-35 hover:bg-white/60"
-                    style={{ borderColor: colors.accent, color: colors.accent }}
-                    aria-label="Next experiences"
-                  >
-                    <ArrowRight size={18} />
-                  </button>
-                </div>
-              ) : null}
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
       </section>
 
-      <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
-        <div ref={addRef(1)} className={`mx-auto max-w-5xl ${pageGutterX} py-20 text-center sm:py-28`}>
-          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
+      <section data-theme="dark" style={{ backgroundColor: colors.primaryBg }}>
+        <div className={`${pageShell} py-20 sm:py-24 lg:py-28`}>
+          <blockquote
+            className="mx-auto max-w-4xl text-center font-serif text-2xl font-light italic leading-snug sm:text-3xl lg:text-4xl"
+            style={{ color: colors.accent }}
+          >
             &ldquo;{data.closingQuote}&rdquo;
           </blockquote>
         </div>
       </section>
 
-      <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
-        <div
-          ref={addRef(2)}
-          className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
-        >
-          <div className="mb-16 text-center">
-            <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
-              {data.introEyebrow}
-            </span>
-            <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
-              {data.introTitle}
-            </h2>
-          </div>
-          <div className="mx-auto max-w-4xl space-y-6 text-center">
-            {data.introParagraphs.map((paragraph) => (
-              <p key={paragraph} className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {data.experienceVideoUrl ? (
-        <section style={{ backgroundColor: colors.secondaryBg }}>
+        <section style={{ backgroundColor: colors.primaryBg }}>
           <div
-            ref={addRef(3)}
+            ref={addRef(2)}
             className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
           >
             <div className="mx-auto max-w-5xl text-center">
@@ -462,6 +389,131 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                   ) : null}
                 </div>
               ) : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+        <div
+          ref={addRef(1)}
+          className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
+        >
+          <div className="mb-16 text-center">
+            <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
+              {data.introEyebrow}
+            </span>
+            <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
+              {data.introTitle}
+            </h2>
+          </div>
+          <div className="mx-auto max-w-4xl space-y-6 text-center">
+            {data.introParagraphs.map((paragraph) => (
+              <p key={paragraph} className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {experienceDividerImages.length === 4 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4 lg:gap-5">
+              {experienceDividerImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="25vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+        <div className={`${pageShell} py-20 sm:py-24 lg:py-28`}>
+          <div className="mb-12 text-center">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
+              {data.moreExperiencesTitle}
+            </h2>
+          </div>
+          <div className="grid gap-x-6 gap-y-36 sm:grid-cols-2 lg:grid-cols-3">
+            {moreExperiences.map((experience, index) => (
+              <article
+                key={experience._key}
+                className={`mx-auto w-full max-w-[19rem] overflow-hidden ${
+                  index === moreExperiences.length - 1 && moreExperiences.length % 3 === 1 ? "lg:col-start-2" : ""
+                }`}
+              >
+                <div className="relative aspect-[4/5] w-full overflow-hidden">
+                  <Image
+                    src={experience.image.url}
+                    alt={experience.image.alt || experience.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </div>
+                <h3 className="mt-4 font-serif text-xl leading-tight sm:text-2xl" style={{ color: colors.accent }}>
+                  {experience.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed" style={{ color: colors.textSecondary }}>
+                  {experience.description}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {nearbyAttractions.length > 0 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+          <div
+            className={`${pageShell} py-20 sm:py-24 lg:py-28`}
+          >
+            <div className="mb-14 text-center">
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
+                {data.nearbyAttractionsTitle}
+              </h2>
+            </div>
+
+            <div className="space-y-12 sm:space-y-14">
+              {nearbyAttractions.map((item, index) => {
+                const isImageLeft = index % 2 === 0;
+
+                return (
+                  <article
+                    key={item._key}
+                    className={`flex flex-col overflow-hidden rounded-2xl border border-white/35 bg-white/55 shadow-lg ${
+                      isImageLeft ? "lg:flex-row" : "lg:flex-row-reverse"
+                    }`}
+                  >
+                    <div className="w-full lg:w-1/2">
+                      <div className="relative aspect-[3/4] w-full">
+                        <Image
+                          src={item.image.url}
+                          alt={item.image.alt || item.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 1024px) 100vw, 50vw"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex min-h-[18rem] w-full items-center justify-center p-8 text-center sm:p-10 lg:w-1/2 lg:p-12">
+                      <div className="max-w-xl">
+                        <h3 className="font-serif text-2xl leading-tight sm:text-3xl" style={{ color: colors.accent }}>
+                          {item.title}
+                        </h3>
+                        <p className="mx-auto mt-4 text-sm leading-relaxed sm:text-base" style={{ color: colors.textSecondary }}>
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>

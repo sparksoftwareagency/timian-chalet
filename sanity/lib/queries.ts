@@ -113,10 +113,12 @@ export type HomePageData = {
   welcomeTitle: string
   welcomeParagraphs: string[]
   welcomeImage: CmsImage
+  welcomeDividerImages: CmsImage[]
   stats: CmsStat[]
   hotelSection: CmsTeaserSection
   roomsDividerImage: CmsImage
   roomsSection: CmsTeaserSection
+  roomsBreakImages: CmsImage[]
   culinaryDividerImage: CmsImage
   culinarySection: CmsTeaserSection
   experiencesDividerImage: CmsImage
@@ -184,7 +186,7 @@ export type RestaurantPageData = {
   atmosphereEyebrow: string
   atmosphereTitle: string
   atmosphereIntro: string
-  highlights: Array<{title: string; description: string}>
+  highlights: Array<{title: string; description: string; image?: CmsImage}>
 }
 
 export type ExperiencesPageData = {
@@ -208,7 +210,22 @@ export type ExperiencesPageData = {
     description: string
     image: CmsImage
   }>
+  experienceDividerImages: CmsImage[]
   closingQuote: string
+  moreExperiencesTitle: string
+  moreExperiences: Array<{
+    _key: string
+    title: string
+    description: string
+    image: CmsImage
+  }>
+  nearbyAttractionsTitle: string
+  nearbyAttractions: Array<{
+    _key: string
+    title: string
+    description: string
+    image: CmsImage
+  }>
 }
 
 export type RoomsPageData = {
@@ -241,7 +258,6 @@ export type WellnessPageData = {
   flyerButtonLabel: string
   flyerPdfUrl: string
   highlightImages: CmsImage[]
-  quote: string
   featuresEyebrow: string
   featuresTitle: string
   featuresBreakImages: CmsImage[]
@@ -280,6 +296,8 @@ export type LocalCheesePageData = {
     pairing: string
     image: CmsImage
   }>
+  collectionsBreakImages: CmsImage[]
+  seasonalityVideoUrl: string
   seasonalityEyebrow: string
   seasonalityTitle: string
   seasonalityIntro: string
@@ -425,6 +443,14 @@ const homePageQuery = groq`*[_type == "homePage" && language == $language][0]{
   welcomeTitle,
   welcomeParagraphs[],
   welcomeImage ${imageProjection},
+  "welcomeDividerImages": coalesce(
+    welcomeDividerImages[]{
+      "alt": coalesce(alt, ""),
+      image,
+      "url": select(defined(image.asset) => image.asset->url, url)
+    },
+    []
+  ),
   stats[]{
     value,
     label
@@ -432,6 +458,14 @@ const homePageQuery = groq`*[_type == "homePage" && language == $language][0]{
   hotelSection ${teaserProjection},
   roomsDividerImage ${imageProjection},
   roomsSection ${teaserProjection},
+  "roomsBreakImages": coalesce(
+    roomsBreakImages[]{
+      "alt": coalesce(alt, ""),
+      image,
+      "url": select(defined(image.asset) => image.asset->url, url)
+    },
+    []
+  ),
   culinaryDividerImage ${imageProjection},
   culinarySection ${teaserProjection},
   experiencesDividerImage ${imageProjection},
@@ -499,7 +533,11 @@ const restaurantPageQuery = groq`*[_type == "restaurantPage" && language == $lan
   atmosphereIntro,
   highlights[]{
     title,
-    description
+    description,
+    image {
+      alt,
+      image
+    }
   }
 }`
 
@@ -532,7 +570,28 @@ const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $l
     description,
     image ${imageProjection}
   },
-  closingQuote
+  "experienceDividerImages": coalesce(experienceDividerImages[] ${imageProjection}, []),
+  closingQuote,
+  moreExperiencesTitle,
+  "moreExperiences": coalesce(
+    moreExperiences[]{
+      _key,
+      title,
+      description,
+      image ${imageProjection}
+    },
+    []
+  ),
+  nearbyAttractionsTitle,
+  "nearbyAttractions": coalesce(
+    nearbyAttractions[]{
+      _key,
+      title,
+      description,
+      image ${imageProjection}
+    },
+    []
+  )
 }`
 
 const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $language][0]{
@@ -558,7 +617,6 @@ const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $languag
     highlightImages[] ${imageProjection},
     select(defined(highlightImage) => [highlightImage ${imageProjection}], [])
   ),
-  quote,
   featuresEyebrow,
   featuresTitle,
   "featuresBreakImages": coalesce(featuresBreakImages[] ${imageProjection}, []),
@@ -600,6 +658,8 @@ const localCheesePageQuery = groq`*[_type == "localCheesePage" && language == $l
     pairing,
     image ${imageProjection}
   },
+  "collectionsBreakImages": coalesce(collectionsBreakImages[] ${imageProjection}, []),
+  "seasonalityVideoUrl": seasonalityVideo.asset->url,
   seasonalityEyebrow,
   seasonalityTitle,
   seasonalityIntro,

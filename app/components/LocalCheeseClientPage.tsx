@@ -4,16 +4,26 @@ import Image from "next/image";
 import { animate } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 
+import FullBleedParallaxDivider from "@/app/components/FullBleedParallaxDivider";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
-import { colors } from "@/app/theme/colors";
+import { colors, palette } from "@/app/theme/colors";
 import { pageGutterX, pageShell } from "@/app/theme/pageShell";
 import type { LocalCheesePageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
 const JUMP_DURATION = 1.9;
+
+/** Temporary quote color previews — remove extras once you pick one. */
+const QUOTE_COLOR_VARIANTS = [
+  { label: "colors.accent · deepSage", color: palette.deepSage },
+  { label: "colors.cta · dustyRoseGold", color: palette.dustyRoseGold },
+  { label: "colors.textPrimary · charcoalBlack", color: palette.charcoalBlack },
+  { label: "colors.textSecondary · warmGray", color: palette.warmGray },
+  { label: "colors.border · pearl", color: palette.pearl },
+] as const;
 
 function useRevealOnScroll() {
   const refs = useRef<(HTMLElement | null)[]>([]);
@@ -98,6 +108,9 @@ function useScrollSnapJump() {
 export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageData }) {
   const addRef = useRevealOnScroll();
   useScrollSnapJump();
+  const collectionsBreakImages = data.collectionsBreakImages
+    .filter((image) => image?.url)
+    .slice(0, 4);
 
   return (
     <main className="w-full">
@@ -133,12 +146,12 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
         }
         .reveal-quote {
           opacity: 0;
-          clip-path: inset(0 100% 0 0);
-          transition: clip-path 0.9s ease-out, opacity 0.6s ease-out;
+          transform: translateY(32px);
+          transition: opacity 0.85s ease-out, transform 0.85s ease-out;
         }
         .revealed .reveal-quote {
           opacity: 1;
-          clip-path: inset(0 0 0 0);
+          transform: translateY(0);
         }
         .float-soft {
           animation: soft-float 7.5s ease-in-out infinite;
@@ -179,6 +192,10 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
           .hero-image-enter,
           .float-soft {
             animation: none;
+          }
+          .reveal-quote {
+            transform: translateY(0);
+            transition: opacity 0.35s ease-out;
           }
         }
       `}</style>
@@ -223,16 +240,11 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
       </section>
 
       <section data-theme="light">
-        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
-          <Image src={data.cellarBreakImage.url} alt={data.cellarBreakImage.alt} fill className="object-cover" sizes="100vw" />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
-            }}
-          />
-        </div>
+        <FullBleedParallaxDivider
+          gradientTop={colors.primaryBg}
+          gradientBottom={colors.secondaryBg}
+          image={data.cellarBreakImage}
+        />
       </section>
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
@@ -261,9 +273,12 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
         </div>
       </section>
 
-      <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
+      <section data-theme="dark" style={{ backgroundColor: colors.primaryBg }}>
         <div ref={addRef(2)} className={`mx-auto max-w-4xl ${pageGutterX} py-20 sm:py-28`}>
-          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
+          <blockquote
+            className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug sm:text-3xl lg:text-4xl"
+            style={{ color: colors.accent }}
+          >
             &ldquo;{data.quote}&rdquo;
           </blockquote>
         </div>
@@ -318,30 +333,61 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
         </div>
       </section>
 
+      {collectionsBreakImages.length === 4 ? (
+        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+          <div className="w-full pb-8 sm:pb-12">
+            <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+              {collectionsBreakImages.map((image, index) => (
+                <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
+                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="25vw" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(4)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
-          <div className="mb-8 text-center">
-            <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
-              {data.seasonalityEyebrow}
-            </span>
-            <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
-              {data.seasonalityTitle}
-            </h2>
-            <p className="mx-auto mt-8 max-w-3xl text-center text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
-              {data.seasonalityIntro}
-            </p>
-          </div>
-          <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2">
-            {data.seasonalityNotes.map((note) => (
-              <div key={note} className="rounded-lg p-8 text-center" style={{ backgroundColor: colors.primaryBg }}>
-                <p className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
-                  {note}
-                </p>
+          <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-14">
+            <div className="relative mx-auto w-full max-w-[520px] overflow-hidden rounded-lg shadow-xl lg:max-w-none">
+              <div className="aspect-[9/16] w-full">
+                <video
+                  src={data.seasonalityVideoUrl}
+                  className="h-full w-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                />
               </div>
-            ))}
+            </div>
+
+            <div className="lg:sticky lg:top-0 lg:flex lg:h-screen lg:items-center">
+              <div className="mx-auto max-w-3xl text-center">
+                <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
+                  {data.seasonalityEyebrow}
+                </span>
+                <h2 className="whitespace-pre-line font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
+                  {data.seasonalityTitle}
+                </h2>
+                <p className="mx-auto mt-8 max-w-3xl text-center text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+                  {data.seasonalityIntro}
+                </p>
+                <div className="mt-14 grid grid-cols-1 gap-8 md:grid-cols-2">
+                  {data.seasonalityNotes.map((note) => (
+                    <div key={note} className="rounded-lg p-8 text-center" style={{ backgroundColor: colors.primaryBg }}>
+                      <p className="text-base leading-relaxed sm:text-lg" style={{ color: colors.textSecondary }}>
+                        {note}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

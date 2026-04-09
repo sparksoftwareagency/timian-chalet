@@ -66,6 +66,13 @@ export const experiencesPageType = defineType({
       validation: (Rule) => Rule.required().min(4),
     }),
     defineField({
+      name: 'experienceDividerImages',
+      title: 'Experience divider images',
+      type: 'array',
+      of: [{type: 'imageBlock'}],
+      validation: (Rule) => Rule.required().min(4).max(4),
+    }),
+    defineField({
       name: 'experienceVideo',
       title: 'Experience video',
       type: 'file',
@@ -86,6 +93,32 @@ export const experiencesPageType = defineType({
       title: 'Closing quote',
       type: 'string',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'moreExperiencesTitle',
+      title: 'More experiences title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'moreExperiences',
+      title: 'More experiences',
+      type: 'array',
+      of: [{type: 'experienceItem'}],
+      validation: (Rule) => Rule.required().min(1),
+    }),
+    defineField({
+      name: 'nearbyAttractionsTitle',
+      title: 'Nearby attractions title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'nearbyAttractions',
+      title: 'Nearby attractions',
+      type: 'array',
+      of: [{type: 'experienceItem'}],
+      validation: (Rule) => Rule.required().min(10).max(10),
     }),
   ],
   preview: {

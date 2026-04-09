@@ -10,13 +10,14 @@ import {
   useState,
 } from "react";
 
+import FullBleedParallaxDivider from "@/app/components/FullBleedParallaxDivider";
 import ImageShow from "@/app/components/ImageShow";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
 import { colors } from "@/app/theme/colors";
-import { pageGutterX, pageShell } from "@/app/theme/pageShell";
+import { pageShell } from "@/app/theme/pageShell";
 import type { WellnessPageData } from "@/sanity/lib/queries";
 
 const TRIGGER_DOWN_DISTANCE = 1;
@@ -211,15 +212,6 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         .reveal-section.revealed .image-lift {
           transform: scale(1);
         }
-        .reveal-quote {
-          opacity: 0;
-          clip-path: inset(0 100% 0 0);
-          transition: clip-path 0.9s ease-out, opacity 0.6s ease-out;
-        }
-        .revealed .reveal-quote {
-          opacity: 1;
-          clip-path: inset(0 0 0 0);
-        }
         .float-soft {
           animation: soft-float 7.5s ease-in-out infinite;
           animation-delay: 0.25s;
@@ -400,17 +392,9 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
-      <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
-        <div ref={addRef(2)} className={`mx-auto max-w-4xl ${pageGutterX} py-20 sm:py-28`}>
-          <blockquote className="reveal-quote text-center font-serif text-2xl font-light italic leading-snug text-white sm:text-3xl lg:text-4xl">
-            &ldquo;{data.quote}&rdquo;
-          </blockquote>
-        </div>
-      </section>
-
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
-          ref={addRef(3)}
+          ref={addRef(2)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="mb-16 text-center">
@@ -427,32 +411,29 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
         </div>
       </section>
 
-      <section data-theme="light">
-        <div className="relative h-[40vh] w-full overflow-hidden sm:h-[50vh] md:h-[60vh]">
-          {breakImages.length === 0 ? null : hasBreakImageShow ? (
-            <ImageShow
-              images={breakImages}
-              className="h-full w-full"
-              aspectRatioClassName="h-full"
-              frameClassName="rounded-none"
-              sizes="100vw"
-            />
-          ) : (
-            <Image src={breakImages[0].url} alt={breakImages[0].alt} fill className="object-cover" sizes="100vw" />
-          )}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background: `linear-gradient(to bottom, ${colors.primaryBg} 0%, transparent 15%, transparent 85%, ${colors.secondaryBg} 100%)`,
-            }}
-          />
-        </div>
-      </section>
+      {breakImages.length > 0 ? (
+        <section data-theme="light">
+          <FullBleedParallaxDivider
+            gradientTop={colors.primaryBg}
+            gradientBottom={colors.secondaryBg}
+            image={hasBreakImageShow ? undefined : breakImages[0]}
+          >
+            {hasBreakImageShow ? (
+              <ImageShow
+                images={breakImages}
+                className="h-full w-full"
+                aspectRatioClassName="h-full"
+                frameClassName="rounded-none"
+                sizes="100vw"
+              />
+            ) : null}
+          </FullBleedParallaxDivider>
+        </section>
+      ) : null}
 
       <section style={{ backgroundColor: colors.secondaryBg }}>
         <div
-          ref={addRef(4)}
+          ref={addRef(3)}
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="space-y-16">
