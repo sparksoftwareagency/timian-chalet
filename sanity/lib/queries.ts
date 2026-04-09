@@ -135,8 +135,7 @@ export type AboutPageData = {
   originTitle: string
   originParagraphs: string[]
   originPrimaryImage: CmsImage
-  originSecondaryImage: CmsImage
-  animalsBreakImage: CmsImage
+  animalsBreakImages: CmsImage[]
   transformEyebrow: string
   transformTitle: string
   transformParagraphs: string[]
@@ -482,8 +481,10 @@ const aboutPageQuery = groq`*[_type == "aboutPage" && language == $language][0]{
   originTitle,
   originParagraphs[],
   originPrimaryImage ${imageProjection},
-  originSecondaryImage ${imageProjection},
-  animalsBreakImage ${imageProjection},
+  "animalsBreakImages": coalesce(
+    animalsBreakImages[] ${imageProjection},
+    select(defined(animalsBreakImage) => [animalsBreakImage ${imageProjection}], [])
+  ),
   transformEyebrow,
   transformTitle,
   transformParagraphs[],
