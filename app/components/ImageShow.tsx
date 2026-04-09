@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import type { CmsImage } from "@/sanity/lib/queries";
 
@@ -40,6 +40,7 @@ export default function ImageShow({
   const slides = useMemo(() => images.filter((image) => image?.url), [images]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   if (slides.length === 0) {
@@ -49,20 +50,34 @@ export default function ImageShow({
   const hasControls = slides.length > 1;
   const activeSlide = slides[activeIndex];
 
+  useEffect(() => {
+    if (!hasControls || shouldReduceMotion || hasUserInteracted) return;
+
+    const timeoutId = window.setTimeout(() => {
+      setDirection(1);
+      setActiveIndex((current) => (current + 1) % slides.length);
+    }, 4000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [activeIndex, hasControls, hasUserInteracted, shouldReduceMotion, slides.length]);
+
   const goToIndex = (nextIndex: number) => {
     if (!hasControls || nextIndex === activeIndex) return;
+    setHasUserInteracted(true);
     setDirection(nextIndex > activeIndex ? 1 : -1);
     setActiveIndex(nextIndex);
   };
 
   const showNext = () => {
     if (!hasControls) return;
+    setHasUserInteracted(true);
     setDirection(1);
     setActiveIndex((current) => (current + 1) % slides.length);
   };
 
   const showPrev = () => {
     if (!hasControls) return;
+    setHasUserInteracted(true);
     setDirection(-1);
     setActiveIndex((current) => (current - 1 + slides.length) % slides.length);
   };
