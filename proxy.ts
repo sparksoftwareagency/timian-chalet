@@ -15,6 +15,7 @@ export function proxy(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/admin") ||
+    pathname.startsWith("/pdf-viewer") ||
     hasFileExtension(pathname)
   ) {
     return NextResponse.next();

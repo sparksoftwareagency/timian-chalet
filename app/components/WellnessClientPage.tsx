@@ -149,7 +149,11 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
     </article>
   );
 
-  const renderSplitFeature = (feature: WellnessPageData["features"][number], index: number) => {
+  const renderSplitFeature = (
+    feature: WellnessPageData["features"][number],
+    index: number,
+    showImagePaginationDots: boolean,
+  ) => {
     const isImageLeft = index % 2 === 0;
     const firstImage = feature.images[0];
 
@@ -168,6 +172,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
               aspectRatioClassName="aspect-[3/4] w-full"
               frameClassName="rounded-none"
               sizes="(max-width: 1024px) 100vw, 50vw"
+              showPaginationDots={showImagePaginationDots}
             />
           ) : firstImage ? (
             <div className="relative aspect-[3/4] w-full">
@@ -413,7 +418,9 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           className={`reveal-section ${pageShell} py-20 sm:py-28 lg:py-32`}
         >
           <div className="space-y-12 sm:space-y-14">
-            {remainingFeatures.map((feature, index) => renderSplitFeature(feature, index))}
+            {remainingFeatures.map((feature, index) =>
+              renderSplitFeature(feature, index, index < remainingFeatures.length - 2),
+            )}
           </div>
         </div>
       </section>

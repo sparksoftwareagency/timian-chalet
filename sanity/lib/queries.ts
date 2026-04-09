@@ -256,7 +256,7 @@ export type WellnessPageData = {
   highlightParagraphs: string[]
   flyerButtonLabel: string
   flyerPdfUrl: string
-  highlightImages: CmsImage[]
+  highlightImage: CmsImage
   featuresEyebrow: string
   featuresTitle: string
   featuresBreakImages: CmsImage[]
@@ -614,10 +614,10 @@ const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $languag
   highlightParagraphs[],
   "flyerButtonLabel": coalesce(flyerButtonLabel, "View Massage Flyer"),
   "flyerPdfUrl": coalesce(flyerPdf.asset->url, flyerPdfUrl, "/massage_flyer.pdf"),
-  "highlightImages": coalesce(
-    highlightImages[] ${imageProjection},
-    select(defined(highlightImage) => [highlightImage ${imageProjection}], [])
-  ),
+  "highlightImage": coalesce(
+    highlightImage,
+    highlightImages[0]
+  ) ${imageProjection},
   featuresEyebrow,
   featuresTitle,
   "featuresBreakImages": coalesce(featuresBreakImages[] ${imageProjection}, []),

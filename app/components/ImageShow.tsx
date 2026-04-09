@@ -14,6 +14,8 @@ type ImageShowProps = {
   className?: string;
   frameClassName?: string;
   priorityFirstImage?: boolean;
+  /** When false, prev/next arrows still show but dot indicators are hidden. */
+  showPaginationDots?: boolean;
 };
 
 export function mergeImageShowImages(primaryImage?: CmsImage | null, galleryImages?: CmsImage[] | null) {
@@ -36,6 +38,7 @@ export default function ImageShow({
   className = "",
   frameClassName = "",
   priorityFirstImage = true,
+  showPaginationDots = true,
 }: ImageShowProps) {
   const slides = useMemo(() => images.filter((image) => image?.url), [images]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -139,7 +142,7 @@ export default function ImageShow({
         ) : null}
       </div>
 
-      {hasControls ? (
+      {hasControls && showPaginationDots ? (
         <div className="mt-3 flex items-center justify-center gap-2">
           {slides.map((slide, index) => {
             const isActive = index === activeIndex;
