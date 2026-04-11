@@ -72,6 +72,7 @@ export default function FloatingMenu({
   navigation: NavigationData;
   settings: SiteSettingsData;
 }) {
+  const navRef = useRef<HTMLElement>(null);
   const [hidden, setHidden] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [menuHover, setMenuHover] = useState(false);
@@ -141,6 +142,83 @@ export default function FloatingMenu({
       }
     });
     if (found) setTheme(found);
+    if (found) return;
+
+    const parseColor = (value: string) => {
+      const normalized = value.trim().toLowerCase();
+      if (!normalized || normalized === "transparent") return null;
+
+      const rgbMatch = normalized.match(
+        /^rgba?\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)(?:\s*,\s*([0-9.]+))?\s*\)$/,
+      );
+      if (rgbMatch) {
+        return {
+          r: Number(rgbMatch[1]),
+          g: Number(rgbMatch[2]),
+          b: Number(rgbMatch[3]),
+          a: rgbMatch[4] === undefined ? 1 : Number(rgbMatch[4]),
+        };
+      }
+
+      const hexMatch = normalized.match(/^#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/);
+      if (!hexMatch) return null;
+
+      const hex = hexMatch[1];
+      if (hex.length === 3) {
+        return {
+          r: Number.parseInt(hex[0] + hex[0], 16),
+          g: Number.parseInt(hex[1] + hex[1], 16),
+          b: Number.parseInt(hex[2] + hex[2], 16),
+          a: 1,
+        };
+      }
+
+      if (hex.length === 6 || hex.length === 8) {
+        return {
+          r: Number.parseInt(hex.slice(0, 2), 16),
+          g: Number.parseInt(hex.slice(2, 4), 16),
+          b: Number.parseInt(hex.slice(4, 6), 16),
+          a: hex.length === 8 ? Number.parseInt(hex.slice(6, 8), 16) / 255 : 1,
+        };
+      }
+
+      return null;
+    };
+
+    const readBackgroundColor = (element: HTMLElement) => {
+      let current: HTMLElement | null = element;
+      while (current && current !== document.body) {
+        const style = window.getComputedStyle(current);
+        const parsed = parseColor(style.backgroundColor);
+        if (parsed && parsed.a > 0.08) {
+          return parsed;
+        }
+        current = current.parentElement;
+      }
+      return null;
+    };
+
+    const brightness = (r: number, g: number, b: number) => {
+      const channel = (value: number) => {
+        const normalized = value / 255;
+        return normalized <= 0.03928 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
+      };
+      const luminance = 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+      return luminance;
+    };
+
+    const rootNav = navRef.current;
+    const stack = document.elementsFromPoint(cx, cy);
+    for (const candidate of stack) {
+      if (!(candidate instanceof HTMLElement)) continue;
+      if (rootNav?.contains(candidate)) continue;
+
+      const bg = readBackgroundColor(candidate);
+      if (!bg) continue;
+
+      setTheme(brightness(bg.r, bg.g, bg.b) > 0.6 ? "light" : "dark");
+      return;
+    }
   }, []);
 
   useEffect(() => {
@@ -180,7 +258,7 @@ export default function FloatingMenu({
 
   return (
     <>
-      <nav className="pointer-events-none fixed left-0 right-0 top-0 z-[100]">
+      <nav ref={navRef} className="pointer-events-none fixed left-0 right-0 top-0 z-[100]">
         <div className="flex items-center justify-between px-5 py-3 md:px-8 md:py-5">
           <div className="pointer-events-auto flex items-center">
             <button
