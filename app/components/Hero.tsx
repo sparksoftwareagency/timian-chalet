@@ -36,7 +36,7 @@ type HeroData = {
 
 const MEDIA_ASPECT = "aspect-[5/2]";
 const SVG_HEADING_TINT = "rgba(118, 109, 103, 0.45)";
-const SVG_HEADING_TINT_STRONG = "rgba(118, 109, 103, 0.75)";
+const SVG_HEADING_TINT_STRONG = "#1C1C1C";
 
 function splitPrimaryAndSecondary(line: string): { primary: string; secondary: string } {
   const clean = line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
@@ -69,20 +69,20 @@ function SvgWordmarkHeading({
       role="img"
       width="100%"
       height={height}
-      viewBox="0 0 1200 220"
+      viewBox="0 0 1200 310"
       preserveAspectRatio="xMinYMid meet"
       className="block overflow-visible"
     >
       <motion.text
         x="0"
-        y="112"
+        y="160"
         className="font-sans uppercase leading-none"
-        initial={{ y: 172, opacity: 0 }}
-        animate={shouldAnimate ? { y: 112, opacity: 1 } : { y: 172, opacity: 0 }}
+        initial={{ y: 240, opacity: 0 }}
+        animate={shouldAnimate ? { y: 160, opacity: 1 } : { y: 240, opacity: 0 }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         style={{
           fill: SVG_HEADING_TINT,
-          fontSize: "134px",
+          fontSize: "210px",
           fontWeight: 300,
           letterSpacing: "0.04em",
         }}
@@ -92,15 +92,15 @@ function SvgWordmarkHeading({
       {secondary ? (
         <motion.text
           x="640"
-          y="163"
+          y="250"
           className="font-sans uppercase leading-none"
-          initial={{ y: 231, opacity: 0 }}
-          animate={shouldAnimate ? { y: 163, opacity: 1 } : { y: 231, opacity: 0 }}
+          initial={{ y: 310, opacity: 0 }}
+          animate={shouldAnimate ? { y: 250, opacity: 1 } : { y: 310, opacity: 0 }}
           transition={{ duration: 0.9, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fill: SVG_HEADING_TINT_STRONG,
-            fontSize: "60px",
-            fontWeight: 300,
+            fontSize: "72px",
+            fontWeight: 500,
             letterSpacing: "0.03em",
           }}
         >
@@ -117,7 +117,7 @@ function SvgTextHeading({
   stretchToWidth = false,
   shouldAnimate,
   baseDelay = 0.1,
-  singleLineFontSize = "400px",
+  singleLineFontSize = "180px",
 }: {
   lines: string[];
   height: string;
@@ -127,8 +127,8 @@ function SvgTextHeading({
   singleLineFontSize?: string;
 }) {
   const cleanLines = lines.map((line) => line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim());
-  const viewBoxHeight = cleanLines.length > 1 ? 320 : 150;
-  const firstLineY = cleanLines.length > 1 ? 130 : 112;
+  const viewBoxHeight = cleanLines.length > 1 ? 320 : 220;
+  const firstLineY = cleanLines.length > 1 ? 130 : 160;
   const lineGap = 136;
 
   return (
@@ -333,9 +333,9 @@ export default function Hero({ data }: { data: HeroData }) {
         <div className={`grid grid-cols-1 md:grid-cols-10 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-6 md:py-10`}>
           <div className="flex items-center order-2 md:order-none md:col-span-5 py-6 md:py-12">
             <SvgWordmarkHeading
-              primary={craftedParts.primary}
-              secondary={craftedParts.secondary}
-              height="clamp(6.5rem, 15vw, 12rem)"
+              primary={craftedParts.primary} // the timian
+              secondary={craftedParts.secondary} // feeling
+              height="clamp(8rem, 18vw, 16rem)"
               shouldAnimate={showFlowingHeadings}
             />
           </div>
@@ -361,16 +361,16 @@ export default function Hero({ data }: { data: HeroData }) {
 
           <div className="flex items-center order-4 md:col-span-3 py-6 md:py-12">
             <SvgTextHeading
-              lines={[liveLine]}
+              lines={[liveLine]} // where
               height="clamp(6rem, 7.5vw, 11rem)"
               stretchToWidth
               shouldAnimate={showFlowingHeadings}
             />
           </div>
 
-          <div className="flex items-center order-5 md:col-span-10 py-6 md:py-6">
+          <div className="flex items-center order-5 md:col-span-10 -mt-10 md:-mt-10">
             <SvgTextHeading
-              lines={[inNatureLine]}
+              lines={[inNatureLine]} // the heart finds home
               height="clamp(7rem, 7vw, 16rem)"
               shouldAnimate={showFlowingHeadings}
               baseDelay={0.2}
