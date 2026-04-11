@@ -69,37 +69,37 @@ function SvgWordmarkHeading({
       role="img"
       width="100%"
       height={height}
-      viewBox="0 0 1200 310"
+      viewBox="0 0 1200 510"
       preserveAspectRatio="xMinYMid meet"
       className="block overflow-visible"
     >
       <motion.text
         x="0"
-        y="160"
+        y="100"
         className="font-sans uppercase leading-none"
         initial={{ y: 240, opacity: 0 }}
         animate={shouldAnimate ? { y: 160, opacity: 1 } : { y: 240, opacity: 0 }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         style={{
           fill: SVG_HEADING_TINT,
-          fontSize: "210px",
+          fontSize: "240px",
           fontWeight: 300,
-          letterSpacing: "0.04em",
+          letterSpacing: "0.00em",
         }}
       >
         {primary}
       </motion.text>
       {secondary ? (
         <motion.text
-          x="640"
-          y="250"
+          x="990"
+          y="160"
           className="font-sans uppercase leading-none"
-          initial={{ y: 310, opacity: 0 }}
-          animate={shouldAnimate ? { y: 250, opacity: 1 } : { y: 310, opacity: 0 }}
+          initial={{ y: 260, opacity: 0 }}
+          animate={shouldAnimate ? { y: 200, opacity: 1 } : { y: 260, opacity: 0 }}
           transition={{ duration: 0.9, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
           style={{
             fill: SVG_HEADING_TINT_STRONG,
-            fontSize: "72px",
+            fontSize: "82px",
             fontWeight: 500,
             letterSpacing: "0.03em",
           }}
@@ -117,7 +117,8 @@ function SvgTextHeading({
   stretchToWidth = false,
   shouldAnimate,
   baseDelay = 0.1,
-  singleLineFontSize = "180px",
+  singleLineFontSize = "400px",
+  x = 0,
 }: {
   lines: string[];
   height: string;
@@ -125,10 +126,11 @@ function SvgTextHeading({
   shouldAnimate: boolean;
   baseDelay?: number;
   singleLineFontSize?: string;
+  x?: number | string;
 }) {
   const cleanLines = lines.map((line) => line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim());
-  const viewBoxHeight = cleanLines.length > 1 ? 320 : 220;
-  const firstLineY = cleanLines.length > 1 ? 130 : 160;
+  const viewBoxHeight = cleanLines.length > 1 ? 220 : 220;
+  const firstLineY = cleanLines.length > 1 ? 120 : 130;
   const lineGap = 136;
 
   return (
@@ -144,7 +146,7 @@ function SvgTextHeading({
       {cleanLines.map((line, index) => (
         <motion.text
           key={`${line}-${index}`}
-          x="0"
+          x={x}
           y={firstLineY + index * lineGap}
           {...(stretchToWidth
             ? {
@@ -269,7 +271,7 @@ export default function Hero({ data }: { data: HeroData }) {
   const showFlowingHeadings = phase === "collapsed";
 
   return (
-    <div data-theme="light" style={{ height: "190vh", position: "relative" }}>
+    <div data-theme="light" style={{ height: "200vh", position: "relative" }}>
       {/* Sticky layer — pinned to viewport top while inside the 190vh container */}
       <div
         ref={stickyRef}
@@ -330,8 +332,8 @@ export default function Hero({ data }: { data: HeroData }) {
       {/* Grid content — in normal document flow below the sticky area.
           Scrolls into the viewport naturally as the page scrolls during animation. */}
       <motion.div style={{ opacity: contentOpacity }}>
-        <div className={`grid grid-cols-1 md:grid-cols-10 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-6 md:py-10`}>
-          <div className="flex items-center order-2 md:order-none md:col-span-5 py-6 md:py-12">
+        <div className={`grid grid-cols-1 md:grid-cols-10 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-4 md:py-10`}>
+          <div className="flex items-center order-2 md:order-none md:col-span-5">
             <SvgWordmarkHeading
               primary={craftedParts.primary} // the timian
               secondary={craftedParts.secondary} // feeling
@@ -343,7 +345,7 @@ export default function Hero({ data }: { data: HeroData }) {
           {/* Empty placeholder — the video in the sticky layer overlays this cell */}
           <div
             ref={videoCellRef}
-            className={`order-1 md:order-none md:col-span-5 ${MEDIA_ASPECT} md:aspect-auto`}
+            className={`order-1 md:order-none md:col-span-5 ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,10vw,15rem)]`}
           />
 
           <div
@@ -359,22 +361,24 @@ export default function Hero({ data }: { data: HeroData }) {
             />
           </div>
 
-          <div className="flex items-center order-4 md:col-span-3 py-6 md:py-12">
+          <div className="flex items-center order-4 md:col-span-3 py-4 md:py-6">
             <SvgTextHeading
               lines={[liveLine]} // where
-              height="clamp(6rem, 7.5vw, 11rem)"
+              height="clamp(7rem, 9vw, 13rem)"
               stretchToWidth
               shouldAnimate={showFlowingHeadings}
+              singleLineFontSize="280px"
             />
           </div>
 
-          <div className="flex items-center order-5 md:col-span-10 -mt-10 md:-mt-10">
+          <div className="flex items-center order-5 md:col-span-10 -mt-14 md:-mt-16">
             <SvgTextHeading
               lines={[inNatureLine]} // the heart finds home
               height="clamp(7rem, 7vw, 16rem)"
               shouldAnimate={showFlowingHeadings}
               baseDelay={0.2}
-              singleLineFontSize="138px"
+              singleLineFontSize="170px"
+              x="180"
             />
           </div>
         </div>

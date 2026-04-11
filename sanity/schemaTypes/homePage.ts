@@ -19,7 +19,6 @@ export const homePageType = defineType({
       name: 'heroSubtitle',
       title: 'Hero subtitle',
       type: 'string',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'heroVideo',
