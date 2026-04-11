@@ -534,7 +534,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       </section>
 
       {nearbyAttractions.length > 0 ? (
-        <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
+        <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
           <div
             className={`${pageShell} py-20 sm:py-24 lg:py-28`}
           >
