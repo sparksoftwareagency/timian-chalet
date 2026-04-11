@@ -290,7 +290,7 @@ export default function AboutClientPage({
         </div>
       </section>
 
-      <section style={{ backgroundColor: colors.secondaryBg }}>
+      <section style={{ backgroundColor: colors.primaryBg }}>
         <FullBleedParallaxDivider height="h-[95vh]" image={data.roomsImage} />
         <div className={`${pageShell} py-20 sm:py-28 lg:py-32`}>
           <div className="mb-6 text-center">
