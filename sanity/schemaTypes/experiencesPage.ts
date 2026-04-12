@@ -118,7 +118,7 @@ export const experiencesPageType = defineType({
       title: 'Nearby attractions',
       type: 'array',
       of: [{type: 'experienceItem'}],
-      validation: (Rule) => Rule.required().min(10).max(10),
+      validation: (Rule) => Rule.required().min(1).max(10),
     }),
   ],
   preview: {
