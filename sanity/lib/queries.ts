@@ -287,6 +287,9 @@ export type LocalCheesePageData = {
   quote: string
   collectionEyebrow: string
   collectionTitle: string
+  collectionExperienceLabel: string
+  collectionVariationsLabel: string
+  collectionPairingLabel: string
   collections: Array<{
     _key: string
     title: string
@@ -652,6 +655,9 @@ const localCheesePageQuery = groq`*[_type == "localCheesePage" && language == $l
   quote,
   collectionEyebrow,
   collectionTitle,
+  "collectionExperienceLabel": coalesce(collectionExperienceLabel, "Experience"),
+  "collectionVariationsLabel": coalesce(collectionVariationsLabel, "Variations"),
+  "collectionPairingLabel": coalesce(collectionPairingLabel, "Pairing"),
   collections[]{
     _key,
     title,

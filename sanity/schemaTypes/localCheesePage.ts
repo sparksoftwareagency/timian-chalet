@@ -102,6 +102,24 @@ export const localCheesePageType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'collectionExperienceLabel',
+      title: 'Collection experience label',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'collectionVariationsLabel',
+      title: 'Collection variations label',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'collectionPairingLabel',
+      title: 'Collection pairing label',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'collections',
       title: 'Collections',
       type: 'array',
