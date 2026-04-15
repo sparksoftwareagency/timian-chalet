@@ -8,6 +8,7 @@ import {
   HERO_SCROLL_VIEWPORT_MULT_LANDING,
   heroScrollStepPx,
 } from "@/app/lib/heroScrollStep";
+import { colors } from "@/app/theme/colors";
 import { pageShell } from "@/app/theme/pageShell";
 
 const ANIMATION_DURATION = 1.9;
@@ -30,13 +31,13 @@ type HeroData = {
   heroVideoUrl: string;
   heroSecondaryImage: { url: string; alt: string };
   heroCraftedLine: string;
+  heroCraftedLineSmall: string;
   heroRootedLine: string;
   heroInNatureLine: string;
 };
 
 const MEDIA_ASPECT = "aspect-[5/2]";
 const SVG_HEADING_TINT = "rgba(118, 109, 103, 0.45)";
-const SVG_HEADING_TINT_STRONG = "#1C1C1C";
 
 function splitPrimaryAndSecondary(line: string): { primary: string; secondary: string } {
   const clean = line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
@@ -98,7 +99,7 @@ function SvgWordmarkHeading({
           animate={shouldAnimate ? { y: 200, opacity: 1 } : { y: 260, opacity: 0 }}
           transition={{ duration: 0.9, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            fill: SVG_HEADING_TINT_STRONG,
+            fill: colors.accent,
             fontSize: "82px",
             fontWeight: 500,
             letterSpacing: "0.03em",
@@ -181,7 +182,13 @@ function SvgTextHeading({
 }
 
 export default function Hero({ data }: { data: HeroData }) {
-  const craftedParts = splitPrimaryAndSecondary(data.heroCraftedLine);
+  const craftedPrimary = data.heroCraftedLine.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
+  const craftedSecondary = data.heroCraftedLineSmall?.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
+  const fallbackCraftedParts = splitPrimaryAndSecondary(data.heroCraftedLine);
+  const craftedParts = {
+    primary: craftedPrimary || fallbackCraftedParts.primary,
+    secondary: craftedSecondary || fallbackCraftedParts.secondary,
+  };
   const liveLine = data.heroRootedLine.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
   const inNatureLine = data.heroInNatureLine.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
 

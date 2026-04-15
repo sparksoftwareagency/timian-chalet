@@ -36,8 +36,17 @@ export const homePageType = defineType({
     defineField({
       name: 'heroCraftedLine',
       title: 'Hero crafted line',
+      description: 'Main large text shown in the crafted wordmark heading.',
       type: 'string',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'heroCraftedLineSmall',
+      title: 'Hero crafted line (small text)',
+      description:
+        'Small accent text shown next to the crafted line. Example: "FEELING".',
+      type: 'string',
+      validation: (Rule) => Rule.max(32),
     }),
     defineField({
       name: 'heroRootedLine',
