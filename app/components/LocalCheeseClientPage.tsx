@@ -311,15 +311,15 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
                     {collection.milk}
                   </p>
                   <p className="text-base leading-relaxed" style={{ color: colors.textSecondary }}>
-                    <strong style={{ color: colors.accent }}>Experience: </strong>
+                    <strong style={{ color: colors.accent }}>{data.collectionExperienceLabel}: </strong>
                     {collection.experience}
                   </p>
                   <p className="text-base leading-relaxed" style={{ color: colors.textSecondary }}>
-                    <strong style={{ color: colors.accent }}>Variations: </strong>
+                    <strong style={{ color: colors.accent }}>{data.collectionVariationsLabel}: </strong>
                     {collection.variations}
                   </p>
                   <p className="text-base leading-relaxed" style={{ color: colors.textSecondary }}>
-                    <strong style={{ color: colors.accent }}>Pairing: </strong>
+                    <strong style={{ color: colors.accent }}>{data.collectionPairingLabel}: </strong>
                     {collection.pairing}
                   </p>
                 </div>
