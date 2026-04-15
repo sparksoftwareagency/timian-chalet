@@ -108,6 +108,7 @@ export type HomePageData = {
   heroVideoUrl: string
   heroSecondaryImage: CmsImage
   heroCraftedLine: string
+  heroCraftedLineSmall: string
   heroRootedLine: string
   heroInNatureLine: string
   welcomeTitle: string
@@ -437,6 +438,7 @@ const homePageQuery = groq`*[_type == "homePage" && language == $language][0]{
   "heroVideoUrl": heroVideo.asset->url,
   heroSecondaryImage ${imageProjection},
   heroCraftedLine,
+  "heroCraftedLineSmall": coalesce(heroCraftedLineSmall, ""),
   heroRootedLine,
   heroInNatureLine,
   welcomeTitle,
