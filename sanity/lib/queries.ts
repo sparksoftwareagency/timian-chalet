@@ -610,19 +610,13 @@ const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $languag
   introTitle,
   introParagraphs[],
   introImage ${imageProjection},
-  "breakImages": coalesce(
-    breakImages[] ${imageProjection},
-    select(defined(breakImage) => [breakImage ${imageProjection}], [])
-  ),
+  "breakImages": coalesce(breakImages[] ${imageProjection}, []),
   highlightEyebrow,
   highlightTitle,
   highlightParagraphs[],
   "flyerButtonLabel": coalesce(flyerButtonLabel, "View Massage Flyer"),
-  "flyerPdfUrl": coalesce(flyerPdf.asset->url, flyerPdfUrl, "/massage_flyer.pdf"),
-  "highlightImage": coalesce(
-    highlightImage,
-    highlightImages[0]
-  ) ${imageProjection},
+  "flyerPdfUrl": coalesce(flyerPdf.asset->url, "/massage_flyer.pdf"),
+  highlightImage ${imageProjection},
   featuresEyebrow,
   featuresTitle,
   "featuresBreakImages": coalesce(featuresBreakImages[] ${imageProjection}, []),
@@ -630,10 +624,7 @@ const wellnessPageQuery = groq`*[_type == "wellnessPage" && language == $languag
     _key,
     title,
     description,
-    "images": coalesce(
-      images[] ${imageProjection},
-      select(defined(image) => [image ${imageProjection}], [])
-    )
+    "images": coalesce(images[] ${imageProjection}, [])
   }
 }`
 

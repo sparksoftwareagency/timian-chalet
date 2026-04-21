@@ -7,6 +7,7 @@ import {useClient} from 'sanity'
 import {apiVersion} from '../env'
 
 const ENGLISH_LANGUAGE = 'en'
+const TRANSLATABLE_ALT_LANGUAGES = new Set(['hu', 'ro'])
 
 type TranslationMetadataResult = {
   translations?: Array<{
@@ -41,6 +42,167 @@ function isStructuralStringKey(key: string | undefined): boolean {
   return key.startsWith('_') || key === 'assetId'
 }
 
+function getArrayItemKey(value: unknown): string | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return null
+  }
+
+  const typedValue = value as {_key?: unknown}
+  return typeof typedValue._key === 'string' ? typedValue._key : null
+}
+
+function getImageAssetRef(value: unknown): string | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return null
+  }
+
+  const typedValue = value as {
+    image?: {
+      asset?: {
+        _ref?: unknown
+      }
+    }
+  }
+  const assetRef = typedValue.image?.asset?._ref
+  return typeof assetRef === 'string' ? assetRef : null
+}
+
+async function translateEnglishText(
+  text: string,
+  targetLanguage: string,
+  cache: Map<string, string>
+): Promise<string> {
+  const normalizedLanguage = targetLanguage.toLowerCase()
+
+  if (!TRANSLATABLE_ALT_LANGUAGES.has(normalizedLanguage)) {
+    return text
+  }
+
+  const cacheKey = `${normalizedLanguage}:${text}`
+  const cachedTranslation = cache.get(cacheKey)
+  if (cachedTranslation) {
+    return cachedTranslation
+  }
+
+  try {
+    const response = await fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${encodeURIComponent(
+        normalizedLanguage
+      )}&dt=t&q=${encodeURIComponent(text)}`
+    )
+
+    if (!response.ok) {
+      cache.set(cacheKey, text)
+      return text
+    }
+
+    const payload = (await response.json()) as unknown
+    const translatedText = Array.isArray(payload)
+      ? (payload[0] as unknown[])
+          ?.map((segment) => (Array.isArray(segment) ? segment[0] : ''))
+          .filter((segment): segment is string => typeof segment === 'string')
+          .join('')
+      : ''
+
+    const normalizedTranslation = translatedText.trim()
+    if (normalizedTranslation.length > 0) {
+      cache.set(cacheKey, normalizedTranslation)
+      return normalizedTranslation
+    }
+  } catch {
+    // Ignore translation errors and fall back to source text.
+  }
+
+  cache.set(cacheKey, text)
+  return text
+}
+
+async function retranslateChangedImageAlts(
+  sourceValue: unknown,
+  targetValue: unknown,
+  mergedValue: unknown,
+  targetLanguage: string,
+  translationCache: Map<string, string>
+): Promise<void> {
+  if (Array.isArray(sourceValue) && Array.isArray(mergedValue)) {
+    const sourceItems = sourceValue
+    const targetItems = Array.isArray(targetValue) ? targetValue : []
+    const targetIndexesByKey = new Map<string, number>()
+
+    targetItems.forEach((item, index) => {
+      const itemKey = getArrayItemKey(item)
+      if (itemKey) {
+        targetIndexesByKey.set(itemKey, index)
+      }
+    })
+
+    await Promise.all(
+      sourceItems.map(async (sourceItem, index) => {
+        const sourceItemKey = getArrayItemKey(sourceItem)
+        const matchingTargetIndex =
+          (sourceItemKey ? targetIndexesByKey.get(sourceItemKey) : undefined) ?? index
+        const matchingTargetItem = targetItems[matchingTargetIndex]
+        const matchingMergedItem = mergedValue[index]
+
+        await retranslateChangedImageAlts(
+          sourceItem,
+          matchingTargetItem,
+          matchingMergedItem,
+          targetLanguage,
+          translationCache
+        )
+      })
+    )
+
+    return
+  }
+
+  if (
+    !sourceValue ||
+    typeof sourceValue !== 'object' ||
+    Array.isArray(sourceValue) ||
+    !mergedValue ||
+    typeof mergedValue !== 'object' ||
+    Array.isArray(mergedValue)
+  ) {
+    return
+  }
+
+  const sourceObject = sourceValue as Record<string, unknown>
+  const targetObject =
+    targetValue && typeof targetValue === 'object' && !Array.isArray(targetValue)
+      ? (targetValue as Record<string, unknown>)
+      : {}
+  const mergedObject = mergedValue as Record<string, unknown>
+
+  const sourceAssetRef = getImageAssetRef(sourceObject)
+  const targetAssetRef = getImageAssetRef(targetObject)
+  const mergedAssetRef = getImageAssetRef(mergedObject)
+  const sourceAlt = typeof sourceObject.alt === 'string' ? sourceObject.alt.trim() : ''
+  const didImageChange =
+    Boolean(sourceAssetRef) &&
+    Boolean(mergedAssetRef) &&
+    sourceAssetRef === mergedAssetRef &&
+    sourceAssetRef !== targetAssetRef
+
+  if (didImageChange && sourceAlt.length > 0) {
+    mergedObject.alt = await translateEnglishText(sourceAlt, targetLanguage, translationCache)
+  }
+
+  const nestedKeys = new Set([...Object.keys(sourceObject), ...Object.keys(mergedObject)])
+  await Promise.all(
+    Array.from(nestedKeys).map(async (nestedKey) => {
+      await retranslateChangedImageAlts(
+        sourceObject[nestedKey],
+        targetObject[nestedKey],
+        mergedObject[nestedKey],
+        targetLanguage,
+        translationCache
+      )
+    })
+  )
+}
+
 function mergeNonTextValue(sourceValue: unknown, targetValue: unknown, key?: string): unknown {
   if (sourceValue === undefined) {
     return targetValue
@@ -49,9 +211,36 @@ function mergeNonTextValue(sourceValue: unknown, targetValue: unknown, key?: str
   if (Array.isArray(sourceValue)) {
     const sourceItems = sourceValue
     const targetItems = Array.isArray(targetValue) ? targetValue : []
+    const targetIndexesByKey = new Map<string, number>()
+
+    targetItems.forEach((item, index) => {
+      const itemKey = getArrayItemKey(item)
+      if (itemKey) {
+        targetIndexesByKey.set(itemKey, index)
+      }
+    })
+
+    const usedTargetIndexes = new Set<number>()
     const mergedItems = sourceItems
-      .map((item, index) => mergeNonTextValue(item, targetItems[index]))
+      .map((item, index) => {
+        const sourceItemKey = getArrayItemKey(item)
+        const matchingTargetIndex =
+          (sourceItemKey ? targetIndexesByKey.get(sourceItemKey) : undefined) ?? index
+        const matchingTargetItem = targetItems[matchingTargetIndex]
+
+        if (matchingTargetItem !== undefined) {
+          usedTargetIndexes.add(matchingTargetIndex)
+        }
+
+        return mergeNonTextValue(item, matchingTargetItem)
+      })
       .filter((item) => item !== undefined)
+
+    targetItems.forEach((item, index) => {
+      if (!usedTargetIndexes.has(index)) {
+        mergedItems.push(item)
+      }
+    })
 
     if (mergedItems.length === 0) {
       return targetItems.length > 0 ? targetItems : undefined
@@ -180,6 +369,7 @@ export const CopyEnglishToTranslationsAction: DocumentActionComponent = (props) 
       setResultMessage(null)
 
       try {
+        const translationCache = new Map<string, string>()
         const sourcePublishedId = normalizeDocumentId(id)
         const sourceDraftId = createDraftId(sourcePublishedId)
         const metadata = await client.fetch<TranslationMetadataResult>(translationMetadataQuery, {
@@ -259,6 +449,15 @@ export const CopyEnglishToTranslationsAction: DocumentActionComponent = (props) 
             language: target.language,
           }
           const mergedPayload = buildMergedPayload(sourceDocument, targetDocument)
+          const normalizedTargetLanguage = typeof target.language === 'string' ? target.language : ''
+
+          await retranslateChangedImageAlts(
+            sourceDocument,
+            targetDocument,
+            mergedPayload,
+            normalizedTargetLanguage,
+            translationCache
+          )
 
           transaction.createIfNotExists({
             _id: targetDraftId,
