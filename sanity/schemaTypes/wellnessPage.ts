@@ -58,21 +58,7 @@ export const wellnessPageType = defineType({
       description: 'Upload one image for a static section image, or multiple images for a slider.',
       type: 'array',
       of: [{type: 'imageBlock'}],
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
-          const hasGalleryImages = Array.isArray(value) && value.length > 0
-          const hasLegacyImage = Boolean((context.document as {breakImage?: unknown})?.breakImage)
-
-          return hasGalleryImages || hasLegacyImage ? true : 'Add at least one break image'
-        }),
-    }),
-    defineField({
-      // Legacy single-image field kept hidden for migration compatibility.
-      name: 'breakImage',
-      title: 'Break image (legacy)',
-      type: 'imageBlock',
-      hidden: true,
-      readOnly: true,
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'highlightEyebrow',
@@ -109,49 +95,14 @@ export const wellnessPageType = defineType({
       options: {
         accept: 'application/pdf',
       },
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
-          const hasLegacyUrl = Boolean((context.document as {flyerPdfUrl?: unknown})?.flyerPdfUrl)
-          return value || hasLegacyUrl ? true : 'Upload a flyer PDF file'
-        }),
-    }),
-    defineField({
-      // Legacy URL field kept hidden for migration compatibility.
-      name: 'flyerPdfUrl',
-      title: 'Flyer PDF URL (legacy)',
-      type: 'string',
-      hidden: true,
-      readOnly: true,
-      deprecated: {
-        reason: 'Use "Flyer PDF file" instead.',
-      },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'highlightImage',
       title: 'Highlight image',
       description: 'Single background image used for the treatment list download section.',
       type: 'imageBlock',
-      validation: (Rule) =>
-        Rule.custom((value, context) => {
-          const hasLegacyGallery = Boolean(
-            Array.isArray((context.document as {highlightImages?: unknown[]})?.highlightImages) &&
-              (context.document as {highlightImages?: unknown[]})?.highlightImages?.length,
-          )
-
-          return value || hasLegacyGallery ? true : 'Add a highlight image'
-        }),
-    }),
-    defineField({
-      // Legacy multi-image gallery field kept hidden for migration compatibility.
-      name: 'highlightImages',
-      title: 'Highlight image gallery (legacy)',
-      type: 'array',
-      of: [{type: 'imageBlock'}],
-      hidden: true,
-      readOnly: true,
-      deprecated: {
-        reason: 'Use "Highlight image" instead.',
-      },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'quote',
