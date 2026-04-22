@@ -37,7 +37,7 @@ export const navigationType = defineType({
       title: 'Utility links',
       type: 'array',
       of: [{type: 'linkObject'}],
-      validation: (Rule) => Rule.required().min(1),
+      validation: (Rule) => Rule.optional(),
     }),
     defineField({
       name: 'menuGroups',

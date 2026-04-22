@@ -121,6 +121,7 @@ export default function FloatingMenu({
       })),
     }));
   }, [locale, navigation.menuGroups]);
+  const utilityLinks = useMemo(() => navigation.utilityLinks ?? [], [navigation.utilityLinks]);
 
   const bookNowHref = useMemo(() => resolveBookNowHref(locale, settings.bookNowLink), [locale, settings.bookNowLink]);
   const isBookNowPage = useMemo(() => (pathname ?? "").split("#")[0].endsWith("/book-now"), [pathname]);
@@ -518,20 +519,22 @@ export default function FloatingMenu({
                     height={40}
                     className="h-auto w-44 opacity-80"
                   />
-                  <nav className="absolute bottom-[22%] left-0 right-0 flex flex-col items-center gap-3">
-                    {navigation.utilityLinks.map((item) => (
-                      <a
-                        key={`${item.href}-${item.label}`}
-                        href={resolveHref(locale, item.href)}
-                        onClick={closeMenu}
-                        target={item.openInNewTab ? "_blank" : undefined}
-                        rel={item.openInNewTab ? "noopener noreferrer" : undefined}
-                        className="text-sm text-white/40 transition-colors hover:text-white"
-                      >
-                        {item.label}
-                      </a>
-                    ))}
-                  </nav>
+                  {utilityLinks.length > 0 && (
+                    <nav className="absolute bottom-[22%] left-0 right-0 flex flex-col items-center gap-3">
+                      {utilityLinks.map((item) => (
+                        <a
+                          key={`${item.href}-${item.label}`}
+                          href={resolveHref(locale, item.href)}
+                          onClick={closeMenu}
+                          target={item.openInNewTab ? "_blank" : undefined}
+                          rel={item.openInNewTab ? "noopener noreferrer" : undefined}
+                          className="text-sm text-white/40 transition-colors hover:text-white"
+                        >
+                          {item.label}
+                        </a>
+                      ))}
+                    </nav>
+                  )}
                 </div>
 
                 <motion.div
@@ -577,22 +580,24 @@ export default function FloatingMenu({
 
               <motion.div className="px-6 pb-12 pt-24 md:hidden" variants={staggerContainer} initial="hidden" animate="visible">
                 <div className="mx-auto w-full max-w-md">
-                  <motion.div variants={fadeUp} className="mb-8 rounded-2xl border border-white/10 bg-black/10 p-4">
-                    <nav className="flex flex-wrap gap-x-4 gap-y-2">
-                      {navigation.utilityLinks.map((item) => (
-                        <a
-                          key={`${item.href}-${item.label}`}
-                          href={resolveHref(locale, item.href)}
-                          onClick={closeMenu}
-                          target={item.openInNewTab ? "_blank" : undefined}
-                          rel={item.openInNewTab ? "noopener noreferrer" : undefined}
-                          className="text-sm text-white/70 transition-colors hover:text-white"
-                        >
-                          {item.label}
-                        </a>
-                      ))}
-                    </nav>
-                  </motion.div>
+                  {utilityLinks.length > 0 && (
+                    <motion.div variants={fadeUp} className="mb-8 rounded-2xl border border-white/10 bg-black/10 p-4">
+                      <nav className="flex flex-wrap gap-x-4 gap-y-2">
+                        {utilityLinks.map((item) => (
+                          <a
+                            key={`${item.href}-${item.label}`}
+                            href={resolveHref(locale, item.href)}
+                            onClick={closeMenu}
+                            target={item.openInNewTab ? "_blank" : undefined}
+                            rel={item.openInNewTab ? "noopener noreferrer" : undefined}
+                            className="text-sm text-white/70 transition-colors hover:text-white"
+                          >
+                            {item.label}
+                          </a>
+                        ))}
+                      </nav>
+                    </motion.div>
+                  )}
 
                   {menuSections.map((section, si) => (
                     <motion.div key={`${section.headline}-${si}`} variants={fadeUp} className={si > 0 ? "mt-8" : ""}>

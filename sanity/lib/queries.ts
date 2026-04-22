@@ -437,7 +437,7 @@ const navigationQuery = groq`*[_type == "navigation" && language == $language][0
   languageSwitcherLabelRomanian,
   languageSwitcherLabelHungarian,
   bookNowLabel,
-  utilityLinks[] ${linkProjection},
+  "utilityLinks": coalesce(utilityLinks[] ${linkProjection}, []),
   menuGroups[]{
     headline,
     links[] ${linkProjection}
