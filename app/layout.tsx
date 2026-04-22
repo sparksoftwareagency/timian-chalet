@@ -21,12 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body className={`${inter.variable} antialiased`}>
-        <div className="mobile-coming-soon" aria-live="polite">
-          Coming soon.
-        </div>
-        <div className="desktop-site-content">{children}</div>
-      </body>
+      <body className={`${inter.variable} antialiased`}>{children}</body>
     </html>
   );
 }
