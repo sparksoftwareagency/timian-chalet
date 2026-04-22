@@ -98,6 +98,7 @@ export default function FloatingMenu({
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const bookRef = useRef<HTMLAnchorElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
 
   const languageOptions = useMemo(
@@ -148,21 +149,32 @@ export default function FloatingMenu({
   }, []);
 
   const detectTheme = useCallback(() => {
-    const btn = bookRef.current;
-    if (!btn) return;
-    const r = btn.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
+    const sampleTargets: HTMLElement[] = [];
+    if (bookRef.current) sampleTargets.push(bookRef.current);
+    if (isMobile && menuButtonRef.current) sampleTargets.push(menuButtonRef.current);
+    if (sampleTargets.length === 0) return;
+
+    const samplePoints = sampleTargets.map((target) => {
+      const rect = target.getBoundingClientRect();
+      return {
+        cx: rect.left + rect.width / 2,
+        cy: rect.top + rect.height / 2,
+      };
+    });
+
     const sections = document.querySelectorAll<HTMLElement>("[data-theme]");
     let found: "light" | "dark" | null = null;
-    sections.forEach((s) => {
-      const t = s.getAttribute("data-theme");
-      if (t !== "light" && t !== "dark") return;
-      const sr = s.getBoundingClientRect();
-      if (cx >= sr.left && cx <= sr.right && cy >= sr.top && cy <= sr.bottom) {
-        found = t;
-      }
-    });
+    for (const point of samplePoints) {
+      sections.forEach((s) => {
+        const t = s.getAttribute("data-theme");
+        if (t !== "light" && t !== "dark") return;
+        const sr = s.getBoundingClientRect();
+        if (point.cx >= sr.left && point.cx <= sr.right && point.cy >= sr.top && point.cy <= sr.bottom) {
+          found = t;
+        }
+      });
+      if (found) break;
+    }
     if (found) setTheme(found);
     if (found) return;
 
@@ -230,18 +242,20 @@ export default function FloatingMenu({
     };
 
     const rootNav = navRef.current;
-    const stack = document.elementsFromPoint(cx, cy);
-    for (const candidate of stack) {
-      if (!(candidate instanceof HTMLElement)) continue;
-      if (rootNav?.contains(candidate)) continue;
+    for (const point of samplePoints) {
+      const stack = document.elementsFromPoint(point.cx, point.cy);
+      for (const candidate of stack) {
+        if (!(candidate instanceof HTMLElement)) continue;
+        if (rootNav?.contains(candidate)) continue;
 
-      const bg = readBackgroundColor(candidate);
-      if (!bg) continue;
+        const bg = readBackgroundColor(candidate);
+        if (!bg) continue;
 
-      setTheme(brightness(bg.r, bg.g, bg.b) > 0.6 ? "light" : "dark");
-      return;
+        setTheme(brightness(bg.r, bg.g, bg.b) > 0.6 ? "light" : "dark");
+        return;
+      }
     }
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     detectTheme();
@@ -284,6 +298,7 @@ export default function FloatingMenu({
         <div className="flex items-center justify-between px-5 py-3 md:px-8 md:py-5">
           <div className="pointer-events-auto flex items-center">
             <button
+              ref={menuButtonRef}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               onClick={() => setMenuOpen((v) => !v)}
               onMouseEnter={() => setMenuHover(true)}
