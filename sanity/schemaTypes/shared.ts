@@ -10,6 +10,7 @@ export const localizedSchemaTypes = [
   'aboutPage',
   'restaurantPage',
   'culinaryPage',
+  'bookingPage',
   'experiencesPage',
   'wellnessPage',
   'localCheesePage',

@@ -63,6 +63,25 @@ function resolveHref(locale: SiteLocale, href: string) {
   return isExternalHref(href) ? href : localizeHref(locale, href);
 }
 
+function resolveBookNowHref(locale: SiteLocale, bookNowLink: string) {
+  const normalizedLink = bookNowLink.trim();
+
+  if (!normalizedLink) {
+    return `/${locale}/book-now`;
+  }
+
+  if (isExternalHref(normalizedLink)) {
+    return normalizedLink;
+  }
+
+  const pathWithoutHash = normalizedLink.split("#")[0];
+  if (pathWithoutHash === "/book-now" || pathWithoutHash === `/${locale}/book-now` || pathWithoutHash === "book-now") {
+    return localizeHref(locale, "/book-now");
+  }
+
+  return `/${locale}/book-now`;
+}
+
 export default function FloatingMenu({
   locale,
   navigation,
@@ -100,6 +119,9 @@ export default function FloatingMenu({
       })),
     }));
   }, [locale, navigation.menuGroups]);
+
+  const bookNowHref = useMemo(() => resolveBookNowHref(locale, settings.bookNowLink), [locale, settings.bookNowLink]);
+  const isBookNowPage = useMemo(() => (pathname ?? "").split("#")[0].endsWith("/book-now"), [pathname]);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
@@ -358,36 +380,38 @@ export default function FloatingMenu({
             </motion.div>
           </div>
 
-          <motion.a
-            ref={bookRef}
-            href={settings.bookNowLink}
-            className="pointer-events-auto relative flex items-center justify-center overflow-hidden rounded-full px-3 py-2 text-sm font-medium uppercase tracking-[0.15em] shadow-lg md:px-4"
-            animate={{
-              opacity: showExtras ? 1 : 0,
-              y: showExtras ? 0 : -40,
-              backgroundColor: tc.bookBg,
-              color: tc.bookText,
-            }}
-            transition={{ duration: 0.35, ease: EASE }}
-            initial="rest"
-            whileHover="hover"
-          >
-            <motion.div
-              variants={{ rest: { x: -20, opacity: 0 }, hover: { x: 0, opacity: 1 } }}
-              transition={{ duration: 0.4, ease: EASE }}
-              className="mr-2"
+          {!isBookNowPage && (
+            <motion.a
+              ref={bookRef}
+              href={bookNowHref}
+              className="pointer-events-auto relative flex items-center justify-center overflow-hidden rounded-full px-3 py-2 text-sm font-medium uppercase tracking-[0.15em] shadow-lg md:px-4"
+              animate={{
+                opacity: showExtras ? 1 : 0,
+                y: showExtras ? 0 : -40,
+                backgroundColor: tc.bookBg,
+                color: tc.bookText,
+              }}
+              transition={{ duration: 0.35, ease: EASE }}
+              initial="rest"
+              whileHover="hover"
             >
-              <ArrowRight size={16} color={tc.accent} strokeWidth={2} />
-            </motion.div>
-            <motion.span variants={{ rest: { x: -10 }, hover: { x: 0 } }} transition={{ duration: 0.4, ease: EASE }}>
-              {navigation.bookNowLabel}
-            </motion.span>
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              style={{ border: `1px solid ${tc.bookBorder}` }}
-              variants={{ rest: { opacity: 0.5 }, hover: { opacity: 1, scale: 1.02 } }}
-            />
-          </motion.a>
+              <motion.div
+                variants={{ rest: { x: -20, opacity: 0 }, hover: { x: 0, opacity: 1 } }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="mr-2"
+              >
+                <ArrowRight size={16} color={tc.accent} strokeWidth={2} />
+              </motion.div>
+              <motion.span variants={{ rest: { x: -10 }, hover: { x: 0 } }} transition={{ duration: 0.4, ease: EASE }}>
+                {navigation.bookNowLabel}
+              </motion.span>
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                style={{ border: `1px solid ${tc.bookBorder}` }}
+                variants={{ rest: { opacity: 0.5 }, hover: { opacity: 1, scale: 1.02 } }}
+              />
+            </motion.a>
+          )}
         </div>
       </nav>
 

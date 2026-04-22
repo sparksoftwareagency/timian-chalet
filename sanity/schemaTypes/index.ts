@@ -1,6 +1,7 @@
 import {type SchemaTypeDefinition} from 'sanity'
 
 import {aboutPageType} from './aboutPage'
+import {bookingPageType} from './bookingPage'
 import {culinaryPageType} from './culinaryPage'
 import {experienceItem} from './experienceItem'
 import {experiencesPageType} from './experiencesPage'
@@ -41,6 +42,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     aboutPageType,
     restaurantPageType,
     culinaryPageType,
+    bookingPageType,
     experiencesPageType,
     wellnessPageType,
     localCheesePageType,
