@@ -420,7 +420,7 @@ export default function Hero({ data }: { data: HeroData }) {
   const showFlowingHeadings = phase === "collapsed";
 
   return (
-    <div data-theme="light" style={{ height: "200vh", position: "relative" }}>
+    <div data-theme="light" style={{ height: "190vh", position: "relative" }}>
       {/* Sticky layer — pinned to viewport top while inside the 190vh container */}
       <div
         ref={stickyRef}
