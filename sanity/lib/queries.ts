@@ -12,6 +12,7 @@ const SANITY_TAGS = {
   aboutPage: 'sanity:aboutPage',
   restaurantPage: 'sanity:restaurantPage',
   culinaryPage: 'sanity:culinaryPage',
+  bookingPage: 'sanity:bookingPage',
   experiencesPage: 'sanity:experiencesPage',
   wellnessPage: 'sanity:wellnessPage',
   localCheesePage: 'sanity:localCheesePage',
@@ -160,6 +161,17 @@ export type CulinaryPageData = {
   heroTitle: string
   heroSubtitle: string
   heroImage: CmsImage
+}
+
+export type BookingPageData = {
+  seoTitle?: string
+  seoDescription?: string
+  eyebrow: string
+  title: string
+  description: string
+  backgroundImage: CmsImage
+  phone: string
+  email: string
 }
 
 export type RestaurantPageData = {
@@ -555,6 +567,17 @@ const culinaryPageQuery = groq`*[_type == "culinaryPage" && language == $languag
   heroImage ${imageProjection}
 }`
 
+const bookingPageQuery = groq`*[_type == "bookingPage" && language == $language][0]{
+  seoTitle,
+  seoDescription,
+  eyebrow,
+  title,
+  description,
+  backgroundImage ${imageProjection},
+  phone,
+  email
+}`
+
 const experiencesPageQuery = groq`*[_type == "experiencesPage" && language == $language][0]{
   language,
   seoTitle,
@@ -751,6 +774,10 @@ export async function fetchRestaurantPage(language: SiteLanguage) {
 
 export async function fetchCulinaryPage(language: SiteLanguage) {
   return fetchWithFallback<CulinaryPageData>(culinaryPageQuery, language, [SANITY_TAGS.culinaryPage])
+}
+
+export async function fetchBookingPage(language: SiteLanguage) {
+  return fetchWithFallback<BookingPageData>(bookingPageQuery, language, [SANITY_TAGS.bookingPage])
 }
 
 export async function fetchExperiencesPage(language: SiteLanguage) {
