@@ -394,9 +394,9 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
       </section>
 
       {breakImages.length > 0 ? (
-        <section data-theme="light">
+        <section data-theme="dark">
           <FullBleedParallaxDivider
-            height="h-[55vh]"
+            height="h-[85vh]"
             image={hasBreakImageShow ? undefined : breakImages[0]}
           >
             {hasBreakImageShow ? (
