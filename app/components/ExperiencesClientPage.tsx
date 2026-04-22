@@ -497,7 +497,12 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         </section>
       ) : null}
 
-      <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+      <section
+        id="more-experiences"
+        data-theme="light"
+        style={{ backgroundColor: colors.primaryBg }}
+        className="scroll-mt-24"
+      >
         <div className={`${pageShell} py-20 sm:py-24 lg:py-28`}>
           <div className="mb-12 text-center">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>

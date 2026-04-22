@@ -38,6 +38,35 @@ type HeroData = {
 
 const MEDIA_ASPECT = "aspect-[5/2]";
 const SVG_HEADING_TINT = "rgba(118, 109, 103, 0.45)";
+const ROOT_FONT_SIZE_PX = 16;
+const WORDMARK_MIN_REM = 12;
+const WORDMARK_MAX_REM = 15;
+const WORDMARK_VW_FACTOR = 0.12;
+const WORDMARK_PROBE_FONT_SIZE_PX = 100;
+const TEXT_HEADING_PROBE_FONT_SIZE_PX = 100;
+const TEXT_HEADING_WIDTH_FIT_RATIO = 0.9;
+const TEXT_HEADING_HEIGHT_FIT_RATIO = 0.9;
+
+function clampWordmarkBoundPx(viewportWidth: number, containerHeight: number): number {
+  const minPx = WORDMARK_MIN_REM * ROOT_FONT_SIZE_PX;
+  const preferredPx = viewportWidth * WORDMARK_VW_FACTOR;
+  const maxPx = WORDMARK_MAX_REM * ROOT_FONT_SIZE_PX;
+  const clampPx = Math.min(Math.max(preferredPx, minPx), maxPx);
+  return Math.min(clampPx, containerHeight / 2);
+}
+
+function fitFontSizeToWidthPx(
+  availableWidth: number,
+  measuredWidthAtProbe: number,
+  maxBoundPx: number,
+): number {
+  if (availableWidth <= 0 || measuredWidthAtProbe <= 0 || maxBoundPx <= 0) {
+    return Math.max(1, maxBoundPx);
+  }
+
+  const widthLimitedPx = (availableWidth / measuredWidthAtProbe) * WORDMARK_PROBE_FONT_SIZE_PX;
+  return Math.max(1, Math.min(maxBoundPx, widthLimitedPx));
+}
 
 function splitPrimaryAndSecondary(line: string): { primary: string; secondary: string } {
   const clean = line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim();
@@ -64,103 +93,215 @@ function SvgWordmarkHeading({
   height: string;
   shouldAnimate: boolean;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const primaryMeasureRef = useRef<HTMLSpanElement>(null);
+  const secondaryMeasureRef = useRef<HTMLSpanElement>(null);
+  const [wordmarkFontSizePx, setWordmarkFontSizePx] = useState(100);
+
+  const recalculateWordmarkFontSize = useCallback(() => {
+    const container = containerRef.current;
+    const primaryMeasure = primaryMeasureRef.current;
+    const secondaryMeasure = secondaryMeasureRef.current;
+    if (!container || !primaryMeasure) return;
+
+    const containerRect = container.getBoundingClientRect();
+    if (containerRect.width <= 0 || containerRect.height <= 0) return;
+
+    const viewportWidth = typeof window === "undefined" ? 0 : window.innerWidth;
+    const boundByClampAndHeight = clampWordmarkBoundPx(viewportWidth, containerRect.height);
+
+    const primaryProbeWidth = primaryMeasure.getBoundingClientRect().width;
+    const secondaryProbeWidth = secondary
+      ? (secondaryMeasure?.getBoundingClientRect().width ?? 0)
+      : 0;
+    const widestProbeWidth = Math.max(primaryProbeWidth, secondaryProbeWidth);
+
+    const nextFontSizePx = fitFontSizeToWidthPx(
+      containerRect.width,
+      widestProbeWidth,
+      boundByClampAndHeight,
+    );
+    setWordmarkFontSizePx(nextFontSizePx);
+  }, [secondary]);
+
+  useEffect(() => {
+    recalculateWordmarkFontSize();
+  }, [recalculateWordmarkFontSize, primary, secondary, height]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      recalculateWordmarkFontSize();
+    });
+    resizeObserver.observe(container);
+
+    window.addEventListener("resize", recalculateWordmarkFontSize);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", recalculateWordmarkFontSize);
+    };
+  }, [recalculateWordmarkFontSize]);
+
   return (
-    <svg
+    <div
+      ref={containerRef}
       aria-label={`${primary}${secondary ? ` ${secondary}` : ""}`}
       role="img"
-      width="100%"
-      height={height}
-      viewBox="0 0 1200 510"
-      preserveAspectRatio="xMinYMid meet"
-      className="block overflow-visible"
+      className="relative flex w-full flex-col items-end justify-evenly overflow-visible text-right"
+      style={{ height }}
     >
-      <motion.text
-        x="0"
-        y="100"
-        className="font-sans uppercase leading-none"
-        initial={{ y: 240, opacity: 0 }}
-        animate={shouldAnimate ? { y: 160, opacity: 1 } : { y: 240, opacity: 0 }}
+      <motion.div
+        className="whitespace-nowrap font-sans uppercase leading-none"
+        initial={{ y: 48, opacity: 0 }}
+        animate={
+          shouldAnimate ? { y: 0, opacity: 1 } : { y: 48, opacity: 0 }
+        }
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
         style={{
-          fill: SVG_HEADING_TINT,
-          fontSize: "240px",
-          fontWeight: 300,
+          color: colors.accent,
+          fontSize: `${wordmarkFontSizePx}px`,
+          fontWeight: 200,
           letterSpacing: "0.00em",
         }}
       >
         {primary}
-      </motion.text>
+      </motion.div>
       {secondary ? (
-        <motion.text
-          x="990"
-          y="160"
-          className="font-sans uppercase leading-none"
-          initial={{ y: 260, opacity: 0 }}
-          animate={shouldAnimate ? { y: 200, opacity: 1 } : { y: 260, opacity: 0 }}
+        <motion.div
+          className="whitespace-nowrap font-sans uppercase leading-none"
+          initial={{ y: 48, opacity: 0 }}
+          animate={
+            shouldAnimate ? { y: 0, opacity: 1 } : { y: 48, opacity: 0 }
+          }
           transition={{ duration: 0.9, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            fill: colors.accent,
-            fontSize: "82px",
-            fontWeight: 500,
+            color: colors.accent,
+            fontSize: `${wordmarkFontSizePx}px`,
+            fontWeight: 150,
             letterSpacing: "0.03em",
           }}
         >
           {secondary}
-        </motion.text>
+        </motion.div>
       ) : null}
-    </svg>
+
+      <span
+        ref={primaryMeasureRef}
+        aria-hidden
+        className="pointer-events-none absolute right-0 top-0 whitespace-nowrap opacity-0"
+        style={{
+          fontSize: `${WORDMARK_PROBE_FONT_SIZE_PX}px`,
+          fontWeight: 200,
+          letterSpacing: "0.00em",
+        }}
+      >
+        {primary}
+      </span>
+      {secondary ? (
+        <span
+          ref={secondaryMeasureRef}
+          aria-hidden
+          className="pointer-events-none absolute right-0 top-0 whitespace-nowrap opacity-0"
+          style={{
+            fontSize: `${WORDMARK_PROBE_FONT_SIZE_PX}px`,
+            fontWeight: 150,
+            letterSpacing: "0.03em",
+          }}
+        >
+          {secondary}
+        </span>
+      ) : null}
+    </div>
   );
 }
 
 function SvgTextHeading({
   lines,
   height,
-  stretchToWidth = false,
   shouldAnimate,
   baseDelay = 0.1,
-  singleLineFontSize = "400px",
-  x = 0,
+  align = "left",
 }: {
   lines: string[];
   height: string;
-  stretchToWidth?: boolean;
   shouldAnimate: boolean;
   baseDelay?: number;
-  singleLineFontSize?: string;
-  x?: number | string;
+  align?: "left" | "center";
 }) {
   const cleanLines = lines.map((line) => line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim());
-  const viewBoxHeight = cleanLines.length > 1 ? 220 : 220;
-  const firstLineY = cleanLines.length > 1 ? 120 : 130;
-  const lineGap = 136;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [textHeadingFontSizePx, setTextHeadingFontSizePx] = useState(100);
+
+  const recalculateTextHeadingFontSize = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+    if (containerRect.width <= 0 || containerRect.height <= 0 || cleanLines.length === 0) return;
+
+    const probeFont = `${TEXT_HEADING_PROBE_FONT_SIZE_PX}px "Inter", "Helvetica Neue", Arial, sans-serif`;
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    context.font = probeFont;
+
+    const widestProbeWidth = cleanLines.reduce((maxWidth, line) => {
+      const width = context.measureText(line).width;
+      return Math.max(maxWidth, width);
+    }, 0);
+
+    const availableWidth = containerRect.width * TEXT_HEADING_WIDTH_FIT_RATIO;
+    const widthLimitedPx =
+      widestProbeWidth > 0
+        ? (availableWidth / widestProbeWidth) * TEXT_HEADING_PROBE_FONT_SIZE_PX
+        : containerRect.height;
+    const perLineHeight = containerRect.height / cleanLines.length;
+    const heightLimitedPx = perLineHeight * TEXT_HEADING_HEIGHT_FIT_RATIO;
+    const nextSize = Math.max(1, Math.min(widthLimitedPx, heightLimitedPx));
+    setTextHeadingFontSizePx(nextSize);
+  }, [cleanLines]);
+
+  useEffect(() => {
+    recalculateTextHeadingFontSize();
+  }, [recalculateTextHeadingFontSize, height]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      recalculateTextHeadingFontSize();
+    });
+    resizeObserver.observe(container);
+
+    window.addEventListener("resize", recalculateTextHeadingFontSize);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", recalculateTextHeadingFontSize);
+    };
+  }, [recalculateTextHeadingFontSize]);
 
   return (
-    <svg
+    <div
+      ref={containerRef}
       aria-label={cleanLines.join(" ")}
       role="img"
-      width="100%"
-      height={height}
-      viewBox={`0 0 1200 ${viewBoxHeight}`}
-      preserveAspectRatio="xMinYMid meet"
-      className="block overflow-visible"
+      className={`flex h-full w-full flex-col justify-evenly overflow-visible ${
+        align === "center" ? "items-center text-center" : "items-start text-left"
+      }`}
+      style={{ height }}
     >
       {cleanLines.map((line, index) => (
-        <motion.text
+        <motion.div
           key={`${line}-${index}`}
-          x={x}
-          y={firstLineY + index * lineGap}
-          {...(stretchToWidth
-            ? {
-                textLength: "1120",
-                lengthAdjust: "spacing" as const,
-              }
-            : {})}
-          className="font-sans uppercase leading-none"
-          initial={{ y: firstLineY + index * lineGap + 72, opacity: 0 }}
+          className="whitespace-nowrap font-sans uppercase leading-none"
+          initial={{ y: 72, opacity: 0 }}
           animate={
             shouldAnimate
-              ? { y: firstLineY + index * lineGap, opacity: 1 }
-              : { y: firstLineY + index * lineGap + 72, opacity: 0 }
+              ? { y: 0, opacity: 1 }
+              : { y: 72, opacity: 0 }
           }
           transition={{
             duration: 0.9,
@@ -168,16 +309,17 @@ function SvgTextHeading({
             ease: [0.22, 1, 0.36, 1],
           }}
           style={{
-            fill: SVG_HEADING_TINT,
-            fontSize: cleanLines.length > 1 ? "138px" : singleLineFontSize,
+            color: SVG_HEADING_TINT,
+            fontSize: `${textHeadingFontSizePx}px`,
             fontWeight: 300,
             letterSpacing: cleanLines.length > 1 ? "0.035em" : "0.005em",
+            maxWidth: `${TEXT_HEADING_WIDTH_FIT_RATIO * 100}%`,
           }}
         >
           {line}
-        </motion.text>
+        </motion.div>
       ))}
-    </svg>
+    </div>
   );
 }
 
@@ -340,7 +482,7 @@ export default function Hero({ data }: { data: HeroData }) {
           Scrolls into the viewport naturally as the page scrolls during animation. */}
       <motion.div style={{ opacity: contentOpacity }}>
         <div className={`grid grid-cols-1 md:grid-cols-10 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-4 md:py-10`}>
-          <div className="flex items-center order-2 md:order-none md:col-span-5">
+          <div className="flex items-center justify-end md:col-start-2 md:col-span-4 md:h-[clamp(12rem,12vw,15rem)]">
             <SvgWordmarkHeading
               primary={craftedParts.primary} // the timian
               secondary={craftedParts.secondary} // feeling
@@ -352,19 +494,17 @@ export default function Hero({ data }: { data: HeroData }) {
           {/* Empty placeholder — the video in the sticky layer overlays this cell */}
           <div
             ref={videoCellRef}
-            className={`order-1 md:order-none md:col-span-5 ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,10vw,15rem)]`}
+            className={`md:col-span-5 ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,12vw,15rem)]`}
           />
 
           <div
-            className={`relative w-full overflow-hidden order-3 md:col-span-7 ${MEDIA_ASPECT} md:aspect-auto`}
+            className={`relative w-full overflow-hidden md:col-span-7`}
           >
             <Image
               src={data.heroSecondaryImage.url}
               alt={data.heroSecondaryImage.alt}
               fill
               className="object-cover"
-              style={{ objectPosition: "50% 75%" }}
-              sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
 
@@ -372,20 +512,18 @@ export default function Hero({ data }: { data: HeroData }) {
             <SvgTextHeading
               lines={[liveLine]} // where
               height="clamp(7rem, 9vw, 13rem)"
-              stretchToWidth
               shouldAnimate={showFlowingHeadings}
-              singleLineFontSize="280px"
+              align="left"
             />
           </div>
 
-          <div className="flex items-center order-5 md:col-span-10 -mt-14 md:-mt-16">
+          <div className="flex items-center order-5 md:col-span-10">
             <SvgTextHeading
               lines={[inNatureLine]} // the heart finds home
               height="clamp(7rem, 7vw, 16rem)"
               shouldAnimate={showFlowingHeadings}
               baseDelay={0.2}
-              singleLineFontSize="170px"
-              x="180"
+              align="center"
             />
           </div>
         </div>
