@@ -500,7 +500,7 @@ export default function Hero({ data }: { data: HeroData }) {
           <div
             className={`relative w-full overflow-hidden md:col-span-7`}
           >
-            <Image
+            <Image data-theme="dark"
               src={data.heroSecondaryImage.url}
               alt={data.heroSecondaryImage.alt}
               fill

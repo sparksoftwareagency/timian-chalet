@@ -35,7 +35,7 @@ export default async function BookNowPage({
 
   return (
     <main data-theme="dark" className="relative min-h-screen overflow-hidden pt-32 md:pt-36" style={{ backgroundColor: colors.primaryBg }}>
-      <Image
+      <Image data-theme="dark"
         src={data.backgroundImage.url}
         alt={data.backgroundImage.alt || data.title}
         fill

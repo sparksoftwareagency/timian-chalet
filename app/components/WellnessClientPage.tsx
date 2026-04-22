@@ -129,7 +129,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           />
         ) : feature.images[0] ? (
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl float-soft">
-            <Image
+            <Image data-theme="dark"
               src={feature.images[0].url}
               alt={feature.images[0].alt}
               fill
@@ -176,7 +176,14 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
             />
           ) : firstImage ? (
             <div className="relative aspect-[3/4] w-full">
-              <Image src={firstImage.url} alt={firstImage.alt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <Image
+                data-theme="dark"
+                src={firstImage.url}
+                alt={firstImage.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
             </div>
           ) : null}
         </div>
@@ -278,7 +285,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image
+        <Image data-theme="dark"
           src={data.heroImage.url}
           alt={data.heroImage.alt}
           fill
@@ -312,7 +319,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl">
-                <Image src={data.introImage.url} alt={data.introImage.alt} fill className="donkey-blur-in object-cover" />
+                <Image data-theme="dark" src={data.introImage.url} alt={data.introImage.alt} fill className="donkey-blur-in object-cover" />
               </div>
             </div>
             <div className="flash-on-reveal mx-auto max-w-2xl space-y-6 text-center lg:col-span-5">
@@ -336,7 +343,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
             <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
               {featuresBreakImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                  <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
                 </div>
               ))}
             </div>
@@ -347,7 +354,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
       {highlightImage ? (
         <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
           <div ref={addRef(1)} className="reveal-section absolute inset-0">
-            <Image
+            <Image data-theme="dark"
               src={highlightImage.url}
               alt={highlightImage.alt || data.highlightTitle}
               fill

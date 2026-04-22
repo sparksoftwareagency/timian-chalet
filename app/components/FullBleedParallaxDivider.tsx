@@ -116,7 +116,7 @@ export default function FullBleedParallaxDivider({
       >
         {children ??
           (image ? (
-            <Image src={image.url} alt={image.alt} fill className="object-cover" sizes={sizes} />
+            <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" sizes={sizes} />
           ) : null)}
       </div>
     </div>

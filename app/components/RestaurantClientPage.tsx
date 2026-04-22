@@ -185,7 +185,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image
+        <Image data-theme="dark"
           src={data.heroImage.url}
           alt={data.heroImage.alt}
           fill
@@ -226,7 +226,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
             </div>
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl">
-                <Image
+                <Image data-theme="dark"
                   src={data.originPrimaryImage.url}
                   alt={data.originPrimaryImage.alt}
                   fill
@@ -244,7 +244,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
             <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
               {ingredientsBreakImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                  <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
                 </div>
               ))}
             </div>
@@ -259,7 +259,13 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
         >
           <div className="order-2 lg:order-1 lg:col-span-6">
             <div className="relative aspect-[3/4] w-full max-h-[550px] overflow-hidden rounded-lg shadow-xl">
-              <Image src={data.spiritsImage.url} alt={data.spiritsImage.alt} fill className="flash-on-reveal object-cover" />
+              <Image
+                data-theme="dark"
+                src={data.spiritsImage.url}
+                alt={data.spiritsImage.alt}
+                fill
+                className="flash-on-reveal object-cover"
+              />
             </div>
           </div>
           <div className="flash-on-reveal order-1 mx-auto max-w-3xl text-center lg:order-2 lg:col-span-6">
@@ -294,7 +300,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
           <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2">
             {data.farmImages.map((image) => (
               <div key={image.url} className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-xl">
-                <Image src={image.url} alt={image.alt} fill className="object-cover" />
+                <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" />
               </div>
             ))}
           </div>
@@ -324,7 +330,7 @@ export default function RestaurantClientPage({ data }: { data: RestaurantPageDat
             {data.highlights.map((feature) => (
               <div key={feature.title} className="text-center">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-lg shadow-lg">
-                  <Image
+                  <Image data-theme="dark"
                     src={
                       feature.image?.url ||
                       HIGHLIGHT_IMAGE_BY_TITLE[feature.title.trim().toLowerCase()] ||

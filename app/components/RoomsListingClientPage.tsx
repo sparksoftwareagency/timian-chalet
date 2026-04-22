@@ -161,7 +161,7 @@ export default function RoomsListingClientPage({ lang, page, rooms }: Props) {
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image
+        <Image data-theme="dark"
           src={page.heroImage.url}
           alt={page.heroImage.alt}
           fill
@@ -192,7 +192,7 @@ export default function RoomsListingClientPage({ lang, page, rooms }: Props) {
                 className="group block"
               >
                 <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg shadow-lg">
-                  <Image
+                  <Image data-theme="dark"
                     src={room.heroImage.url}
                     alt={room.heroImage.alt}
                     fill

@@ -24,7 +24,14 @@ export default function Footer({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div>
-              <Image src={settings.logoDarkUrl} alt={settings.siteTitle} width={180} height={36} className="h-9 w-auto" />
+              <Image
+                data-theme="dark"
+                src={settings.logoDarkUrl}
+                alt={settings.siteTitle}
+                width={180}
+                height={36}
+                className="h-9 w-auto"
+              />
             </div>
             <p className="text-sm leading-relaxed" style={{ color: colors.textSecondary }}>
               {settings.footerDescription}

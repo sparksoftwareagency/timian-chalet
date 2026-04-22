@@ -201,7 +201,14 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image src={data.heroImage.url} alt={data.heroImage.alt} fill className="hero-image-enter object-cover" priority />
+        <Image
+          data-theme="dark"
+          src={data.heroImage.url}
+          alt={data.heroImage.alt}
+          fill
+          className="hero-image-enter object-cover"
+          priority
+        />
         <div className="absolute inset-0 bg-black/45" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <h1 className="float-soft font-serif text-5xl font-light uppercase tracking-[0.2em] text-white sm:text-6xl md:text-7xl lg:text-8xl">
@@ -220,7 +227,13 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
         >
           <div className="order-2 lg:order-1 lg:col-span-7">
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl">
-              <Image src={data.legacyImage.url} alt={data.legacyImage.alt} fill className="donkey-blur-in object-cover" />
+              <Image
+                data-theme="dark"
+                src={data.legacyImage.url}
+                alt={data.legacyImage.alt}
+                fill
+                className="donkey-blur-in object-cover"
+              />
             </div>
           </div>
           <div className="flash-on-reveal order-1 mx-auto max-w-2xl text-center lg:order-2 lg:col-span-5">
@@ -263,7 +276,13 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
           </div>
           <div className="order-2 lg:col-span-6">
             <div className="relative aspect-[3/4] w-full max-h-[550px] overflow-hidden rounded-lg shadow-xl">
-              <Image src={data.signatureImage.url} alt={data.signatureImage.alt} fill className="flash-on-reveal object-cover" />
+              <Image
+                data-theme="dark"
+                src={data.signatureImage.url}
+                alt={data.signatureImage.alt}
+                fill
+                className="flash-on-reveal object-cover"
+              />
             </div>
           </div>
         </div>
@@ -301,7 +320,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
                 style={{ backgroundColor: colors.secondaryBg }}
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <Image src={collection.image.url} alt={collection.image.alt} fill className="object-cover" />
+                  <Image data-theme="dark" src={collection.image.url} alt={collection.image.alt} fill className="object-cover" />
                 </div>
                 <div className="space-y-3 p-7 text-center">
                   <h3 className="font-serif text-2xl" style={{ color: colors.accent }}>
@@ -335,7 +354,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
             <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {collectionsBreakImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="25vw" />
+                  <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" sizes="25vw" />
                 </div>
               ))}
             </div>

@@ -109,7 +109,7 @@ export default function ImageShow({
             transition={{ duration: shouldReduceMotion ? 0 : 0.46, ease: [0.32, 0.72, 0, 1] }}
             className="absolute inset-0"
           >
-            <Image
+            <Image data-theme="dark"
               src={activeSlide.url}
               alt={activeSlide.alt || ""}
               fill

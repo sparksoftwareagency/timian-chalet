@@ -276,7 +276,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image src={data.heroImage.url} alt={data.heroImage.alt} fill className="object-cover" priority />
+        <Image data-theme="dark" src={data.heroImage.url} alt={data.heroImage.alt} fill className="object-cover" priority />
         <div className="absolute inset-0 bg-black/45" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <h1 className="font-serif text-5xl font-light uppercase tracking-[0.2em] text-white sm:text-6xl md:text-7xl lg:text-8xl">
@@ -332,7 +332,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                           className="shrink-0 rounded-2xl bg-white/75 p-4 shadow-md sm:w-[68%] lg:w-[24rem]"
                         >
                           <div className="relative mb-5 aspect-[16/11] w-full overflow-hidden rounded-l">
-                            <Image
+                            <Image data-theme="dark"
                               src={activity.image.url}
                               alt={activity.image.alt}
                               fill
@@ -489,7 +489,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
             <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {experienceDividerImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                  <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
                 </div>
               ))}
             </div>
@@ -518,7 +518,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                 }`}
               >
                 <div className="relative aspect-[4/5] w-full overflow-hidden">
-                  <Image
+                  <Image data-theme="dark"
                     src={experience.image.url}
                     alt={experience.image.alt || experience.title}
                     fill
@@ -562,7 +562,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                   >
                     <div className="w-full lg:w-1/2">
                       <div className="relative aspect-[3/4] w-full">
-                        <Image
+                        <Image data-theme="dark"
                           src={item.image.url}
                           alt={item.image.alt || item.title}
                           fill

@@ -99,6 +99,7 @@ export default function FloatingMenu({
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const bookRef = useRef<HTMLAnchorElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const logoRef = useRef<HTMLAnchorElement>(null);
   const pathname = usePathname();
 
   const languageOptions = useMemo(
@@ -150,8 +151,9 @@ export default function FloatingMenu({
 
   const detectTheme = useCallback(() => {
     const sampleTargets: HTMLElement[] = [];
-    if (bookRef.current) sampleTargets.push(bookRef.current);
-    if (isMobile && menuButtonRef.current) sampleTargets.push(menuButtonRef.current);
+    if (logoRef.current) sampleTargets.push(logoRef.current);
+    if (sampleTargets.length === 0 && menuButtonRef.current) sampleTargets.push(menuButtonRef.current);
+    if (sampleTargets.length === 0 && bookRef.current) sampleTargets.push(bookRef.current);
     if (sampleTargets.length === 0) return;
 
     const samplePoints = sampleTargets.map((target) => {
@@ -161,22 +163,6 @@ export default function FloatingMenu({
         cy: rect.top + rect.height / 2,
       };
     });
-
-    const sections = document.querySelectorAll<HTMLElement>("[data-theme]");
-    let found: "light" | "dark" | null = null;
-    for (const point of samplePoints) {
-      sections.forEach((s) => {
-        const t = s.getAttribute("data-theme");
-        if (t !== "light" && t !== "dark") return;
-        const sr = s.getBoundingClientRect();
-        if (point.cx >= sr.left && point.cx <= sr.right && point.cy >= sr.top && point.cy <= sr.bottom) {
-          found = t;
-        }
-      });
-      if (found) break;
-    }
-    if (found) setTheme(found);
-    if (found) return;
 
     const parseColor = (value: string) => {
       const normalized = value.trim().toLowerCase();
@@ -241,12 +227,58 @@ export default function FloatingMenu({
       return luminance;
     };
 
+    const isImageSurface = (element: HTMLElement) => {
+      const tag = element.tagName;
+      if (tag === "IMG" || tag === "VIDEO" || tag === "CANVAS" || tag === "PICTURE") {
+        return true;
+      }
+      const style = window.getComputedStyle(element);
+      return style.backgroundImage && style.backgroundImage !== "none";
+    };
+
+    const readDataTheme = (element: HTMLElement) => {
+      const value = element.getAttribute("data-theme");
+      return value === "light" || value === "dark" ? value : null;
+    };
+
     const rootNav = navRef.current;
     for (const point of samplePoints) {
       const stack = document.elementsFromPoint(point.cx, point.cy);
+      const themedCandidates: HTMLElement[] = [];
+
       for (const candidate of stack) {
         if (!(candidate instanceof HTMLElement)) continue;
         if (rootNav?.contains(candidate)) continue;
+        themedCandidates.push(candidate);
+      }
+
+      // Image-level themes win over wrapper/section themes.
+      const imageThemedCandidate = themedCandidates.find((candidate) => {
+        if (!isImageSurface(candidate)) return false;
+        return readDataTheme(candidate) !== null;
+      });
+      if (imageThemedCandidate) {
+        const themeValue = readDataTheme(imageThemedCandidate);
+        if (themeValue) {
+          setTheme(themeValue);
+          return;
+        }
+      }
+
+      const firstThemedCandidate = themedCandidates.find((candidate) => readDataTheme(candidate) !== null);
+      if (firstThemedCandidate) {
+        const themeValue = readDataTheme(firstThemedCandidate);
+        if (themeValue) {
+          setTheme(themeValue);
+          return;
+        }
+      }
+
+      for (const candidate of themedCandidates) {
+        if (isImageSurface(candidate)) {
+          setTheme("dark");
+          return;
+        }
 
         const bg = readBackgroundColor(candidate);
         if (!bg) continue;
@@ -255,7 +287,7 @@ export default function FloatingMenu({
         return;
       }
     }
-  }, [isMobile]);
+  }, []);
 
   useEffect(() => {
     detectTheme();
@@ -291,6 +323,8 @@ export default function FloatingMenu({
   const tc = THEMES[effectiveTheme];
   const showLogo = !menuOpen && (isMobile || !hidden);
   const showExtras = !hidden;
+  const showMobileSocial = showExtras && !menuOpen;
+  const shouldShowMenuHover = !isMobile && !menuOpen && menuHover;
 
   return (
     <>
@@ -303,11 +337,14 @@ export default function FloatingMenu({
               onClick={() => setMenuOpen((v) => !v)}
               onMouseEnter={() => setMenuHover(true)}
               onMouseLeave={() => setMenuHover(false)}
-              className="relative flex shrink-0 cursor-pointer items-center justify-center"
+              onBlur={() => setMenuHover(false)}
+              onTouchStart={() => setMenuHover(false)}
+              className="relative flex shrink-0 cursor-pointer touch-manipulation select-none items-center justify-center appearance-none border-0 bg-transparent p-2 md:p-0"
               style={{
                 borderColor: effectiveTheme === "dark" ? tc.border : colors.border,
                 background: "transparent",
                 color: effectiveTheme === "dark" ? tc.fg : colors.textPrimary,
+                WebkitTapHighlightColor: "transparent",
               }}
             >
               <motion.span
@@ -315,8 +352,8 @@ export default function FloatingMenu({
                 style={{ width: 70, height: 70 }}
                 initial={false}
                 animate={{
-                  scale: menuHover ? 1 : 0,
-                  opacity: menuHover ? 1 : 0,
+                  scale: shouldShowMenuHover ? 1 : 0,
+                  opacity: shouldShowMenuHover ? 1 : 0,
                   backgroundColor: tc.hoverCircle,
                 }}
                 transition={{ duration: 0.3, ease: EASE }}
@@ -347,7 +384,7 @@ export default function FloatingMenu({
                     style={{
                       height: HAMBURGER_LINE_HEIGHT,
                       borderRadius: 2,
-                      backgroundColor: menuHover ? tc.hamburgerHoverFg : tc.fg,
+                      backgroundColor: shouldShowMenuHover ? tc.hamburgerHoverFg : tc.fg,
                       display: "block",
                       transformOrigin: "center",
                       transition: "background-color 0.25s ease",
@@ -358,6 +395,7 @@ export default function FloatingMenu({
             </button>
 
             <motion.a
+              ref={logoRef}
               href={`/${locale}`}
               className="ml-2 h-4 md:ml-3 md:h-5"
               animate={{ opacity: showLogo ? 1 : 0, y: showLogo ? 0 : -40 }}
@@ -432,9 +470,10 @@ export default function FloatingMenu({
 
       <motion.div
         className="fixed z-[100] flex flex-col gap-2 md:hidden"
-        style={{ left: 30, top: 75 }}
-        animate={{ opacity: showExtras ? 1 : 0, x: showExtras ? 0 : -50 }}
+        style={{ left: 30, top: 75, pointerEvents: showMobileSocial ? "auto" : "none" }}
+        animate={{ opacity: showMobileSocial ? 1 : 0, x: showMobileSocial ? 0 : -50 }}
         transition={{ duration: 0.4, ease: EASE }}
+        aria-hidden={!showMobileSocial}
       >
         {settings.socialLinks.slice(0, 2).map((social) => (
           <CircleLink
@@ -472,6 +511,7 @@ export default function FloatingMenu({
               <div className="hidden h-full min-h-full md:flex">
                 <div className="relative flex h-full w-[32%] max-w-sm items-center justify-center border-r border-white/[0.07] px-12">
                   <Image
+                    data-theme="dark"
                     src={settings.logoLightUrl}
                     alt={settings.siteTitle}
                     width={200}
@@ -536,38 +576,103 @@ export default function FloatingMenu({
               </div>
 
               <motion.div className="px-6 pb-12 pt-24 md:hidden" variants={staggerContainer} initial="hidden" animate="visible">
-                {menuSections.map((section, si) => (
-                  <motion.div key={`${section.headline}-${si}`} variants={fadeUp} className={si > 0 ? "mt-8" : ""}>
-                    <h3
-                      className="mb-1 border-b border-white/10 pb-3 text-[10px] font-medium uppercase tracking-[0.3em]"
-                      style={{ color: colors.cta }}
-                    >
-                      {section.headline}
-                    </h3>
-                    <ul>
-                      {section.links.map((link) => (
-                        <li key={`${link.href}-${link.label}`}>
-                          <a
-                            href={link.href}
-                            target={link.openInNewTab ? "_blank" : undefined}
-                            rel={link.openInNewTab ? "noopener noreferrer" : undefined}
-                            onClick={closeMenu}
-                            className="group -mx-3 flex items-center justify-between rounded-lg border border-transparent px-4 py-3 transition-all duration-300 hover:border-white/[0.12]"
-                          >
-                            <span className="font-serif text-2xl text-white/70 transition-colors duration-300 group-hover:text-white">
-                              {link.label}
-                            </span>
-                            <ArrowRight
-                              size={16}
-                              strokeWidth={1.5}
-                              className="translate-x-0 text-white/0 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-white/50"
-                            />
-                          </a>
-                        </li>
+                <div className="mx-auto w-full max-w-md">
+                  <motion.div variants={fadeUp} className="mb-8 rounded-2xl border border-white/10 bg-black/10 p-4">
+                    <nav className="flex flex-wrap gap-x-4 gap-y-2">
+                      {navigation.utilityLinks.map((item) => (
+                        <a
+                          key={`${item.href}-${item.label}`}
+                          href={resolveHref(locale, item.href)}
+                          onClick={closeMenu}
+                          target={item.openInNewTab ? "_blank" : undefined}
+                          rel={item.openInNewTab ? "noopener noreferrer" : undefined}
+                          className="text-sm text-white/70 transition-colors hover:text-white"
+                        >
+                          {item.label}
+                        </a>
                       ))}
-                    </ul>
+                    </nav>
                   </motion.div>
-                ))}
+
+                  {menuSections.map((section, si) => (
+                    <motion.div key={`${section.headline}-${si}`} variants={fadeUp} className={si > 0 ? "mt-8" : ""}>
+                      <h3
+                        className="mb-1 border-b border-white/10 pb-3 text-[10px] font-medium uppercase tracking-[0.3em]"
+                        style={{ color: colors.cta }}
+                      >
+                        {section.headline}
+                      </h3>
+                      <ul>
+                        {section.links.map((link) => (
+                          <li key={`${link.href}-${link.label}`}>
+                            <a
+                              href={link.href}
+                              target={link.openInNewTab ? "_blank" : undefined}
+                              rel={link.openInNewTab ? "noopener noreferrer" : undefined}
+                              onClick={closeMenu}
+                              className="group -mx-3 flex items-center justify-between rounded-lg border border-transparent px-4 py-3 transition-all duration-300 hover:border-white/[0.12]"
+                            >
+                              <span className="font-serif text-2xl text-white/70 transition-colors duration-300 group-hover:text-white">
+                                {link.label}
+                              </span>
+                              <ArrowRight
+                                size={16}
+                                strokeWidth={1.5}
+                                className="translate-x-0 text-white/0 transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-white/50"
+                              />
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  ))}
+
+                  <motion.div variants={fadeUp} className="mt-10 border-t border-white/10 pt-6">
+                    <div className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] tracking-[0.15em]">
+                      {languageOptions.map((entry, idx) => {
+                        const href = switchLocaleInPathname(pathname || `/${locale}`, entry.code);
+                        const active = entry.code === locale;
+                        return (
+                          <span key={entry.code} className="inline-flex items-center">
+                            <a
+                              href={href}
+                              onClick={closeMenu}
+                              className="transition-colors"
+                              style={{
+                                color: active ? "#FFFFFF" : "rgba(255,255,255,0.65)",
+                                textDecoration: active ? "underline" : "none",
+                                textUnderlineOffset: "2px",
+                              }}
+                            >
+                              {entry.label}
+                            </a>
+                            {idx < languageOptions.length - 1 && <span className="mx-2 text-white/35">/</span>}
+                          </span>
+                        );
+                      })}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {settings.socialLinks.slice(0, 2).map((social) => (
+                        <CircleLink
+                          key={`${social.href}-${social.label}-menu`}
+                          href={social.href}
+                          label={social.label}
+                          size={34}
+                          color="#FFFFFF"
+                          borderColor="rgba(255,255,255,0.35)"
+                          hoverBg="rgba(255,255,255,0.12)"
+                          external={social.openInNewTab ?? true}
+                        >
+                          {social.label.toLowerCase().includes("facebook") ? (
+                            <FacebookIcon size={12} />
+                          ) : (
+                            <InstagramIcon size={12} />
+                          )}
+                        </CircleLink>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
               </motion.div>
             </div>
           </motion.div>
