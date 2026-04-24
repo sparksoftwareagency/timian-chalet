@@ -490,7 +490,7 @@ export default function Hero({ data }: { data: HeroData }) {
           Scrolls into the viewport naturally as the page scrolls during animation. */}
       <motion.div className="flex items-center justify-center md:pt-10 lg:pt-12" style={{ opacity: contentOpacity, height: "100vh" }}>
         <div className={`w-full grid grid-cols-1 md:grid-cols-10 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-4 md:py-10`}>
-          <div className="flex items-center justify-end md:col-start-2 md:col-span-4 md:h-[clamp(12rem,25vh,15rem)]">
+          <div className="flex items-center justify-end md:col-start-2 md:col-span-4 md:h-[clamp(12rem,20vh,15rem)]">
             <SvgWordmarkHeading
               primary={craftedParts.primary} // the timian
               secondary={craftedParts.secondary} // feeling
@@ -502,11 +502,11 @@ export default function Hero({ data }: { data: HeroData }) {
           {/* Empty placeholder — the video in the sticky layer overlays this cell */}
           <div
             ref={videoCellRef}
-            className={`md:col-span-5 ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,25vh,15rem)]`}
+            className={`md:col-span-5 ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,20vh,15rem)]`}
           />
 
           <div
-            className={`relative hidden w-full overflow-hidden md:col-span-7 md:block ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,25vh,15rem)]`}
+            className={`relative hidden w-full overflow-hidden md:col-span-7 md:block ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,20vh,15rem)]`}
           >
             <SanityImage
               data-theme="dark"
@@ -516,24 +516,24 @@ export default function Hero({ data }: { data: HeroData }) {
             />
           </div>
 
-          <div className="flex h-[4rem] items-center order-4 md:col-span-3 py-4 md:py-6 md:h-[clamp(12rem,25vh,15rem)]">
+          <div className="flex h-[4rem] items-center order-4 md:col-span-3 py-4 md:py-6 md:h-[clamp(12rem,20vh,15rem)]">
             <SvgTextHeading
               lines={[liveLine]} // where
-              height="clamp(3rem, 10vh, 13rem)"
+              height="100%"
               shouldAnimate={showFlowingHeadings}
               align="left"
               verticalAlign="center"
             />
           </div>
 
-          <div className="flex h-[5rem] items-center order-5 md:col-span-10 md:h-[clamp(12rem,12vh,15rem)]">
+          <div className="flex h-[5rem] items-center order-5 md:col-span-10 md:h-[clamp(6rem,8vh,15rem)]">
             <SvgTextHeading
               lines={[inNatureLine]} // the heart finds home
-              height="clamp(3.5rem, 7.5vw, 16rem)"
+              height="clamp(3.5rem, 6vw, 16rem)"
               shouldAnimate={showFlowingHeadings}
               baseDelay={0.2}
               align="center"
-              verticalAlign="top-mobile-center-desktop"
+              verticalAlign="top"
             />
           </div>
         </div>
