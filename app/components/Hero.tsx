@@ -41,15 +41,15 @@ const SVG_HEADING_TINT = "rgba(118, 109, 103, 0.45)";
 const ROOT_FONT_SIZE_PX = 16;
 const WORDMARK_MIN_REM = 12;
 const WORDMARK_MAX_REM = 15;
-const WORDMARK_VW_FACTOR = 0.12;
+const WORDMARK_VH_FACTOR = 0.25;
 const WORDMARK_PROBE_FONT_SIZE_PX = 100;
 const TEXT_HEADING_PROBE_FONT_SIZE_PX = 100;
 const TEXT_HEADING_WIDTH_FIT_RATIO = 0.9;
 const TEXT_HEADING_HEIGHT_FIT_RATIO = 0.9;
 
-function clampWordmarkBoundPx(viewportWidth: number, containerHeight: number): number {
+function clampWordmarkBoundPx(viewportHeight: number, containerHeight: number): number {
   const minPx = WORDMARK_MIN_REM * ROOT_FONT_SIZE_PX;
-  const preferredPx = viewportWidth * WORDMARK_VW_FACTOR;
+  const preferredPx = viewportHeight * WORDMARK_VH_FACTOR;
   const maxPx = WORDMARK_MAX_REM * ROOT_FONT_SIZE_PX;
   const clampPx = Math.min(Math.max(preferredPx, minPx), maxPx);
   return Math.min(clampPx, containerHeight / 2);
@@ -107,8 +107,8 @@ function SvgWordmarkHeading({
     const containerRect = container.getBoundingClientRect();
     if (containerRect.width <= 0 || containerRect.height <= 0) return;
 
-    const viewportWidth = typeof window === "undefined" ? 0 : window.innerWidth;
-    const boundByClampAndHeight = clampWordmarkBoundPx(viewportWidth, containerRect.height);
+    const viewportHeight = typeof window === "undefined" ? 0 : window.innerHeight;
+    const boundByClampAndHeight = clampWordmarkBoundPx(viewportHeight, containerRect.height);
 
     const primaryProbeWidth = primaryMeasure.getBoundingClientRect().width;
     const secondaryProbeWidth = secondary
@@ -223,12 +223,14 @@ function SvgTextHeading({
   shouldAnimate,
   baseDelay = 0.1,
   align = "left",
+  verticalAlign = "center",
 }: {
   lines: string[];
   height: string;
   shouldAnimate: boolean;
   baseDelay?: number;
   align?: "left" | "center";
+  verticalAlign?: "top" | "center" | "top-mobile-center-desktop";
 }) {
   const cleanLines = lines.map((line) => line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim());
   const containerRef = useRef<HTMLDivElement>(null);
@@ -288,7 +290,13 @@ function SvgTextHeading({
       ref={containerRef}
       aria-label={cleanLines.join(" ")}
       role="img"
-      className={`flex h-full w-full flex-col justify-evenly overflow-visible ${
+      className={`flex h-full w-full flex-col overflow-visible ${
+        verticalAlign === "top"
+          ? "justify-start"
+          : verticalAlign === "top-mobile-center-desktop"
+            ? "justify-start md:justify-evenly"
+            : "justify-evenly"
+      } ${
         align === "center" ? "items-center text-center" : "items-start text-left"
       }`}
       style={{ height }}
@@ -420,7 +428,7 @@ export default function Hero({ data }: { data: HeroData }) {
   const showFlowingHeadings = phase === "collapsed";
 
   return (
-    <div data-theme="light" style={{ height: "190vh", position: "relative" }}>
+    <div data-theme="light" style={{ height: "200vh", position: "relative" }}>
       {/* Sticky layer — pinned to viewport top while inside the 190vh container */}
       <div
         ref={stickyRef}
@@ -480,9 +488,9 @@ export default function Hero({ data }: { data: HeroData }) {
 
       {/* Grid content — in normal document flow below the sticky area.
           Scrolls into the viewport naturally as the page scrolls during animation. */}
-      <motion.div style={{ opacity: contentOpacity }}>
-        <div className={`grid grid-cols-1 md:grid-cols-10 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-4 md:py-10`}>
-          <div className="flex items-center justify-end md:col-start-2 md:col-span-4 md:h-[clamp(12rem,12vw,15rem)]">
+      <motion.div className="flex items-center justify-center md:pt-10 lg:pt-12" style={{ opacity: contentOpacity, height: "100vh" }}>
+        <div className={`w-full grid grid-cols-1 md:grid-cols-10 gap-4 md:gap-6 lg:gap-8 ${pageShell} py-4 md:py-10`}>
+          <div className="flex items-center justify-end md:col-start-2 md:col-span-4 md:h-[clamp(12rem,25vh,15rem)]">
             <SvgWordmarkHeading
               primary={craftedParts.primary} // the timian
               secondary={craftedParts.secondary} // feeling
@@ -494,36 +502,38 @@ export default function Hero({ data }: { data: HeroData }) {
           {/* Empty placeholder — the video in the sticky layer overlays this cell */}
           <div
             ref={videoCellRef}
-            className={`md:col-span-5 ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,12vw,15rem)]`}
+            className={`md:col-span-5 ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,25vh,15rem)]`}
           />
 
           <div
-            className={`relative w-full overflow-hidden md:col-span-7`}
+            className={`relative hidden w-full overflow-hidden md:col-span-7 md:block ${MEDIA_ASPECT} md:aspect-auto md:self-start md:h-[clamp(12rem,25vh,15rem)]`}
           >
             <SanityImage
               data-theme="dark"
               image={data.heroSecondaryImage}
               fill
-              className="object-cover"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
 
-          <div className="flex items-center order-4 md:col-span-3 py-4 md:py-6">
+          <div className="flex h-[4rem] items-center order-4 md:col-span-3 py-4 md:py-6 md:h-[clamp(12rem,25vh,15rem)]">
             <SvgTextHeading
               lines={[liveLine]} // where
-              height="clamp(7rem, 9vw, 13rem)"
+              height="clamp(3rem, 10vh, 13rem)"
               shouldAnimate={showFlowingHeadings}
               align="left"
+              verticalAlign="center"
             />
           </div>
 
-          <div className="flex items-center order-5 md:col-span-10">
+          <div className="flex h-[5rem] items-center order-5 md:col-span-10 md:h-[clamp(12rem,12vh,15rem)]">
             <SvgTextHeading
               lines={[inNatureLine]} // the heart finds home
-              height="clamp(7rem, 7vw, 16rem)"
+              height="clamp(3.5rem, 7.5vw, 16rem)"
               shouldAnimate={showFlowingHeadings}
               baseDelay={0.2}
               align="center"
+              verticalAlign="top-mobile-center-desktop"
             />
           </div>
         </div>
