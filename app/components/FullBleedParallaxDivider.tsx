@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, type ReactNode } from "react";
+import SanityImage from "@/app/components/SanityImage";
 
 /** Share of viewport height used as max upward travel (stronger, consistent across breakpoints). */
 const PARALLAX_LIFT_VH_RATIO = 0.35;
@@ -11,6 +11,7 @@ const PARALLAX_LIFT_MAX_PX = 520;
 export type FullBleedParallaxDividerImage = {
   url: string;
   alt: string;
+  image?: unknown;
 };
 
 export type FullBleedParallaxDividerProps = {
@@ -116,7 +117,13 @@ export default function FullBleedParallaxDivider({
       >
         {children ??
           (image ? (
-            <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" sizes={sizes} />
+            <SanityImage
+              data-theme="dark"
+              image={image}
+              fill
+              className="object-cover"
+              sizes={sizes}
+            />
           ) : null)}
       </div>
     </div>

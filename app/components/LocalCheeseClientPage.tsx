@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { animate } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 
 import FullBleedParallaxDivider from "@/app/components/FullBleedParallaxDivider";
+import SanityImage from "@/app/components/SanityImage";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
@@ -201,10 +201,9 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image
+        <SanityImage
           data-theme="dark"
-          src={data.heroImage.url}
-          alt={data.heroImage.alt}
+          image={data.heroImage}
           fill
           className="hero-image-enter object-cover"
           priority
@@ -227,10 +226,9 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
         >
           <div className="order-2 lg:order-1 lg:col-span-7">
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl">
-              <Image
+              <SanityImage
                 data-theme="dark"
-                src={data.legacyImage.url}
-                alt={data.legacyImage.alt}
+                image={data.legacyImage}
                 fill
                 className="donkey-blur-in object-cover"
               />
@@ -276,10 +274,9 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
           </div>
           <div className="order-2 lg:col-span-6">
             <div className="relative aspect-[3/4] w-full max-h-[550px] overflow-hidden rounded-lg shadow-xl">
-              <Image
+              <SanityImage
                 data-theme="dark"
-                src={data.signatureImage.url}
-                alt={data.signatureImage.alt}
+                image={data.signatureImage}
                 fill
                 className="flash-on-reveal object-cover"
               />
@@ -320,7 +317,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
                 style={{ backgroundColor: colors.secondaryBg }}
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <Image data-theme="dark" src={collection.image.url} alt={collection.image.alt} fill className="object-cover" />
+                  <SanityImage data-theme="dark" image={collection.image} fill className="object-cover" />
                 </div>
                 <div className="space-y-3 p-7 text-center">
                   <h3 className="font-serif text-2xl" style={{ color: colors.accent }}>
@@ -354,7 +351,7 @@ export default function LocalCheeseClientPage({ data }: { data: LocalCheesePageD
             <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {collectionsBreakImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" sizes="25vw" />
+                  <SanityImage data-theme="dark" image={image} fill className="object-cover" sizes="25vw" />
                 </div>
               ))}
             </div>

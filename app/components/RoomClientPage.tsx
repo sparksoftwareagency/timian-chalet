@@ -1,10 +1,10 @@
 "use client";
 
 import { animate, motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
+import SanityImage from "@/app/components/SanityImage";
 import { localizeHref, type SiteLocale } from "@/app/lib/locale";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
@@ -90,7 +90,7 @@ export default function RoomClientPage({
   return (
     <main className="w-full">
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image data-theme="dark" src={first.url} alt={first.alt} fill priority className="object-cover" />
+        <SanityImage data-theme="dark" image={first} fill priority className="object-cover" />
         <div className="absolute inset-0 bg-black/30" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
@@ -137,10 +137,9 @@ export default function RoomClientPage({
               }}
             >
               <div className="relative aspect-[3/4] max-h-[600px] w-full overflow-hidden rounded-lg shadow-xl">
-                <Image
+                <SanityImage
                   data-theme="dark"
-                  src={second?.url ?? first.url}
-                  alt={second?.alt ?? first.alt}
+                  image={second ?? first}
                   fill
                   className="object-cover"
                 />
@@ -176,7 +175,7 @@ export default function RoomClientPage({
                 }}
               >
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-lg">
-                  <Image data-theme="dark" src={image!.url} alt={image!.alt} fill className="object-cover" />
+                  <SanityImage data-theme="dark" image={image!} fill className="object-cover" />
                 </div>
               </motion.div>
             ))}

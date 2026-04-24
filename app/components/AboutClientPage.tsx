@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { animate } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 
 import FullBleedParallaxDivider from "@/app/components/FullBleedParallaxDivider";
+import SanityImage from "@/app/components/SanityImage";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
@@ -159,7 +159,7 @@ export default function AboutClientPage({
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image data-theme="dark" src={data.heroImage.url} alt={data.heroImage.alt} fill className="object-cover" priority />
+        <SanityImage data-theme="dark" image={data.heroImage} fill className="object-cover" priority />
         <div className="absolute inset-0 bg-black/45" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <h1 className="font-serif text-5xl font-light uppercase tracking-[0.2em] text-white sm:text-6xl md:text-7xl lg:text-8xl">
@@ -194,9 +194,9 @@ export default function AboutClientPage({
             </div>
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl">
-                <Image data-theme="dark"
-                  src={data.originPrimaryImage.url}
-                  alt={data.originPrimaryImage.alt}
+                <SanityImage
+                  data-theme="dark"
+                  image={data.originPrimaryImage}
                   fill
                   className="object-cover"
                 />
@@ -212,7 +212,7 @@ export default function AboutClientPage({
             <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
               {animalsBreakImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                  <SanityImage data-theme="dark" image={image} fill className="object-cover" sizes="20vw" />
                 </div>
               ))}
             </div>
@@ -227,9 +227,9 @@ export default function AboutClientPage({
         >
           <div className="order-2 lg:order-1 lg:col-span-6">
             <div className="relative aspect-[3/4] w-full max-h-[550px] overflow-hidden rounded-lg shadow-xl">
-              <Image data-theme="dark"
-                src={data.transformImage.url}
-                alt={data.transformImage.alt}
+              <SanityImage
+                data-theme="dark"
+                image={data.transformImage}
                 fill
                 className="flash-on-reveal object-cover"
               />
@@ -278,7 +278,7 @@ export default function AboutClientPage({
           <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-2">
             {data.farmImages.map((image) => (
               <div key={image.url} className="relative aspect-[4/3] overflow-hidden rounded-lg shadow-xl">
-                <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" />
+                <SanityImage data-theme="dark" image={image} fill className="object-cover" />
               </div>
             ))}
           </div>

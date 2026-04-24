@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import { animate, motion, useMotionValue, useTransform } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import SanityImage from "@/app/components/SanityImage";
 import {
   HERO_SCROLL_VIEWPORT_MULT_LANDING,
   heroScrollStepPx,
@@ -500,9 +500,9 @@ export default function Hero({ data }: { data: HeroData }) {
           <div
             className={`relative w-full overflow-hidden md:col-span-7`}
           >
-            <Image data-theme="dark"
-              src={data.heroSecondaryImage.url}
-              alt={data.heroSecondaryImage.alt}
+            <SanityImage
+              data-theme="dark"
+              image={data.heroSecondaryImage}
               fill
               className="object-cover"
             />

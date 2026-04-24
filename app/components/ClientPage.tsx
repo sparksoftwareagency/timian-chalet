@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
 
@@ -8,6 +7,7 @@ import { localizeHref, type SiteLocale } from "@/app/lib/locale";
 import { colors } from "@/app/theme/colors";
 import { pageGutterX, pageShell } from "@/app/theme/pageShell";
 import type { HomePageData } from "@/sanity/lib/queries";
+import SanityImage from "@/app/components/SanityImage";
 
 import Hero from "./Hero";
 import LoadingState from "./LoadingState";
@@ -76,7 +76,7 @@ function SectionDivider({
   bgTop,
   bgBottom,
 }: {
-  image: { url: string; alt: string };
+  image: { url: string; alt: string; image?: unknown };
   bgTop: string;
   bgBottom: string;
 }) {
@@ -113,9 +113,9 @@ function SectionDivider({
         className="absolute top-1/2 -translate-y-1/2 right-6 sm:right-8 lg:right-10"
       >
         <div className="relative mr-16 w-36 h-24 sm:w-48 sm:h-32 md:w-56 md:h-36 rounded-lg overflow-hidden shadow-lg">
-          <Image data-theme="dark"
-            src={image.url}
-            alt={image.alt}
+          <SanityImage
+            data-theme="dark"
+            image={image}
             fill
             className="object-cover"
             sizes="(max-width: 640px) 144px, (max-width: 768px) 192px, 224px"
@@ -215,9 +215,9 @@ export default function ClientPage({
 
             <div className="w-full lg:w-[65%] min-w-0 flex justify-center">
               <div className="relative w-full aspect-[3/4] max-h-[600px] rounded-lg overflow-hidden shadow-xl">
-                <Image data-theme="dark"
-                  src={data.welcomeImage.url}
-                  alt={data.welcomeImage.alt}
+                <SanityImage
+                  data-theme="dark"
+                  image={data.welcomeImage}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -235,7 +235,7 @@ export default function ClientPage({
             <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {welcomeDividerImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" />
+                  <SanityImage data-theme="dark" image={image} fill className="object-cover" />
                 </div>
               ))}
             </div>
@@ -281,9 +281,9 @@ export default function ClientPage({
           <div className="flex flex-col-reverse lg:flex-row gap-12 lg:gap-16 items-center">
             <div className="flex-1 min-w-0 w-full lg:w-auto flex justify-center">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
-                <Image data-theme="dark"
-                  src={data.hotelSection.image.url}
-                  alt={data.hotelSection.image.alt}
+                <SanityImage
+                  data-theme="dark"
+                  image={data.hotelSection.image}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -349,9 +349,9 @@ export default function ClientPage({
               {data.experiencesBand.cards.map((card) => (
                 <div key={card._key} className="flex flex-col h-full min-w-0 items-center text-center">
                   <div className="relative w-full aspect-[3/4] sm:aspect-[2/3] rounded-lg overflow-hidden shadow-lg">
-                    <Image data-theme="dark"
-                      src={card.image.url}
-                      alt={card.image.alt}
+                    <SanityImage
+                      data-theme="dark"
+                      image={card.image}
                       fill
                       className="object-cover"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 34vw, 31vw"
@@ -424,9 +424,9 @@ export default function ClientPage({
 
             <div className="w-full lg:w-[65%] min-w-0 flex justify-center">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-xl">
-                <Image data-theme="dark"
-                  src={data.roomsSection.image.url}
-                  alt={data.roomsSection.image.alt}
+                <SanityImage
+                  data-theme="dark"
+                  image={data.roomsSection.image}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -443,7 +443,7 @@ export default function ClientPage({
             <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
               {roomsBreakImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image data-theme="dark" src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                  <SanityImage data-theme="dark" image={image} fill className="object-cover" sizes="20vw" />
                 </div>
               ))}
             </div>
@@ -459,9 +459,9 @@ export default function ClientPage({
           <div className="flex flex-col-reverse lg:flex-row-reverse gap-12 lg:gap-16 items-center">
             <div className="flex-1 min-w-0 w-full lg:w-auto flex justify-center">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
-                <Image data-theme="dark"
-                  src={data.culinarySection.image.url}
-                  alt={data.culinarySection.image.alt}
+                <SanityImage
+                  data-theme="dark"
+                  image={data.culinarySection.image}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"

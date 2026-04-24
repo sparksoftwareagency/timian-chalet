@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 
+import SanityImage from "@/app/components/SanityImage";
 import { isSiteLocale, SITE_LOCALES, type SiteLocale } from "@/app/lib/locale";
 import { colors } from "@/app/theme/colors";
 import { fetchCulinaryPage } from "@/sanity/lib/queries";
@@ -29,7 +29,7 @@ export default async function CulinaryPage({
   return (
     <main>
       <section className="relative h-screen w-full overflow-hidden">
-        <Image data-theme="dark" src={data.heroImage.url} alt={data.heroImage.alt} fill priority className="object-cover" />
+        <SanityImage data-theme="dark" image={data.heroImage} fill priority className="object-cover" />
         <div className="absolute inset-0 bg-black/40" />
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
