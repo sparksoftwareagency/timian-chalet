@@ -291,13 +291,13 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         data-theme="light"
         style={{ backgroundColor: colors.primaryBg, height: `${chapterHeightVh}vh` }}
       >
-        <div className="sticky top-0 h-screen overflow-hidden">
-          <div className={`${pageShell} flex h-full flex-col justify-center py-12 sm:py-16`}>
-            <div className="mb-8 text-center sm:mb-10">
+        <div className="sticky top-0 h-[100svh] overflow-hidden sm:h-screen pt-12 md:pt-12">
+          <div className={`${pageShell} flex h-full flex-col justify-start py-8 sm:justify-center sm:py-16`}>
+            <div className="mb-6 text-center">
               <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
                 {data.activitiesEyebrow}
               </span>
-              <h2 className="whitespace-pre-line font-serif text-3xl sm:text-3xl lg:text-4xl" style={{ color: colors.accent }}>
+              <h2 className="whitespace-pre-line font-serif text-2xl sm:text-3xl lg:text-4xl" style={{ color: colors.accent }}>
                 {data.activitiesTitle}
               </h2>
             </div>
@@ -305,7 +305,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
             {data.activities.length > 0 ? (
               <div className="mx-auto w-full max-w-[88rem]">
                 <div
-                  className="rounded-[2rem] border border-white/25 bg-white/40 p-4 shadow-xl backdrop-blur-sm sm:p-6"
+                  className="rounded-[1.5rem] border border-white/25 bg-white/40 p-3 shadow-xl backdrop-blur-sm sm:rounded-[2rem] sm:p-6"
                   style={{
                     transform: `scale(${0.92 + chapterRevealProgress * 0.08})`,
                     opacity: 0.72 + chapterRevealProgress * 0.28,
@@ -322,16 +322,16 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                   >
                     <div
                       ref={activitiesTrackRef}
-                      className="flex gap-6 will-change-transform"
+                      className="flex gap-4 will-change-transform sm:gap-6"
                       style={{ transform: `translate3d(${chapterTranslateX}px, 0, 0)` }}
                     >
                       {data.activities.map((activity, index) => (
                         <article
                           key={activity._key}
                           data-activity-card
-                          className="shrink-0 rounded-2xl bg-white/75 p-4 shadow-md sm:w-[68%] lg:w-[24rem]"
+                          className="w-[82vw] max-w-[22rem] shrink-0 rounded-2xl bg-white/75 p-4 shadow-md sm:w-[68%] lg:w-[24rem]"
                         >
-                          <div className="relative mb-5 aspect-[16/11] w-full overflow-hidden rounded-l">
+                          <div className="relative mb-4 aspect-[16/11] w-full overflow-hidden rounded-xl sm:mb-5">
                             <SanityImage
                               data-theme="dark"
                               image={activity.image}
