@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { animate } from "framer-motion";
 import {
   useCallback,
@@ -10,6 +9,7 @@ import {
 
 import FullBleedParallaxDivider from "@/app/components/FullBleedParallaxDivider";
 import ImageShow from "@/app/components/ImageShow";
+import SanityImage from "@/app/components/SanityImage";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
@@ -129,9 +129,9 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           />
         ) : feature.images[0] ? (
           <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl float-soft">
-            <Image
-              src={feature.images[0].url}
-              alt={feature.images[0].alt}
+            <SanityImage
+              data-theme="dark"
+              image={feature.images[0]}
               fill
               className="image-lift object-cover"
             />
@@ -176,7 +176,13 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
             />
           ) : firstImage ? (
             <div className="relative aspect-[3/4] w-full">
-              <Image src={firstImage.url} alt={firstImage.alt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <SanityImage
+                data-theme="dark"
+                image={firstImage}
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
             </div>
           ) : null}
         </div>
@@ -278,9 +284,9 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image
-          src={data.heroImage.url}
-          alt={data.heroImage.alt}
+        <SanityImage
+          data-theme="dark"
+          image={data.heroImage}
           fill
           className="hero-image-enter object-cover"
           priority
@@ -312,7 +318,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
           <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-7">
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-xl">
-                <Image src={data.introImage.url} alt={data.introImage.alt} fill className="donkey-blur-in object-cover" />
+                <SanityImage data-theme="dark" image={data.introImage} fill className="donkey-blur-in object-cover" />
               </div>
             </div>
             <div className="flash-on-reveal mx-auto max-w-2xl space-y-6 text-center lg:col-span-5">
@@ -336,7 +342,7 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
             <div className="grid grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
               {featuresBreakImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                  <SanityImage data-theme="dark" image={image} fill className="object-cover" sizes="20vw" />
                 </div>
               ))}
             </div>
@@ -347,9 +353,9 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
       {highlightImage ? (
         <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
           <div ref={addRef(1)} className="reveal-section absolute inset-0">
-            <Image
-              src={highlightImage.url}
-              alt={highlightImage.alt || data.highlightTitle}
+            <SanityImage
+              data-theme="dark"
+              image={highlightImage}
               fill
               className="flash-on-reveal object-cover"
               sizes="100vw"
@@ -394,9 +400,9 @@ export default function WellnessClientPage({ data }: { data: WellnessPageData })
       </section>
 
       {breakImages.length > 0 ? (
-        <section data-theme="light">
+        <section data-theme="dark">
           <FullBleedParallaxDivider
-            height="h-[55vh]"
+            height="h-[85vh]"
             image={hasBreakImageShow ? undefined : breakImages[0]}
           >
             {hasBreakImageShow ? (

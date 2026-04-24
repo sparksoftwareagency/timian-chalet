@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { animate } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 
+import SanityImage from "@/app/components/SanityImage";
 import { localizeHref, type SiteLocale } from "@/app/lib/locale";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
@@ -161,9 +161,9 @@ export default function RoomsListingClientPage({ lang, page, rooms }: Props) {
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image
-          src={page.heroImage.url}
-          alt={page.heroImage.alt}
+        <SanityImage
+          data-theme="dark"
+          image={page.heroImage}
           fill
           priority
           className="hero-image-enter object-cover"
@@ -192,9 +192,9 @@ export default function RoomsListingClientPage({ lang, page, rooms }: Props) {
                 className="group block"
               >
                 <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg shadow-lg">
-                  <Image
-                    src={room.heroImage.url}
-                    alt={room.heroImage.alt}
+                  <SanityImage
+                    data-theme="dark"
+                    image={room.heroImage}
                     fill
                     className="flash-on-reveal object-cover transition-transform duration-700 group-hover:scale-105"
                   />

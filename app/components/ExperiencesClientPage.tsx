@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { animate } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import SanityImage from "@/app/components/SanityImage";
 import {
   HERO_SCROLL_VIEWPORT_MULT_SUBPAGE,
   heroScrollStepPx,
@@ -276,7 +276,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
       `}</style>
 
       <section data-theme="dark" className="relative h-screen w-full overflow-hidden">
-        <Image src={data.heroImage.url} alt={data.heroImage.alt} fill className="object-cover" priority />
+        <SanityImage data-theme="dark" image={data.heroImage} fill className="object-cover" priority />
         <div className="absolute inset-0 bg-black/45" />
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <h1 className="font-serif text-5xl font-light uppercase tracking-[0.2em] text-white sm:text-6xl md:text-7xl lg:text-8xl">
@@ -291,68 +291,70 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         data-theme="light"
         style={{ backgroundColor: colors.primaryBg, height: `${chapterHeightVh}vh` }}
       >
-        <div className="sticky top-0 h-screen overflow-hidden">
-          <div className={`${pageShell} flex h-full flex-col justify-center py-12 sm:py-16`}>
-            <div className="mb-8 text-center sm:mb-10">
-              <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
-                {data.activitiesEyebrow}
-              </span>
-              <h2 className="whitespace-pre-line font-serif text-3xl sm:text-3xl lg:text-4xl" style={{ color: colors.accent }}>
-                {data.activitiesTitle}
-              </h2>
-            </div>
+        <div className="sticky top-0 h-[100svh] overflow-hidden sm:h-screen md:pt-12">
+          <div className="flex h-[100svh] items-center">
+            <div className={`${pageShell} w-full py-8 sm:py-16`}>
+              <div className="mb-6 text-center">
+                <span className="mb-4 block text-xs font-medium uppercase tracking-[0.3em]" style={{ color: colors.cta }}>
+                  {data.activitiesEyebrow}
+                </span>
+                <h2 className="whitespace-pre-line font-serif text-2xl sm:text-3xl lg:text-4xl" style={{ color: colors.accent }}>
+                  {data.activitiesTitle}
+                </h2>
+              </div>
 
-            {data.activities.length > 0 ? (
-              <div className="mx-auto w-full max-w-[88rem]">
-                <div
-                  className="rounded-[2rem] border border-white/25 bg-white/40 p-4 shadow-xl backdrop-blur-sm sm:p-6"
-                  style={{
-                    transform: `scale(${0.92 + chapterRevealProgress * 0.08})`,
-                    opacity: 0.72 + chapterRevealProgress * 0.28,
-                  }}
-                >
+              {data.activities.length > 0 ? (
+                <div className="mx-auto w-full max-w-[88rem]">
                   <div
-                    ref={activitiesTrackViewportRef}
-                    className={`overflow-hidden ${isDraggingActivities ? "cursor-grabbing select-none" : "cursor-grab"}`}
-                    onPointerDown={handleActivitiesPointerDown}
-                    onPointerMove={handleActivitiesPointerMove}
-                    onPointerUp={handleActivitiesPointerEnd}
-                    onPointerCancel={handleActivitiesPointerEnd}
-                    onLostPointerCapture={handleActivitiesPointerEnd}
+                    className="w-full rounded-[1.5rem] border border-white/25 bg-white/40 p-3 shadow-xl backdrop-blur-sm sm:rounded-[2rem] sm:p-6"
+                    style={{
+                      transform: `scale(${0.92 + chapterRevealProgress * 0.08})`,
+                      opacity: 0.72 + chapterRevealProgress * 0.28,
+                    }}
                   >
                     <div
-                      ref={activitiesTrackRef}
-                      className="flex gap-6 will-change-transform"
-                      style={{ transform: `translate3d(${chapterTranslateX}px, 0, 0)` }}
+                      ref={activitiesTrackViewportRef}
+                      className={`overflow-hidden ${isDraggingActivities ? "cursor-grabbing select-none" : "cursor-grab"}`}
+                      onPointerDown={handleActivitiesPointerDown}
+                      onPointerMove={handleActivitiesPointerMove}
+                      onPointerUp={handleActivitiesPointerEnd}
+                      onPointerCancel={handleActivitiesPointerEnd}
+                      onLostPointerCapture={handleActivitiesPointerEnd}
                     >
-                      {data.activities.map((activity, index) => (
-                        <article
-                          key={activity._key}
-                          data-activity-card
-                          className="shrink-0 rounded-2xl bg-white/75 p-4 shadow-md sm:w-[68%] lg:w-[24rem]"
-                        >
-                          <div className="relative mb-5 aspect-[16/11] w-full overflow-hidden rounded-l">
-                            <Image
-                              src={activity.image.url}
-                              alt={activity.image.alt}
-                              fill
-                              className="object-cover"
-                              priority={index === 0}
-                            />
-                          </div>
-                          <h3 className="mb-3 font-serif text-xl leading-tight sm:text-xl" style={{ color: colors.accent }}>
-                            {activity.title}
-                          </h3>
-                          <p className="text-sm leading-relaxed sm:text-base" style={{ color: colors.textSecondary }}>
-                            {activity.description}
-                          </p>
-                        </article>
-                      ))}
+                      <div
+                        ref={activitiesTrackRef}
+                        className="flex gap-4 will-change-transform sm:gap-6"
+                        style={{ transform: `translate3d(${chapterTranslateX}px, 0, 0)` }}
+                      >
+                        {data.activities.map((activity, index) => (
+                          <article
+                            key={activity._key}
+                            data-activity-card
+                            className="w-[82vw] max-w-[22rem] shrink-0 rounded-2xl bg-white/75 p-4 shadow-md sm:w-[68%] lg:w-[24rem]"
+                          >
+                            <div className="relative mb-4 aspect-[16/11] w-full overflow-hidden rounded-xl sm:mb-5">
+                              <SanityImage
+                                data-theme="dark"
+                                image={activity.image}
+                                fill
+                                className="object-cover"
+                                priority={index === 0}
+                              />
+                            </div>
+                            <h3 className="mb-3 font-serif text-xl leading-tight sm:text-xl" style={{ color: colors.accent }}>
+                              {activity.title}
+                            </h3>
+                            <p className="text-sm leading-relaxed sm:text-base" style={{ color: colors.textSecondary }}>
+                              {activity.description}
+                            </p>
+                          </article>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </div>
         </div>
       </section>
@@ -387,9 +389,8 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
               <div className="grid items-center gap-5 md:grid-cols-[minmax(0,0.45fr)_minmax(0,1fr)_minmax(0,0.45fr)]">
                 {videoSideImageLeft ? (
                   <div className="relative hidden aspect-[5/4] overflow-hidden rounded-[1.4rem] border border-white/30 shadow-xl md:block">
-                    <Image
-                      src={videoSideImageLeft.url}
-                      alt={videoSideImageLeft.alt}
+                    <SanityImage
+                      image={videoSideImageLeft}
                       fill
                       className="object-cover"
                     />
@@ -419,9 +420,8 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
 
                 {videoSideImageRight ? (
                   <div className="relative hidden aspect-[5/4] overflow-hidden rounded-[1.4rem] border border-white/30 shadow-xl md:block">
-                    <Image
-                      src={videoSideImageRight.url}
-                      alt={videoSideImageRight.alt}
+                    <SanityImage
+                      image={videoSideImageRight}
                       fill
                       className="object-cover"
                     />
@@ -435,9 +435,8 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                 <div className="mt-5 grid gap-4 sm:grid-cols-2 md:hidden">
                   {videoSideImageLeft ? (
                     <div className="relative aspect-[16/10] overflow-hidden rounded-[1.2rem] border border-white/30 shadow-lg">
-                      <Image
-                        src={videoSideImageLeft.url}
-                        alt={videoSideImageLeft.alt}
+                      <SanityImage
+                        image={videoSideImageLeft}
                         fill
                         className="object-cover"
                       />
@@ -445,9 +444,8 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                   ) : null}
                   {videoSideImageRight ? (
                     <div className="relative aspect-[16/10] overflow-hidden rounded-[1.2rem] border border-white/30 shadow-lg">
-                      <Image
-                        src={videoSideImageRight.url}
-                        alt={videoSideImageRight.alt}
+                      <SanityImage
+                        image={videoSideImageRight}
                         fill
                         className="object-cover"
                       />
@@ -489,7 +487,7 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
             <div className="grid grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
               {experienceDividerImages.map((image, index) => (
                 <div key={`${image.url}-${index}`} className="relative aspect-[3/4] w-full overflow-hidden">
-                  <Image src={image.url} alt={image.alt} fill className="object-cover" sizes="20vw" />
+                  <SanityImage data-theme="dark" image={image} fill className="object-cover" sizes="20vw" />
                 </div>
               ))}
             </div>
@@ -497,7 +495,12 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
         </section>
       ) : null}
 
-      <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+      <section
+        id="more-experiences"
+        data-theme="light"
+        style={{ backgroundColor: colors.primaryBg }}
+        className="scroll-mt-24"
+      >
         <div className={`${pageShell} py-20 sm:py-24 lg:py-28`}>
           <div className="mb-12 text-center">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl" style={{ color: colors.accent }}>
@@ -513,9 +516,9 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                 }`}
               >
                 <div className="relative aspect-[4/5] w-full overflow-hidden">
-                  <Image
-                    src={experience.image.url}
-                    alt={experience.image.alt || experience.title}
+                  <SanityImage
+                    data-theme="dark"
+                    image={experience.image}
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -557,9 +560,9 @@ export default function ExperiencesClientPage({ data }: { data: ExperiencesPageD
                   >
                     <div className="w-full lg:w-1/2">
                       <div className="relative aspect-[3/4] w-full">
-                        <Image
-                          src={item.image.url}
-                          alt={item.image.alt || item.title}
+                        <SanityImage
+                          data-theme="dark"
+                          image={item.image}
                           fill
                           className="object-cover"
                           sizes="(max-width: 1024px) 100vw, 50vw"

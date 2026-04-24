@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 
+import SanityImage from "@/app/components/SanityImage";
 import { isSiteLocale, SITE_LOCALES } from "@/app/lib/locale";
 import { colors } from "@/app/theme/colors";
 import { pageShell } from "@/app/theme/pageShell";
@@ -35,9 +35,9 @@ export default async function BookNowPage({
 
   return (
     <main data-theme="dark" className="relative min-h-screen overflow-hidden pt-32 md:pt-36" style={{ backgroundColor: colors.primaryBg }}>
-      <Image
-        src={data.backgroundImage.url}
-        alt={data.backgroundImage.alt || data.title}
+      <SanityImage
+        data-theme="dark"
+        image={data.backgroundImage}
         fill
         priority
         className="object-cover"

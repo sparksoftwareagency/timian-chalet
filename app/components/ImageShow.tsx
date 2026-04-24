@@ -2,9 +2,9 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
+import SanityImage from "@/app/components/SanityImage";
 import type { CmsImage } from "@/sanity/lib/queries";
 
 type ImageShowProps = {
@@ -45,13 +45,7 @@ export default function ImageShow({
   const [direction, setDirection] = useState<1 | -1>(1);
   const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const shouldReduceMotion = useReducedMotion();
-
-  if (slides.length === 0) {
-    return null;
-  }
-
   const hasControls = slides.length > 1;
-  const activeSlide = slides[activeIndex];
 
   useEffect(() => {
     if (!hasControls || shouldReduceMotion || hasUserInteracted) return;
@@ -85,6 +79,12 @@ export default function ImageShow({
     setActiveIndex((current) => (current - 1 + slides.length) % slides.length);
   };
 
+  if (slides.length === 0) {
+    return null;
+  }
+
+  const activeSlide = slides[activeIndex];
+
   return (
     <div className={className}>
       <div className={`relative w-full overflow-hidden rounded-lg ${aspectRatioClassName} ${frameClassName}`}>
@@ -109,9 +109,9 @@ export default function ImageShow({
             transition={{ duration: shouldReduceMotion ? 0 : 0.46, ease: [0.32, 0.72, 0, 1] }}
             className="absolute inset-0"
           >
-            <Image
-              src={activeSlide.url}
-              alt={activeSlide.alt || ""}
+            <SanityImage
+              data-theme="dark"
+              image={activeSlide}
               fill
               sizes={sizes}
               className="object-cover"
