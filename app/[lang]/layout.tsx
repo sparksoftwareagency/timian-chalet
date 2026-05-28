@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 
 import FloatingMenu from "@/app/components/FloatingMenu";
 import Footer from "@/app/components/Footer";
+import JsonLd from "@/app/components/JsonLd";
 import { isSiteLocale, SITE_LOCALES, type SiteLocale } from "@/app/lib/locale";
 import { buildPageMetadata } from "@/app/lib/seo";
+import { lodgingBusinessJsonLd } from "@/app/lib/structuredData";
 import { fetchNavigation, fetchSiteSettings } from "@/sanity/lib/queries";
 
 export function generateStaticParams() {
@@ -64,6 +66,7 @@ export default async function LocaleLayout({
 
   return (
     <>
+      <JsonLd data={lodgingBusinessJsonLd(settings, lang as SiteLocale)} />
       <FloatingMenu locale={lang} navigation={navigation} settings={settings} />
       {children}
       <Footer locale={lang} settings={settings} />
