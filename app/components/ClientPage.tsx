@@ -451,7 +451,7 @@ export default function ClientPage({
         </section>
       ) : null}
 
-      <section data-theme="dark" style={{ backgroundColor: colors.primaryBg }}>
+      <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
         <div
           ref={addRef(4)}
           className={`reveal-section ${pageShell} py-20 sm:py-24`}
@@ -500,6 +500,58 @@ export default function ClientPage({
           </div>
         </div>
       </section>
+
+      {data.wellnessSection ? (
+        <section data-theme="light" style={{ backgroundColor: colors.primaryBg }}>
+          <div
+            ref={addRef(6)}
+            className={`reveal-section ${pageShell} py-20 sm:py-24`}
+          >
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+              <div className="flex-1 min-w-0 w-full lg:w-auto flex justify-center">
+                <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden shadow-lg">
+                  <SanityImage
+                    data-theme="dark"
+                    image={data.wellnessSection.image}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+              </div>
+
+              <div className="flex-1 min-w-0 reveal-section-delay flex flex-col items-center text-center">
+                <span
+                  className="block text-xs uppercase tracking-[0.3em] mb-4 font-medium"
+                  style={{ color: colors.cta }}
+                >
+                  {data.wellnessSection.eyebrow}
+                </span>
+                <h3
+                  className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight mb-6 whitespace-pre-line max-w-2xl"
+                  style={{ color: colors.accent }}
+                >
+                  {data.wellnessSection.title}
+                </h3>
+                <div className="w-12 h-[1px] mb-6 shrink-0 mx-auto" style={{ backgroundColor: colors.cta }} />
+                <p
+                  className="text-base sm:text-lg leading-relaxed mb-2 max-w-2xl"
+                  style={{ color: colors.textSecondary }}
+                >
+                  {data.wellnessSection.description}
+                </p>
+                <div className="flex w-full justify-center">
+                  <SectionLink
+                    href={localizeHref(locale, data.wellnessSection.link.href)}
+                    label={data.wellnessSection.link.label}
+                    color={colors.cta}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
     </main>
   );

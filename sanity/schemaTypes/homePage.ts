@@ -133,6 +133,11 @@ export const homePageType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'wellnessSection',
+      title: 'Wellness section',
+      type: 'teaserSection',
+    }),
+    defineField({
       name: 'experiencesDividerImage',
       title: 'Experiences divider image',
       type: 'imageBlock',

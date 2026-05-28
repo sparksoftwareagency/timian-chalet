@@ -123,6 +123,7 @@ export type HomePageData = {
   roomsBreakImages: CmsImage[]
   culinaryDividerImage: CmsImage
   culinarySection: CmsTeaserSection
+  wellnessSection: CmsTeaserSection | null
   experiencesDividerImage: CmsImage
   experiencesBand: CmsHomeExperiencesBand
 }
@@ -484,6 +485,7 @@ const homePageQuery = groq`*[_type == "homePage" && language == $language][0]{
   ),
   culinaryDividerImage ${imageProjection},
   culinarySection ${teaserProjection},
+  wellnessSection ${teaserProjection},
   experiencesDividerImage ${imageProjection},
   experiencesBand ${homeExperiencesBandProjection}
 }`
