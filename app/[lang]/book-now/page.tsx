@@ -1,13 +1,43 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import SanityImage from "@/app/components/SanityImage";
-import { isSiteLocale, SITE_LOCALES } from "@/app/lib/locale";
+import { isSiteLocale, SITE_LOCALES, type SiteLocale } from "@/app/lib/locale";
+import { buildPageMetadata } from "@/app/lib/seo";
 import { colors } from "@/app/theme/colors";
 import { pageShell } from "@/app/theme/pageShell";
-import { fetchBookingPage } from "@/sanity/lib/queries";
+import { fetchBookingPage, fetchSiteSettings } from "@/sanity/lib/queries";
 
 export function generateStaticParams() {
   return SITE_LOCALES.map((lang) => ({ lang }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isSiteLocale(lang)) return {};
+
+  const [data, settings] = await Promise.all([
+    fetchBookingPage(lang as SiteLocale),
+    fetchSiteSettings(lang as SiteLocale),
+  ]);
+  if (!data || !settings) return {};
+
+  const title = data.seoTitle ?? `${data.title} — ${settings.siteTitle}`;
+  const description =
+    data.seoDescription ?? data.description ?? settings.siteDescription;
+
+  return buildPageMetadata({
+    locale: lang as SiteLocale,
+    path: "/book-now",
+    title,
+    description,
+    imageUrl: data.backgroundImage?.url ?? settings.ogImage?.url,
+    imageAlt: data.backgroundImage?.alt ?? settings.ogImage?.alt,
+  });
 }
 
 export default async function BookNowPage({

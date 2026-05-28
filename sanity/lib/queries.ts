@@ -69,6 +69,7 @@ export type SiteSettingsData = {
   siteDescription: string
   seoTitle?: string
   seoDescription?: string
+  ogImage?: CmsImage
   logoDarkUrl: string
   logoLightUrl: string
   loadingBrand: string
@@ -123,6 +124,7 @@ export type HomePageData = {
   roomsBreakImages: CmsImage[]
   culinaryDividerImage: CmsImage
   culinarySection: CmsTeaserSection
+  wellnessSection: CmsTeaserSection | null
   experiencesDividerImage: CmsImage
   experiencesBand: CmsHomeExperiencesBand
 }
@@ -413,6 +415,7 @@ const siteSettingsQuery = groq`*[_type == "siteSettings" && language == $languag
   siteDescription,
   seoTitle,
   seoDescription,
+  ogImage ${imageProjection},
   "logoDarkUrl": logoDark.asset->url,
   "logoLightUrl": logoLight.asset->url,
   loadingBrand,
@@ -484,6 +487,7 @@ const homePageQuery = groq`*[_type == "homePage" && language == $language][0]{
   ),
   culinaryDividerImage ${imageProjection},
   culinarySection ${teaserProjection},
+  wellnessSection ${teaserProjection},
   experiencesDividerImage ${imageProjection},
   experiencesBand ${homeExperiencesBandProjection}
 }`

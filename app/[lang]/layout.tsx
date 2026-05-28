@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 
 import FloatingMenu from "@/app/components/FloatingMenu";
 import Footer from "@/app/components/Footer";
+import JsonLd from "@/app/components/JsonLd";
 import { isSiteLocale, SITE_LOCALES, type SiteLocale } from "@/app/lib/locale";
+import { buildPageMetadata } from "@/app/lib/seo";
+import { lodgingBusinessJsonLd } from "@/app/lib/structuredData";
 import { fetchNavigation, fetchSiteSettings } from "@/sanity/lib/queries";
 
 export function generateStaticParams() {
@@ -26,20 +29,17 @@ export async function generateMetadata({
     return {};
   }
 
-  return {
-    title: settings.seoTitle ?? settings.siteTitle,
-    description: settings.seoDescription ?? settings.siteDescription,
-    openGraph: {
-      title: settings.seoTitle ?? settings.siteTitle,
-      description: settings.seoDescription ?? settings.siteDescription,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: settings.seoTitle ?? settings.siteTitle,
-      description: settings.seoDescription ?? settings.siteDescription,
-    },
-  };
+  const title = settings.seoTitle ?? settings.siteTitle;
+  const description = settings.seoDescription ?? settings.siteDescription;
+
+  return buildPageMetadata({
+    locale: lang as SiteLocale,
+    path: "/",
+    title,
+    description,
+    imageUrl: settings.ogImage?.url,
+    imageAlt: settings.ogImage?.alt,
+  });
 }
 
 export default async function LocaleLayout({
@@ -66,6 +66,7 @@ export default async function LocaleLayout({
 
   return (
     <>
+      <JsonLd data={lodgingBusinessJsonLd(settings, lang as SiteLocale)} />
       <FloatingMenu locale={lang} navigation={navigation} settings={settings} />
       {children}
       <Footer locale={lang} settings={settings} />

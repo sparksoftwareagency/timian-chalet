@@ -93,7 +93,7 @@ function SvgWordmarkHeading({
   height: string;
   shouldAnimate: boolean;
 }) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLHeadingElement>(null);
   const primaryMeasureRef = useRef<HTMLSpanElement>(null);
   const secondaryMeasureRef = useRef<HTMLSpanElement>(null);
   const [wordmarkFontSizePx, setWordmarkFontSizePx] = useState(100);
@@ -145,15 +145,13 @@ function SvgWordmarkHeading({
   }, [recalculateWordmarkFontSize]);
 
   return (
-    <div
+    <h2
       ref={containerRef}
-      aria-label={`${primary}${secondary ? ` ${secondary}` : ""}`}
-      role="img"
-      className="relative flex w-full flex-col items-end justify-evenly overflow-visible text-right"
+      className="relative m-0 flex w-full flex-col items-end justify-evenly overflow-visible text-right"
       style={{ height }}
     >
-      <motion.div
-        className="whitespace-nowrap font-sans uppercase leading-none"
+      <motion.span
+        className="block whitespace-nowrap font-sans uppercase leading-none"
         initial={{ y: 48, opacity: 0 }}
         animate={
           shouldAnimate ? { y: 0, opacity: 1 } : { y: 48, opacity: 0 }
@@ -167,10 +165,10 @@ function SvgWordmarkHeading({
         }}
       >
         {primary}
-      </motion.div>
+      </motion.span>
       {secondary ? (
-        <motion.div
-          className="whitespace-nowrap font-sans uppercase leading-none"
+        <motion.span
+          className="block whitespace-nowrap font-sans uppercase leading-none"
           initial={{ y: 48, opacity: 0 }}
           animate={
             shouldAnimate ? { y: 0, opacity: 1 } : { y: 48, opacity: 0 }
@@ -184,7 +182,7 @@ function SvgWordmarkHeading({
           }}
         >
           {secondary}
-        </motion.div>
+        </motion.span>
       ) : null}
 
       <span
@@ -213,7 +211,7 @@ function SvgWordmarkHeading({
           {secondary}
         </span>
       ) : null}
-    </div>
+    </h2>
   );
 }
 
@@ -233,7 +231,7 @@ function SvgTextHeading({
   verticalAlign?: "top" | "center" | "top-mobile-center-desktop";
 }) {
   const cleanLines = lines.map((line) => line.replace(/\r?\n+/g, " ").replace(/\s+/g, " ").trim());
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLParagraphElement>(null);
   const [textHeadingFontSizePx, setTextHeadingFontSizePx] = useState(100);
 
   const recalculateTextHeadingFontSize = useCallback(() => {
@@ -286,11 +284,9 @@ function SvgTextHeading({
   }, [recalculateTextHeadingFontSize]);
 
   return (
-    <div
+    <p
       ref={containerRef}
-      aria-label={cleanLines.join(" ")}
-      role="img"
-      className={`flex h-full w-full flex-col overflow-visible ${
+      className={`m-0 flex h-full w-full flex-col overflow-visible ${
         verticalAlign === "top"
           ? "justify-start"
           : verticalAlign === "top-mobile-center-desktop"
@@ -302,9 +298,9 @@ function SvgTextHeading({
       style={{ height }}
     >
       {cleanLines.map((line, index) => (
-        <motion.div
+        <motion.span
           key={`${line}-${index}`}
-          className="whitespace-nowrap font-sans uppercase leading-none"
+          className="block whitespace-nowrap font-sans uppercase leading-none"
           initial={{ y: 72, opacity: 0 }}
           animate={
             shouldAnimate
@@ -325,9 +321,9 @@ function SvgTextHeading({
           }}
         >
           {line}
-        </motion.div>
+        </motion.span>
       ))}
-    </div>
+    </p>
   );
 }
 
@@ -462,6 +458,8 @@ export default function Hero({ data }: { data: HeroData }) {
             muted
             loop
             playsInline
+            preload="metadata"
+            poster={data.heroSecondaryImage?.url}
           >
             <source src={data.heroVideoUrl} type="video/mp4" />
           </video>

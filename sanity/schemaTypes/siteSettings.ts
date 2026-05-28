@@ -23,6 +23,20 @@ export const siteSettingsType = defineType({
     }),
     ...seoFields,
     defineField({
+      name: 'ogImage',
+      title: 'Default social share image',
+      description: '1200x630 image used for Open Graph / Twitter previews when a page does not provide its own.',
+      type: 'image',
+      options: {hotspot: true},
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt text',
+          type: 'string',
+        }),
+      ],
+    }),
+    defineField({
       name: 'logoDark',
       title: 'Dark logo',
       type: 'image',
