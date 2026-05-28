@@ -8,6 +8,12 @@ function hasFileExtension(pathname: string) {
   return lastSegment.includes(".");
 }
 
+function withPathnameHeader(request: NextRequest) {
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", request.nextUrl.pathname);
+  return NextResponse.next({ request: { headers: requestHeaders } });
+}
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -26,7 +32,7 @@ export function proxy(request: NextRequest) {
   );
 
   if (isAlreadyLocalized) {
-    return NextResponse.next();
+    return withPathnameHeader(request);
   }
 
   const url = request.nextUrl.clone();

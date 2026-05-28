@@ -69,6 +69,7 @@ export type SiteSettingsData = {
   siteDescription: string
   seoTitle?: string
   seoDescription?: string
+  ogImage?: CmsImage
   logoDarkUrl: string
   logoLightUrl: string
   loadingBrand: string
@@ -414,6 +415,7 @@ const siteSettingsQuery = groq`*[_type == "siteSettings" && language == $languag
   siteDescription,
   seoTitle,
   seoDescription,
+  ogImage ${imageProjection},
   "logoDarkUrl": logoDark.asset->url,
   "logoLightUrl": logoLight.asset->url,
   loadingBrand,
