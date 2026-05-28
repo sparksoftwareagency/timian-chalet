@@ -37,30 +37,34 @@ export default function Footer({
               {settings.footerDescription}
             </p>
             <div className="flex space-x-3">
-              <a
-                href={facebook?.href ?? "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 rounded border flex items-center justify-center"
-                style={{ borderColor: colors.border }}
-                aria-label={facebook?.label ?? "Facebook"}
-              >
-                <svg className="w-4 h-4" style={{ color: colors.textSecondary }} fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M22.675 0h-21.35C.594 0 0 .594 0 1.326v21.348C0 23.406.594 24 1.326 24h11.495v-9.294H9.692V11.08h3.129V8.413c0-3.1 1.894-4.788 4.659-4.788 1.325 0 2.464.099 2.795.143v3.24h-1.918c-1.505 0-1.796.716-1.796 1.765v2.313h3.587l-.467 3.626h-3.12V24h6.114C23.406 24 24 23.406 24 22.674V1.326C24 .594 23.406 0 22.675 0z" />
-                </svg>
-              </a>
-              <a
-                href={instagram?.href ?? "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 rounded border flex items-center justify-center"
-                style={{ borderColor: colors.border }}
-                aria-label={instagram?.label ?? "Instagram"}
-              >
-                <svg className="w-4 h-4" style={{ color: colors.textSecondary }} fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M7.75 2C4.574 2 2 4.574 2 7.75v8.5C2 19.426 4.574 22 7.75 22h8.5C19.426 22 22 19.426 22 16.25v-8.5C22 4.574 19.426 2 16.25 2h-8.5zm0 1.8h8.5a3.95 3.95 0 0 1 3.95 3.95v8.5a3.95 3.95 0 0 1-3.95 3.95h-8.5a3.95 3.95 0 0 1-3.95-3.95v-8.5A3.95 3.95 0 0 1 7.75 3.8zm9.05 1.35a1.05 1.05 0 1 0 0 2.1 1.05 1.05 0 0 0 0-2.1zM12 7.2A4.8 4.8 0 1 0 12 16.8 4.8 4.8 0 0 0 12 7.2zm0 1.8A3 3 0 1 1 12 15a3 3 0 0 1 0-6z" />
-                </svg>
-              </a>
+              {facebook?.href ? (
+                <a
+                  href={facebook.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded border flex items-center justify-center"
+                  style={{ borderColor: colors.border }}
+                  aria-label={facebook.label}
+                >
+                  <svg className="w-4 h-4" style={{ color: colors.textSecondary }} fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M22.675 0h-21.35C.594 0 0 .594 0 1.326v21.348C0 23.406.594 24 1.326 24h11.495v-9.294H9.692V11.08h3.129V8.413c0-3.1 1.894-4.788 4.659-4.788 1.325 0 2.464.099 2.795.143v3.24h-1.918c-1.505 0-1.796.716-1.796 1.765v2.313h3.587l-.467 3.626h-3.12V24h6.114C23.406 24 24 23.406 24 22.674V1.326C24 .594 23.406 0 22.675 0z" />
+                  </svg>
+                </a>
+              ) : null}
+              {instagram?.href ? (
+                <a
+                  href={instagram.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 rounded border flex items-center justify-center"
+                  style={{ borderColor: colors.border }}
+                  aria-label={instagram.label}
+                >
+                  <svg className="w-4 h-4" style={{ color: colors.textSecondary }} fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M7.75 2C4.574 2 2 4.574 2 7.75v8.5C2 19.426 4.574 22 7.75 22h8.5C19.426 22 22 19.426 22 16.25v-8.5C22 4.574 19.426 2 16.25 2h-8.5zm0 1.8h8.5a3.95 3.95 0 0 1 3.95 3.95v8.5a3.95 3.95 0 0 1-3.95 3.95h-8.5a3.95 3.95 0 0 1-3.95-3.95v-8.5A3.95 3.95 0 0 1 7.75 3.8zm9.05 1.35a1.05 1.05 0 1 0 0 2.1 1.05 1.05 0 0 0 0-2.1zM12 7.2A4.8 4.8 0 1 0 12 16.8 4.8 4.8 0 0 0 12 7.2zm0 1.8A3 3 0 1 1 12 15a3 3 0 0 1 0-6z" />
+                  </svg>
+                </a>
+              ) : null}
             </div>
           </div>
 
@@ -85,10 +89,8 @@ export default function Footer({
             </h3>
             <ul className="space-y-2">
               {settings.services.map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-sm hover:opacity-80 transition-opacity" style={{ color: colors.textSecondary }}>
-                    {item}
-                  </a>
+                <li key={item} className="text-sm" style={{ color: colors.textSecondary }}>
+                  {item}
                 </li>
               ))}
             </ul>
