@@ -30,7 +30,8 @@ export default function Footer({
                 alt={settings.siteTitle}
                 width={180}
                 height={36}
-                className="h-9 w-auto"
+                className="w-auto"
+                style={{ height: 140, width: "auto" }}
               />
             </div>
             <p className="text-sm leading-relaxed" style={{ color: colors.textSecondary }}>
