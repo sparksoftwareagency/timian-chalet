@@ -10,6 +10,11 @@ export const homePageType = defineType({
     languageField,
     ...seoFields,
     defineField({
+      name: 'eventPromo',
+      title: 'Event promo band',
+      type: 'eventPromo',
+    }),
+    defineField({
       name: 'heroTitle',
       title: 'Hero title',
       type: 'string',

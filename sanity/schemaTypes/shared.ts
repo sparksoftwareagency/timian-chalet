@@ -16,6 +16,8 @@ export const localizedSchemaTypes = [
   'localCheesePage',
   'roomsPage',
   'room',
+  'eventsPage',
+  'event',
 ] as const
 
 export const languageField = defineField({

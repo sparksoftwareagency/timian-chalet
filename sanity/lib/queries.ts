@@ -18,10 +18,16 @@ const SANITY_TAGS = {
   localCheesePage: 'sanity:localCheesePage',
   roomsPage: 'sanity:roomsPage',
   room: 'sanity:room',
+  eventsPage: 'sanity:eventsPage',
+  event: 'sanity:event',
 } as const
 
 function roomSlugTag(slug: string) {
   return `${SANITY_TAGS.room}:${slug}`
+}
+
+function eventSlugTag(slug: string) {
+  return `${SANITY_TAGS.event}:${slug}`
 }
 
 export type CmsImage = {
@@ -102,9 +108,20 @@ export type NavigationData = {
   roomsGroupTitle: string
 }
 
+export type CmsEventPromo = {
+  enabled: boolean
+  eyebrow: string
+  title: string
+  dateLabel: string
+  description: string
+  link: CmsLink
+  image: CmsImage
+}
+
 export type HomePageData = {
   seoTitle?: string
   seoDescription?: string
+  eventPromo: CmsEventPromo | null
   heroTitle: string
   heroSubtitle: string
   heroVideoUrl: string
@@ -340,6 +357,56 @@ export type RoomPageData = {
   galleryImages: CmsImage[]
 }
 
+export type EventsPageData = {
+  seoTitle?: string
+  seoDescription?: string
+  heroEyebrow: string
+  heroTitle: string
+  heroSubtitle: string
+  emptyStateText: string
+  viewDetailsLabel: string
+  backToEventsLabel: string
+  ledByLabel: string
+  detailsTitle: string
+  whenLabel: string
+  whereLabel: string
+  hostsLabel: string
+  ctaTitle: string
+  ctaSubtitle: string
+  callLabel: string
+  emailLabel: string
+}
+
+export type EventCardData = {
+  title: string
+  slug: string
+  order: number
+  eyebrow: string
+  startDate: string
+  dateLabel: string
+  location: string
+  tagline: string
+  flyer: CmsImage
+}
+
+export type EventPageData = {
+  title: string
+  slug: string
+  order: number
+  seoTitle?: string
+  seoDescription?: string
+  eyebrow: string
+  startDate: string
+  dateLabel: string
+  location: string
+  hosts: string[]
+  tagline: string
+  descriptionParagraphs: string[]
+  flyer: CmsImage
+  phone: string
+  email: string
+}
+
 const linkProjection = groq`{
   label,
   href,
@@ -451,6 +518,15 @@ const navigationQuery = groq`*[_type == "navigation" && language == $language][0
 const homePageQuery = groq`*[_type == "homePage" && language == $language][0]{
   seoTitle,
   seoDescription,
+  eventPromo{
+    enabled,
+    eyebrow,
+    title,
+    dateLabel,
+    description,
+    link ${linkProjection},
+    image ${imageProjection}
+  },
   heroTitle,
   heroSubtitle,
   "heroVideoUrl": heroVideo.asset->url,
@@ -729,6 +805,60 @@ const roomSlugsQuery = groq`*[_type == "room" && language == $language]{
   "slug": slug.current
 }`
 
+const eventsPageQuery = groq`*[_type == "eventsPage" && language == $language][0]{
+  seoTitle,
+  seoDescription,
+  heroEyebrow,
+  heroTitle,
+  heroSubtitle,
+  emptyStateText,
+  viewDetailsLabel,
+  backToEventsLabel,
+  ledByLabel,
+  detailsTitle,
+  whenLabel,
+  whereLabel,
+  hostsLabel,
+  ctaTitle,
+  ctaSubtitle,
+  callLabel,
+  emailLabel
+}`
+
+const eventsQuery = groq`*[_type == "event" && language == $language] | order(order asc){
+  title,
+  "slug": slug.current,
+  order,
+  eyebrow,
+  startDate,
+  dateLabel,
+  location,
+  tagline,
+  flyer ${imageProjection}
+}`
+
+const eventQuery = groq`*[_type == "event" && language == $language && slug.current == $slug][0]{
+  title,
+  "slug": slug.current,
+  order,
+  seoTitle,
+  seoDescription,
+  eyebrow,
+  startDate,
+  dateLabel,
+  location,
+  hosts[],
+  tagline,
+  descriptionParagraphs[],
+  flyer ${imageProjection},
+  phone,
+  email
+}`
+
+const eventSlugsQuery = groq`*[_type == "event" && language == $language]{
+  "slug": slug.current
+}`
+
 async function fetchWithFallback<T>(
   query: string,
   language: SiteLanguage,
@@ -815,5 +945,27 @@ export async function fetchRoom(language: SiteLanguage, slug: string) {
 
 export async function fetchRoomSlugs(language: SiteLanguage) {
   const rows = await fetchWithFallback<Array<{slug: string}>>(roomSlugsQuery, language, [SANITY_TAGS.room])
+  return (rows ?? []).map((row) => row.slug)
+}
+
+export async function fetchEventsPage(language: SiteLanguage) {
+  return fetchWithFallback<EventsPageData>(eventsPageQuery, language, [SANITY_TAGS.eventsPage])
+}
+
+export async function fetchEvents(language: SiteLanguage) {
+  return (await fetchWithFallback<EventCardData[]>(eventsQuery, language, [SANITY_TAGS.event])) ?? []
+}
+
+export async function fetchEvent(language: SiteLanguage, slug: string) {
+  return fetchWithFallback<EventPageData>(
+    eventQuery,
+    language,
+    [SANITY_TAGS.event, eventSlugTag(slug)],
+    {slug},
+  )
+}
+
+export async function fetchEventSlugs(language: SiteLanguage) {
+  const rows = await fetchWithFallback<Array<{slug: string}>>(eventSlugsQuery, language, [SANITY_TAGS.event])
   return (rows ?? []).map((row) => row.slug)
 }

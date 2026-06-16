@@ -273,6 +273,70 @@ export default function ClientPage({
         </div>
       </section>
 
+      {data.eventPromo?.enabled ? (
+        <section data-theme="dark" style={{ backgroundColor: colors.accent }}>
+          <div
+            ref={addRef(7)}
+            className={`reveal-section ${pageShell} py-20 sm:py-24`}
+          >
+            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+              {data.eventPromo.image?.url ? (
+                <div className="w-full lg:w-[40%] min-w-0 flex justify-center">
+                  <div className="relative w-full max-w-xs aspect-[1414/2000] rounded-2xl overflow-hidden shadow-2xl">
+                    <SanityImage
+                      image={data.eventPromo.image}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 1024px) 80vw, 40vw"
+                    />
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="flex-1 min-w-0 reveal-section-delay flex flex-col items-center text-center lg:items-start lg:text-left">
+                {data.eventPromo.eyebrow ? (
+                  <span
+                    className="block text-xs uppercase tracking-[0.3em] mb-4 font-medium"
+                    style={{ color: colors.secondaryBg }}
+                  >
+                    {data.eventPromo.eyebrow}
+                  </span>
+                ) : null}
+                <h3 className="text-3xl sm:text-4xl lg:text-5xl font-serif leading-tight text-white max-w-2xl">
+                  {data.eventPromo.title}
+                </h3>
+                {data.eventPromo.dateLabel ? (
+                  <span
+                    className="mt-4 font-serif text-2xl sm:text-3xl"
+                    style={{ color: colors.secondaryBg }}
+                  >
+                    {data.eventPromo.dateLabel}
+                  </span>
+                ) : null}
+                <div className="w-12 h-[1px] my-6 shrink-0" style={{ backgroundColor: colors.cta }} />
+                {data.eventPromo.description ? (
+                  <p className="text-base sm:text-lg leading-relaxed text-white/80 max-w-2xl">
+                    {data.eventPromo.description}
+                  </p>
+                ) : null}
+                {data.eventPromo.link?.href ? (
+                  <Link
+                    href={localizeHref(locale, data.eventPromo.link.href)}
+                    className="mt-8 inline-flex rounded-full px-8 py-3 text-sm font-semibold uppercase tracking-[0.15em] transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: colors.cta, color: "#FFFFFF" }}
+                    {...(data.eventPromo.link.openInNewTab
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                  >
+                    {data.eventPromo.link.label}
+                  </Link>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section data-theme="light" style={{ backgroundColor: colors.secondaryBg }}>
         <div
           ref={addRef(2)}

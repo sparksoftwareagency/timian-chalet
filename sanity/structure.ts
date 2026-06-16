@@ -17,4 +17,7 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem('localCheesePage').title('Local cheese page'),
       S.documentTypeListItem('roomsPage').title('Rooms page'),
       S.documentTypeListItem('room').title('Rooms'),
+      S.divider(),
+      S.documentTypeListItem('eventsPage').title('Events page'),
+      S.documentTypeListItem('event').title('Events'),
     ])

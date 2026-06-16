@@ -37,6 +37,10 @@ function getTypeTags(type?: string, slug?: string | null) {
     tags.push(`sanity:room:${slug}`)
   }
 
+  if (type === 'event' && slug) {
+    tags.push(`sanity:event:${slug}`)
+  }
+
   return tags
 }
 
@@ -80,6 +84,16 @@ function revalidateTypePaths(type?: string, slug?: string | null) {
 
     if (type === 'room' && slug) {
       revalidatePath(`/${locale}/rooms/${slug}`)
+    }
+
+    // An event change affects both the landing-page promo band and the events pages.
+    if (type === 'event' || type === 'eventsPage') {
+      revalidatePath(`/${locale}`)
+      revalidatePath(`/${locale}/events`)
+    }
+
+    if (type === 'event' && slug) {
+      revalidatePath(`/${locale}/events/${slug}`)
     }
   }
 }

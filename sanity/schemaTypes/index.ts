@@ -3,6 +3,9 @@ import {type SchemaTypeDefinition} from 'sanity'
 import {aboutPageType} from './aboutPage'
 import {bookingPageType} from './bookingPage'
 import {culinaryPageType} from './culinaryPage'
+import {eventType} from './event'
+import {eventPromo} from './eventPromo'
+import {eventsPageType} from './eventsPage'
 import {experienceItem} from './experienceItem'
 import {experiencesPageType} from './experiencesPage'
 import {homeExperienceCard, homeExperiencesBand} from './homeExperienceCard'
@@ -35,6 +38,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     teaserSection,
     homeExperienceCard,
     homeExperiencesBand,
+    eventPromo,
     roomFloorItem,
     siteSettingsType,
     navigationType,
@@ -48,5 +52,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     localCheesePageType,
     roomsPageType,
     roomType,
+    eventsPageType,
+    eventType,
   ],
 }

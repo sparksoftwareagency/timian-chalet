@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 import { SITE_LOCALES, type SiteLocale } from "./lib/locale";
 import { SITE_URL } from "./lib/seo";
-import { fetchRoomSlugs } from "@/sanity/lib/queries";
+import { fetchEventSlugs, fetchRoomSlugs } from "@/sanity/lib/queries";
 
 const STATIC_PATHS = [
   "",
@@ -14,6 +14,7 @@ const STATIC_PATHS = [
   "/culinary",
   "/local-cheese",
   "/book-now",
+  "/events",
 ] as const;
 
 function buildLanguageMap(path: string): Record<string, string> {
@@ -42,16 +43,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  const slugsByLocale = await Promise.all(
+  const roomSlugsByLocale = await Promise.all(
     SITE_LOCALES.map(async (locale) => ({
       locale,
       slugs: await fetchRoomSlugs(locale),
     })),
   );
 
-  for (const { locale, slugs } of slugsByLocale) {
+  for (const { locale, slugs } of roomSlugsByLocale) {
     for (const slug of slugs) {
       entries.push(entryFor(locale, `/rooms/${slug}`));
+    }
+  }
+
+  const eventSlugsByLocale = await Promise.all(
+    SITE_LOCALES.map(async (locale) => ({
+      locale,
+      slugs: await fetchEventSlugs(locale),
+    })),
+  );
+
+  for (const { locale, slugs } of eventSlugsByLocale) {
+    for (const slug of slugs) {
+      entries.push(entryFor(locale, `/events/${slug}`));
     }
   }
 
